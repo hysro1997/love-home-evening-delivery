@@ -9,6 +9,22 @@ export function listStudentInfo(query) {
   })
 }
 
+// 查询学校信息
+export function getSchools() {
+  return request({
+    url: '/info/studentInfo/initSchool',
+    method: 'get'
+  })
+}
+
+// 查询年级信息
+export function getGrades() {
+  return request({
+    url: '/info/studentInfo/initGrade',
+    method: 'get'
+  })
+}
+
 // 查询学生信息详细
 export function getStudentInfo(studentId) {
   return request({

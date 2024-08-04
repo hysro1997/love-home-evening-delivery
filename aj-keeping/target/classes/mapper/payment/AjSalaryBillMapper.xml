@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hysro.ajkeeping.mapper.AjSalaryBillMapper">
+    
+    <resultMap type="AjSalaryBill" id="AjSalaryBillResult">
+        <result property="id"    column="id"    />
+        <result property="teacherId"    column="teacher_id"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="teacherCheckInStatistciId"    column="teacher_check_in_statistci_id"    />
+        <result property="checkInBeginDate"    column="check_in_begin_date"    />
+        <result property="checkInEndDate"    column="check_in_end_date"    />
+        <result property="checkInSumDays"    column="check_in_sum_days"    />
+        <result property="checkInTimes"    column="check_in_times"    />
+        <result property="leaveDays"    column="leave_days"    />
+        <result property="onDutyTimes"    column="on_duty_times"    />
+        <result property="onDutyPension"    column="on_duty_pension"    />
+        <result property="fullCheckIn"    column="full_check_in"    />
+        <result property="fullCheckInPension"    column="full_check_in_pension"    />
+        <result property="otherPension"    column="other_pension"    />
+        <result property="deduckMoney"    column="deduck_money"    />
+        <result property="acutalSalary"    column="acutal_salary"    />
+    </resultMap>
+
+    <sql id="selectAjSalaryBillVo">
+        select id, teacher_id, teacher_name, teacher_check_in_statistci_id, check_in_begin_date, check_in_end_date, check_in_sum_days, check_in_times, leave_days, on_duty_times, on_duty_pension, full_check_in, full_check_in_pension, other_pension, deduck_money, acutal_salary from aj_salary_bill
+    </sql>
+
+    <select id="selectAjSalaryBillList" parameterType="AjSalaryBill" resultMap="AjSalaryBillResult">
+        <include refid="selectAjSalaryBillVo"/>
+        <where>  
+            <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="teacherCheckInStatistciId != null "> and teacher_check_in_statistci_id = #{teacherCheckInStatistciId}</if>
+            <if test="checkInBeginDate != null "> and check_in_begin_date = #{checkInBeginDate}</if>
+            <if test="checkInEndDate != null "> and check_in_end_date = #{checkInEndDate}</if>
+            <if test="checkInSumDays != null "> and check_in_sum_days = #{checkInSumDays}</if>
+            <if test="checkInTimes != null "> and check_in_times = #{checkInTimes}</if>
+            <if test="leaveDays != null "> and leave_days = #{leaveDays}</if>
+            <if test="onDutyTimes != null "> and on_duty_times = #{onDutyTimes}</if>
+            <if test="onDutyPension != null "> and on_duty_pension = #{onDutyPension}</if>
+            <if test="fullCheckIn != null "> and full_check_in = #{fullCheckIn}</if>
+            <if test="fullCheckInPension != null "> and full_check_in_pension = #{fullCheckInPension}</if>
+            <if test="otherPension != null "> and other_pension = #{otherPension}</if>
+            <if test="deduckMoney != null "> and deduck_money = #{deduckMoney}</if>
+            <if test="acutalSalary != null "> and acutal_salary = #{acutalSalary}</if>
+        </where>
+    </select>
+    
+    <select id="selectAjSalaryBillById" parameterType="Long" resultMap="AjSalaryBillResult">
+        <include refid="selectAjSalaryBillVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAjSalaryBill" parameterType="AjSalaryBill" useGeneratedKeys="true" keyProperty="id">
+        insert into aj_salary_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">teacher_id,</if>
+            <if test="teacherName != null">teacher_name,</if>
+            <if test="teacherCheckInStatistciId != null">teacher_check_in_statistci_id,</if>
+            <if test="checkInBeginDate != null">check_in_begin_date,</if>
+            <if test="checkInEndDate != null">check_in_end_date,</if>
+            <if test="checkInSumDays != null">check_in_sum_days,</if>
+            <if test="checkInTimes != null">check_in_times,</if>
+            <if test="leaveDays != null">leave_days,</if>
+            <if test="onDutyTimes != null">on_duty_times,</if>
+            <if test="onDutyPension != null">on_duty_pension,</if>
+            <if test="fullCheckIn != null">full_check_in,</if>
+            <if test="fullCheckInPension != null">full_check_in_pension,</if>
+            <if test="otherPension != null">other_pension,</if>
+            <if test="deduckMoney != null">deduck_money,</if>
+            <if test="acutalSalary != null">acutal_salary,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherId != null">#{teacherId},</if>
+            <if test="teacherName != null">#{teacherName},</if>
+            <if test="teacherCheckInStatistciId != null">#{teacherCheckInStatistciId},</if>
+            <if test="checkInBeginDate != null">#{checkInBeginDate},</if>
+            <if test="checkInEndDate != null">#{checkInEndDate},</if>
+            <if test="checkInSumDays != null">#{checkInSumDays},</if>
+            <if test="checkInTimes != null">#{checkInTimes},</if>
+            <if test="leaveDays != null">#{leaveDays},</if>
+            <if test="onDutyTimes != null">#{onDutyTimes},</if>
+            <if test="onDutyPension != null">#{onDutyPension},</if>
+            <if test="fullCheckIn != null">#{fullCheckIn},</if>
+            <if test="fullCheckInPension != null">#{fullCheckInPension},</if>
+            <if test="otherPension != null">#{otherPension},</if>
+            <if test="deduckMoney != null">#{deduckMoney},</if>
+            <if test="acutalSalary != null">#{acutalSalary},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAjSalaryBill" parameterType="AjSalaryBill">
+        update aj_salary_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherId != null">teacher_id = #{teacherId},</if>
+            <if test="teacherName != null">teacher_name = #{teacherName},</if>
+            <if test="teacherCheckInStatistciId != null">teacher_check_in_statistci_id = #{teacherCheckInStatistciId},</if>
+            <if test="checkInBeginDate != null">check_in_begin_date = #{checkInBeginDate},</if>
+            <if test="checkInEndDate != null">check_in_end_date = #{checkInEndDate},</if>
+            <if test="checkInSumDays != null">check_in_sum_days = #{checkInSumDays},</if>
+            <if test="checkInTimes != null">check_in_times = #{checkInTimes},</if>
+            <if test="leaveDays != null">leave_days = #{leaveDays},</if>
+            <if test="onDutyTimes != null">on_duty_times = #{onDutyTimes},</if>
+            <if test="onDutyPension != null">on_duty_pension = #{onDutyPension},</if>
+            <if test="fullCheckIn != null">full_check_in = #{fullCheckIn},</if>
+            <if test="fullCheckInPension != null">full_check_in_pension = #{fullCheckInPension},</if>
+            <if test="otherPension != null">other_pension = #{otherPension},</if>
+            <if test="deduckMoney != null">deduck_money = #{deduckMoney},</if>
+            <if test="acutalSalary != null">acutal_salary = #{acutalSalary},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAjSalaryBillById" parameterType="Long">
+        delete from aj_salary_bill where id = #{id}
+    </delete>
+
+    <delete id="deleteAjSalaryBillByIds" parameterType="String">
+        delete from aj_salary_bill where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

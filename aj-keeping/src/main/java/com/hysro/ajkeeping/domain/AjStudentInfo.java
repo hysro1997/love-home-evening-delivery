@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 学生信息对象 aj_student_info
- * 
+ *
  * @author aj
  * @date 2024-08-04
  */
@@ -19,11 +19,11 @@ public class AjStudentInfo extends BaseEntity
     private Long studentId;
 
     /** 学生姓名（可重复，建议添加后缀） */
-    @Excel(name = "学生姓名", readConverterExp = "可=重复，建议添加后缀")
+    @Excel(name = "学生姓名")
     private String studentName;
 
     /** 学生性别（0默认，1男，2女） */
-    @Excel(name = "学生性别", readConverterExp = "0=默认，1男，2女")
+    @Excel(name = "学生性别", readConverterExp = "0=默认,1=男,2=女")
     private Integer studentGender;
 
     /** 学生学校 */
@@ -43,11 +43,10 @@ public class AjStudentInfo extends BaseEntity
     private String studentPhone;
 
     /** 人脸识别base64 */
-    @Excel(name = "人脸识别base64")
     private String studentFace;
 
     /** 学生来源（上门，招生，推荐） */
-    @Excel(name = "学生来源", readConverterExp = "上=门，招生，推荐")
+    @Excel(name = "学生来源")
     private String studentSource;
 
     /** 备注信息 */
@@ -55,105 +54,104 @@ public class AjStudentInfo extends BaseEntity
     private String studentRemark;
 
     /** 学生状态（0在学，1不学） */
-    @Excel(name = "学生状态", readConverterExp = "0=在学，1不学")
     private Integer studentStatus;
 
-    public void setStudentId(Long studentId) 
+    public void setStudentId(Long studentId)
     {
         this.studentId = studentId;
     }
 
-    public Long getStudentId() 
+    public Long getStudentId()
     {
         return studentId;
     }
-    public void setStudentName(String studentName) 
+    public void setStudentName(String studentName)
     {
         this.studentName = studentName;
     }
 
-    public String getStudentName() 
+    public String getStudentName()
     {
         return studentName;
     }
-    public void setStudentGender(Integer studentGender) 
+    public void setStudentGender(Integer studentGender)
     {
         this.studentGender = studentGender;
     }
 
-    public Integer getStudentGender() 
+    public Integer getStudentGender()
     {
         return studentGender;
     }
-    public void setStudentSchool(String studentSchool) 
+    public void setStudentSchool(String studentSchool)
     {
         this.studentSchool = studentSchool;
     }
 
-    public String getStudentSchool() 
+    public String getStudentSchool()
     {
         return studentSchool;
     }
-    public void setStudentGrade(String studentGrade) 
+    public void setStudentGrade(String studentGrade)
     {
         this.studentGrade = studentGrade;
     }
 
-    public String getStudentGrade() 
+    public String getStudentGrade()
     {
         return studentGrade;
     }
-    public void setStudentClass(String studentClass) 
+    public void setStudentClass(String studentClass)
     {
         this.studentClass = studentClass;
     }
 
-    public String getStudentClass() 
+    public String getStudentClass()
     {
         return studentClass;
     }
-    public void setStudentPhone(String studentPhone) 
+    public void setStudentPhone(String studentPhone)
     {
         this.studentPhone = studentPhone;
     }
 
-    public String getStudentPhone() 
+    public String getStudentPhone()
     {
         return studentPhone;
     }
-    public void setStudentFace(String studentFace) 
+    public void setStudentFace(String studentFace)
     {
         this.studentFace = studentFace;
     }
 
-    public String getStudentFace() 
+    public String getStudentFace()
     {
         return studentFace;
     }
-    public void setStudentSource(String studentSource) 
+    public void setStudentSource(String studentSource)
     {
         this.studentSource = studentSource;
     }
 
-    public String getStudentSource() 
+    public String getStudentSource()
     {
         return studentSource;
     }
-    public void setStudentRemark(String studentRemark) 
+    public void setStudentRemark(String studentRemark)
     {
         this.studentRemark = studentRemark;
     }
 
-    public String getStudentRemark() 
+    public String getStudentRemark()
     {
         return studentRemark;
     }
-    public void setStudentStatus(Integer studentStatus) 
+    public void setStudentStatus(Integer studentStatus)
     {
         this.studentStatus = studentStatus;
     }
 
-    public Integer getStudentStatus() 
+    public Integer getStudentStatus()
     {
         return studentStatus;
     }

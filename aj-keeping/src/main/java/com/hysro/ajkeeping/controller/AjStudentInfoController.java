@@ -23,7 +23,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 学生信息Controller
- * 
+ *
  * @author aj
  * @date 2024-08-04
  */
@@ -33,6 +33,26 @@ public class AjStudentInfoController extends BaseController
 {
     @Autowired
     private IAjStudentInfoService ajStudentInfoService;
+
+    /**
+     *
+     * 获取基础信息，学校列表
+     */
+    @PreAuthorize("@ss.hasPermi('info:studentInfo:list')")
+    @GetMapping("/initSchool")
+    public AjaxResult initSchoolInfo(){
+        return success(ajStudentInfoService.selectAjSchools());
+    }
+
+    /**
+     *
+     * 获取基础信息，年级列表
+     */
+    @PreAuthorize("@ss.hasPermi('info:studentInfo:list')")
+    @GetMapping("/initGrade")
+    public AjaxResult initGradeInfo(){
+        return success(ajStudentInfoService.selectAjGrades());
+    }
 
     /**
      * 查询学生信息列表
@@ -77,7 +97,7 @@ public class AjStudentInfoController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody AjStudentInfo ajStudentInfo)
     {
-        return toAjax(ajStudentInfoService.insertAjStudentInfo(ajStudentInfo));
+        return success(ajStudentInfoService.insertAjStudentInfo(ajStudentInfo));
     }
 
     /**
@@ -88,7 +108,7 @@ public class AjStudentInfoController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody AjStudentInfo ajStudentInfo)
     {
-        return toAjax(ajStudentInfoService.updateAjStudentInfo(ajStudentInfo));
+        return success(ajStudentInfoService.updateAjStudentInfo(ajStudentInfo));
     }
 
     /**

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hysro.ajkeeping.mapper.AjBaseCheckInMapper">
+    
+    <resultMap type="AjBaseCheckIn" id="AjBaseCheckInResult">
+        <result property="baseCheckInId"    column="base_check_in_id"    />
+        <result property="baseCheckInName"    column="base_check_in_name"    />
+        <result property="baseCheckInStudents"    column="base_check_in_students"    />
+        <result property="baseCheckInTeachers"    column="base_check_in_teachers"    />
+        <result property="baseCheckInBeginDate"    column="base_check_in_begin_date"    />
+        <result property="baseCheckInEndDate"    column="base_check_in_end_date"    />
+        <result property="baseCheckInDaysOneWeek"    column="base_check_in_days_one_week"    />
+        <result property="baseCheckInSumDays"    column="base_check_in_sum_days"    />
+        <result property="baseCheckInWeeks"    column="base_check_in_weeks"    />
+        <result property="baseCheckInStatus"    column="base_check_in_status"    />
+    </resultMap>
+
+    <sql id="selectAjBaseCheckInVo">
+        select base_check_in_id, base_check_in_name, base_check_in_students, base_check_in_teachers, base_check_in_begin_date, base_check_in_end_date, base_check_in_days_one_week, base_check_in_sum_days, base_check_in_weeks, base_check_in_status from aj_base_check_in
+    </sql>
+
+    <select id="selectAjBaseCheckInList" parameterType="AjBaseCheckIn" resultMap="AjBaseCheckInResult">
+        <include refid="selectAjBaseCheckInVo"/>
+        <where>  
+            <if test="baseCheckInName != null  and baseCheckInName != ''"> and base_check_in_name like concat('%', #{baseCheckInName}, '%')</if>
+            <if test="baseCheckInStudents != null  and baseCheckInStudents != ''"> and base_check_in_students = #{baseCheckInStudents}</if>
+            <if test="baseCheckInTeachers != null  and baseCheckInTeachers != ''"> and base_check_in_teachers = #{baseCheckInTeachers}</if>
+            <if test="baseCheckInBeginDate != null "> and base_check_in_begin_date = #{baseCheckInBeginDate}</if>
+            <if test="baseCheckInEndDate != null "> and base_check_in_end_date = #{baseCheckInEndDate}</if>
+            <if test="baseCheckInDaysOneWeek != null "> and base_check_in_days_one_week = #{baseCheckInDaysOneWeek}</if>
+            <if test="baseCheckInSumDays != null "> and base_check_in_sum_days = #{baseCheckInSumDays}</if>
+            <if test="baseCheckInWeeks != null "> and base_check_in_weeks = #{baseCheckInWeeks}</if>
+            <if test="baseCheckInStatus != null "> and base_check_in_status = #{baseCheckInStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectAjBaseCheckInByBaseCheckInId" parameterType="Long" resultMap="AjBaseCheckInResult">
+        <include refid="selectAjBaseCheckInVo"/>
+        where base_check_in_id = #{baseCheckInId}
+    </select>
+
+    <insert id="insertAjBaseCheckIn" parameterType="AjBaseCheckIn" useGeneratedKeys="true" keyProperty="baseCheckInId">
+        insert into aj_base_check_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baseCheckInName != null">base_check_in_name,</if>
+            <if test="baseCheckInStudents != null">base_check_in_students,</if>
+            <if test="baseCheckInTeachers != null">base_check_in_teachers,</if>
+            <if test="baseCheckInBeginDate != null">base_check_in_begin_date,</if>
+            <if test="baseCheckInEndDate != null">base_check_in_end_date,</if>
+            <if test="baseCheckInDaysOneWeek != null">base_check_in_days_one_week,</if>
+            <if test="baseCheckInSumDays != null">base_check_in_sum_days,</if>
+            <if test="baseCheckInWeeks != null">base_check_in_weeks,</if>
+            <if test="baseCheckInStatus != null">base_check_in_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baseCheckInName != null">#{baseCheckInName},</if>
+            <if test="baseCheckInStudents != null">#{baseCheckInStudents},</if>
+            <if test="baseCheckInTeachers != null">#{baseCheckInTeachers},</if>
+            <if test="baseCheckInBeginDate != null">#{baseCheckInBeginDate},</if>
+            <if test="baseCheckInEndDate != null">#{baseCheckInEndDate},</if>
+            <if test="baseCheckInDaysOneWeek != null">#{baseCheckInDaysOneWeek},</if>
+            <if test="baseCheckInSumDays != null">#{baseCheckInSumDays},</if>
+            <if test="baseCheckInWeeks != null">#{baseCheckInWeeks},</if>
+            <if test="baseCheckInStatus != null">#{baseCheckInStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAjBaseCheckIn" parameterType="AjBaseCheckIn">
+        update aj_base_check_in
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baseCheckInName != null">base_check_in_name = #{baseCheckInName},</if>
+            <if test="baseCheckInStudents != null">base_check_in_students = #{baseCheckInStudents},</if>
+            <if test="baseCheckInTeachers != null">base_check_in_teachers = #{baseCheckInTeachers},</if>
+            <if test="baseCheckInBeginDate != null">base_check_in_begin_date = #{baseCheckInBeginDate},</if>
+            <if test="baseCheckInEndDate != null">base_check_in_end_date = #{baseCheckInEndDate},</if>
+            <if test="baseCheckInDaysOneWeek != null">base_check_in_days_one_week = #{baseCheckInDaysOneWeek},</if>
+            <if test="baseCheckInSumDays != null">base_check_in_sum_days = #{baseCheckInSumDays},</if>
+            <if test="baseCheckInWeeks != null">base_check_in_weeks = #{baseCheckInWeeks},</if>
+            <if test="baseCheckInStatus != null">base_check_in_status = #{baseCheckInStatus},</if>
+        </trim>
+        where base_check_in_id = #{baseCheckInId}
+    </update>
+
+    <delete id="deleteAjBaseCheckInByBaseCheckInId" parameterType="Long">
+        delete from aj_base_check_in where base_check_in_id = #{baseCheckInId}
+    </delete>
+
+    <delete id="deleteAjBaseCheckInByBaseCheckInIds" parameterType="String">
+        delete from aj_base_check_in where base_check_in_id in 
+        <foreach item="baseCheckInId" collection="array" open="(" separator="," close=")">
+            #{baseCheckInId}
+        </foreach>
+    </delete>
+</mapper>

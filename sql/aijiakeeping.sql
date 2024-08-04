@@ -290,7 +290,7 @@ DROP TABLE IF EXISTS `aj_teacher_info`;
 CREATE TABLE `aj_teacher_info`  (
   `teacher_id` int(11) NOT NULL AUTO_INCREMENT,
   `teacher_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '教师姓名（可重复，建议添加后缀）',
-  `teacher_gender` tinyint(1) NULL DEFAULT NULL COMMENT '教师性别',
+  `teacher_gender` tinyint(1) NULL DEFAULT 0 COMMENT '教师性别',
   `teacher_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '教师电话',
   `teacher_employ_type` tinyint(1) NULL DEFAULT NULL COMMENT '用工类别（0兼职，1全职，2暑假工）',
   `teacher_face` blob NULL COMMENT '教师人脸识别base64',
