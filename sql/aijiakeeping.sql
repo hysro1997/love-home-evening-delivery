@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 04/08/2024 16:09:10
+ Date: 04/08/2024 17:17:12
 */
 
 SET NAMES utf8mb4;
@@ -64,6 +64,20 @@ CREATE TABLE `aj_cost_template`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for aj_grade
+-- ----------------------------
+DROP TABLE IF EXISTS `aj_grade`;
+CREATE TABLE `aj_grade`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `grade` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '年级',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '年级' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of aj_grade
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for aj_salary_bill
 -- ----------------------------
 DROP TABLE IF EXISTS `aj_salary_bill`;
@@ -111,6 +125,20 @@ CREATE TABLE `aj_salary_template`  (
 
 -- ----------------------------
 -- Records of aj_salary_template
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for aj_school
+-- ----------------------------
+DROP TABLE IF EXISTS `aj_school`;
+CREATE TABLE `aj_school`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `school_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学校',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学校' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of aj_school
 -- ----------------------------
 
 -- ----------------------------
@@ -301,12 +329,12 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
-INSERT INTO `gen_table` VALUES (1, 'aj_student_info', '学生信息表', NULL, NULL, 'AjStudentInfo', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'info', 'studentInfo', '学生信息', 'aj', '0', '/', '{\"parentMenuId\":\"1061\"}', 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40', '学生信息');
+INSERT INTO `gen_table` VALUES (1, 'aj_student_info', '学生信息表', NULL, NULL, 'AjStudentInfo', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'info', 'studentInfo', '学生信息', 'aj', '0', '/', '{\"parentMenuId\":\"1061\"}', 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13', '学生信息');
 INSERT INTO `gen_table` VALUES (2, 'aj_base_check_in', '考勤总表', NULL, NULL, 'AjBaseCheckIn', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'checkin', 'baseCheckin', '考勤总表', 'hysro', '0', '/', '{\"parentMenuId\":1063}', 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:20:52', NULL);
 INSERT INTO `gen_table` VALUES (4, 'aj_salary_bill', '工资明细表', NULL, NULL, 'AjSalaryBill', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'payment', 'teacherSalary', '工资明细', 'hysro', '0', '/', '{\"parentMenuId\":1064}', 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:26:58', NULL);
 INSERT INTO `gen_table` VALUES (6, 'aj_student_bill', '学生账单明细', NULL, NULL, 'AjStudentBill', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'payment', 'studentBill', '学生账单明细', 'hysro', '0', '/', '{\"parentMenuId\":1064}', 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:26:27', NULL);
@@ -317,6 +345,8 @@ INSERT INTO `gen_table` VALUES (10, 'aj_teacher_check_in_statistic', '教师考�
 INSERT INTO `gen_table` VALUES (11, 'aj_teacher_info', '教师信息表', NULL, NULL, 'AjTeacherInfo', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'info', 'teacherInfo', '教师信息', 'ruoyi', '0', '/', '{\"parentMenuId\":\"1061\"}', 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:27:53', NULL);
 INSERT INTO `gen_table` VALUES (12, 'aj_cost_template', '费用模板', NULL, NULL, 'AjCostTemplate', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'bill', 'studentBillTemplate', '学生费用模板', 'hysro', '0', '/', '{\"parentMenuId\":1062}', 'admin', '2024-08-04 14:12:58', '', '2024-08-04 14:14:51', NULL);
 INSERT INTO `gen_table` VALUES (13, 'aj_salary_template', '老师工资模板', NULL, NULL, 'AjSalaryTemplate', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'bill', 'teacherBillTemplate', '老师工资模板', 'hysro', '0', '/', '{\"parentMenuId\":1062}', 'admin', '2024-08-04 14:15:32', '', '2024-08-04 14:16:37', NULL);
+INSERT INTO `gen_table` VALUES (14, 'aj_grade', '年级', NULL, NULL, 'AjGrade', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'schools', 'grade', '年级', 'hysro', '0', '/', '{\"parentMenuId\":1143}', 'admin', '2024-08-04 17:12:44', '', '2024-08-04 17:13:23', NULL);
+INSERT INTO `gen_table` VALUES (15, 'aj_school', '学校', NULL, NULL, 'AjSchool', 'crud', 'element-ui', 'com.hysro.ajkeeping', 'schools', 'school', '学校', 'hysro', '0', '/', '{\"parentMenuId\":1143}', 'admin', '2024-08-04 17:12:44', '', '2024-08-04 17:13:39', NULL);
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -346,22 +376,22 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 148 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 152 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table_column
 -- ----------------------------
-INSERT INTO `gen_table_column` VALUES (1, 1, 'student_id', 'id', 'int(11)', 'Long', 'studentId', '1', '1', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (2, 1, 'student_name', '学生姓名（可重复，建议添加后缀）', 'varchar(255)', 'String', 'studentName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (3, 1, 'student_gender', '学生性别（0默认，1男，2女）', 'tinyint(1)', 'Integer', 'studentGender', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (4, 1, 'student_school', '学生学校', 'varchar(255)', 'String', 'studentSchool', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (5, 1, 'student_grade', '学生年级', 'varchar(255)', 'String', 'studentGrade', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (6, 1, 'student_class', '学生班级', 'varchar(255)', 'String', 'studentClass', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (7, 1, 'student_phone', '联系电话', 'varchar(255)', 'String', 'studentPhone', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (8, 1, 'student_face', '人脸识别base64', 'blob', 'String', 'studentFace', '0', '0', '0', '1', '1', '1', '1', 'EQ', NULL, '', 8, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (9, 1, 'student_source', '学生来源（上门，招生，推荐）', 'varchar(50)', 'String', 'studentSource', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (10, 1, 'student_remark', '备注信息', 'varchar(255)', 'String', 'studentRemark', '0', '0', '0', '1', '1', '1', '0', 'EQ', 'input', '', 10, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
-INSERT INTO `gen_table_column` VALUES (11, 1, 'student_status', '学生状态（0在学，1不学）', 'tinyint(1)', 'Integer', 'studentStatus', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'radio', '', 11, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 14:27:40');
+INSERT INTO `gen_table_column` VALUES (1, 1, 'student_id', 'id', 'int(11)', 'Long', 'studentId', '1', '1', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (2, 1, 'student_name', '学生姓名（可重复，建议添加后缀）', 'varchar(255)', 'String', 'studentName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (3, 1, 'student_gender', '学生性别（0默认，1男，2女）', 'tinyint(1)', 'Integer', 'studentGender', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'radio', '', 3, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (4, 1, 'student_school', '学生学校', 'varchar(255)', 'String', 'studentSchool', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'select', '', 4, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (5, 1, 'student_grade', '学生年级', 'varchar(255)', 'String', 'studentGrade', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'select', '', 5, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (6, 1, 'student_class', '学生班级', 'varchar(255)', 'String', 'studentClass', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'select', '', 6, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (7, 1, 'student_phone', '联系电话', 'varchar(255)', 'String', 'studentPhone', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (8, 1, 'student_face', '人脸识别base64', 'blob', 'String', 'studentFace', '0', '0', '0', '1', '1', '1', '1', 'EQ', NULL, '', 8, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (9, 1, 'student_source', '学生来源（上门，招生，推荐）', 'varchar(50)', 'String', 'studentSource', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'select', '', 9, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (10, 1, 'student_remark', '备注信息', 'varchar(255)', 'String', 'studentRemark', '0', '0', '0', '1', '1', '1', '0', 'EQ', 'textarea', '', 10, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
+INSERT INTO `gen_table_column` VALUES (11, 1, 'student_status', '学生状态（0在学，1不学）', 'tinyint(1)', 'Integer', 'studentStatus', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'radio', '', 11, 'admin', '2024-08-04 13:39:51', '', '2024-08-04 17:01:13');
 INSERT INTO `gen_table_column` VALUES (12, 2, 'base_check_in_id', 'id', 'int(11)', 'Long', 'baseCheckInId', '1', '1', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:20:52');
 INSERT INTO `gen_table_column` VALUES (13, 2, 'base_check_in_name', '考勤名称', 'varchar(255)', 'String', 'baseCheckInName', '0', '0', '0', '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:20:52');
 INSERT INTO `gen_table_column` VALUES (14, 2, 'base_check_in_students', '考勤学生的id数组', 'varchar(1000)', 'String', 'baseCheckInStudents', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'textarea', '', 3, 'admin', '2024-08-04 13:40:03', '', '2024-08-04 14:20:52');
@@ -476,6 +506,10 @@ INSERT INTO `gen_table_column` VALUES (144, 13, 'salary_on_duty', '值班费', '
 INSERT INTO `gen_table_column` VALUES (145, 13, 'salary_off_duty_fee', '请假工资', 'decimal(10,2)', 'BigDecimal', 'salaryOffDutyFee', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2024-08-04 14:15:32', '', '2024-08-04 14:16:37');
 INSERT INTO `gen_table_column` VALUES (146, 13, 'salary_default', '默认（0不默认，1默认）', 'tinyint(1)', 'Integer', 'salaryDefault', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2024-08-04 14:15:32', '', '2024-08-04 14:16:37');
 INSERT INTO `gen_table_column` VALUES (147, 13, 'salary_all_duty', '全勤奖', 'decimal(10,2)', 'BigDecimal', 'salaryAllDuty', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2024-08-04 14:15:32', '', '2024-08-04 14:16:37');
+INSERT INTO `gen_table_column` VALUES (148, 14, 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-08-04 17:12:44', '', '2024-08-04 17:13:23');
+INSERT INTO `gen_table_column` VALUES (149, 14, 'grade', '年级', 'varchar(255)', 'String', 'grade', '0', '0', '0', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2024-08-04 17:12:44', '', '2024-08-04 17:13:23');
+INSERT INTO `gen_table_column` VALUES (150, 15, 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', '0', '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2024-08-04 17:12:44', '', '2024-08-04 17:13:39');
+INSERT INTO `gen_table_column` VALUES (151, 15, 'school_name', '学校', 'varchar(255)', 'String', 'schoolName', '0', '0', '0', '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2024-08-04 17:12:44', '', '2024-08-04 17:13:39');
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -910,12 +944,13 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
 -- ----------------------------
 INSERT INTO `sys_logininfor` VALUES (1, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-08-04 13:33:59');
+INSERT INTO `sys_logininfor` VALUES (2, 'admin', '127.0.0.1', '内网IP', 'Chrome 12', 'Windows 10', '0', '登录成功', '2024-08-04 16:12:20');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -943,7 +978,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1143 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1156 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1102,6 +1137,19 @@ INSERT INTO `sys_menu` VALUES (1127, '员工考勤新增', 1125, 2, '#', '', NUL
 INSERT INTO `sys_menu` VALUES (1128, '员工考勤修改', 1125, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'checkin:teacherCheckin:edit', '#', 'admin', '2024-08-04 14:52:13', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1129, '员工考勤删除', 1125, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'checkin:teacherCheckin:remove', '#', 'admin', '2024-08-04 14:52:13', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (1130, '员工考勤导出', 1125, 5, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'checkin:teacherCheckin:export', '#', 'admin', '2024-08-04 14:52:13', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1143, '周边学校', 0, 8, 'schools', NULL, NULL, '', 1, 0, 'M', '0', '0', '', 'nested', 'admin', '2024-08-04 17:12:13', 'admin', '2024-08-04 17:12:18', '');
+INSERT INTO `sys_menu` VALUES (1144, '年级', 1143, 1, 'grade', 'schools/grade/index', NULL, '', 1, 0, 'C', '0', '0', 'schools:grade:list', '#', 'admin', '2024-08-04 17:14:31', '', NULL, '年级菜单');
+INSERT INTO `sys_menu` VALUES (1145, '年级查询', 1144, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:grade:query', '#', 'admin', '2024-08-04 17:14:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1146, '年级新增', 1144, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:grade:add', '#', 'admin', '2024-08-04 17:14:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1147, '年级修改', 1144, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:grade:edit', '#', 'admin', '2024-08-04 17:14:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1148, '年级删除', 1144, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:grade:remove', '#', 'admin', '2024-08-04 17:14:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1149, '年级导出', 1144, 5, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:grade:export', '#', 'admin', '2024-08-04 17:14:31', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1150, '学校', 1143, 1, 'school', 'schools/school/index', NULL, '', 1, 0, 'C', '0', '0', 'schools:school:list', '#', 'admin', '2024-08-04 17:14:39', '', NULL, '学校菜单');
+INSERT INTO `sys_menu` VALUES (1151, '学校查询', 1150, 1, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:school:query', '#', 'admin', '2024-08-04 17:14:39', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1152, '学校新增', 1150, 2, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:school:add', '#', 'admin', '2024-08-04 17:14:39', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1153, '学校修改', 1150, 3, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:school:edit', '#', 'admin', '2024-08-04 17:14:39', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1154, '学校删除', 1150, 4, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:school:remove', '#', 'admin', '2024-08-04 17:14:39', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1155, '学校导出', 1150, 5, '#', '', NULL, '', 1, 0, 'F', '0', '0', 'schools:school:export', '#', 'admin', '2024-08-04 17:14:39', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1153,7 +1201,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1194,6 +1242,14 @@ INSERT INTO `sys_oper_log` VALUES (33, '代码生成', 2, 'com.ruoyi.generator.c
 INSERT INTO `sys_oper_log` VALUES (34, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', '研发部门', '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"studentInfo\",\"className\":\"AjStudentInfo\",\"columns\":[{\"capJavaField\":\"StudentId\",\"columnComment\":\"id\",\"columnId\":1,\"columnName\":\"student_id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:39:51\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"studentId\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:07:40\",\"usableColumn\":false},{\"capJavaField\":\"StudentName\",\"columnComment\":\"学生姓名（可重复，建议添加后缀）\",\"columnId\":2,\"columnName\":\"student_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:39:51\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"studentName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:07:40\",\"usableColumn\":false},{\"capJavaField\":\"StudentGender\",\"columnComment\":\"学生性别（0默认，1男，2女）\",\"columnId\":3,\"columnName\":\"student_gender\",\"columnType\":\"tinyint(1)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:39:51\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"0\",\"javaField\":\"studentGender\",\"javaType\":\"Integer\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:07:40\",\"usableColumn\":false},{\"capJavaField\":\"StudentSchool\",\"columnComment\":\"学生学校\",\"columnId\":4,\"columnName\":\"student_school\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:3', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 14:27:40', 42);
 INSERT INTO `sys_oper_log` VALUES (35, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', '研发部门', '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"teacherInfo\",\"className\":\"AjTeacherInfo\",\"columns\":[{\"capJavaField\":\"TeacherId\",\"columnId\":119,\"columnName\":\"teacher_id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:40:03\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"teacherId\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":11,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:10:04\",\"usableColumn\":false},{\"capJavaField\":\"TeacherName\",\"columnComment\":\"教师姓名（可重复，建议添加后缀）\",\"columnId\":120,\"columnName\":\"teacher_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:40:03\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"teacherName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":11,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:10:04\",\"usableColumn\":false},{\"capJavaField\":\"TeacherGender\",\"columnComment\":\"教师性别\",\"columnId\":121,\"columnName\":\"teacher_gender\",\"columnType\":\"tinyint(1)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:40:03\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"0\",\"javaField\":\"teacherGender\",\"javaType\":\"Integer\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":11,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:10:04\",\"usableColumn\":false},{\"capJavaField\":\"TeacherPhone\",\"columnComment\":\"教师电话\",\"columnId\":122,\"columnName\":\"teacher_phone\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:40:03\",\"dictType\":\"\",\"ed', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 14:27:53', 151);
 INSERT INTO `sys_oper_log` VALUES (36, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', '研发部门', '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"aj_student_info,aj_base_check_in,aj_salary_bill,aj_student_bill,aj_student_check_in,aj_student_check_in_statistic,aj_teacher_check_in,aj_teacher_check_in_statistic,aj_teacher_info,aj_cost_template,aj_salary_template\"}', NULL, 0, NULL, '2024-08-04 14:28:12', 443);
+INSERT INTO `sys_oper_log` VALUES (37, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', '行政部门', '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"studentInfo\",\"className\":\"AjStudentInfo\",\"columns\":[{\"capJavaField\":\"StudentId\",\"columnComment\":\"id\",\"columnId\":1,\"columnName\":\"student_id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:39:51\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"studentId\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:27:40\",\"usableColumn\":false},{\"capJavaField\":\"StudentName\",\"columnComment\":\"学生姓名（可重复，建议添加后缀）\",\"columnId\":2,\"columnName\":\"student_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:39:51\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"studentName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:27:40\",\"usableColumn\":false},{\"capJavaField\":\"StudentGender\",\"columnComment\":\"学生性别（0默认，1男，2女）\",\"columnId\":3,\"columnName\":\"student_gender\",\"columnType\":\"tinyint(1)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:39:51\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"radio\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"0\",\"javaField\":\"studentGender\",\"javaType\":\"Integer\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2024-08-04 14:27:40\",\"usableColumn\":false},{\"capJavaField\":\"StudentSchool\",\"columnComment\":\"学生学校\",\"columnId\":4,\"columnName\":\"student_school\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 13:3', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:01:13', 329);
+INSERT INTO `sys_oper_log` VALUES (38, '菜单管理', 1, 'com.ruoyi.web.controller.system.SysMenuController.add()', 'POST', 1, 'admin', '行政部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createBy\":\"admin\",\"icon\":\"nested\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"周边学校\",\"menuType\":\"M\",\"orderNum\":7,\"params\":{},\"parentId\":0,\"path\":\"schools\",\"status\":\"0\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:12:13', 53);
+INSERT INTO `sys_oper_log` VALUES (39, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '行政部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2024-08-04 17:12:13\",\"icon\":\"nested\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1143,\"menuName\":\"周边学校\",\"menuType\":\"M\",\"orderNum\":8,\"params\":{},\"parentId\":0,\"path\":\"schools\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:12:18', 14);
+INSERT INTO `sys_oper_log` VALUES (40, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', '行政部门', '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"aj_grade,aj_school\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:12:45', 93);
+INSERT INTO `sys_oper_log` VALUES (41, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', '行政部门', '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"grade\",\"className\":\"AjGrade\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":148,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 17:12:44\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":14,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Grade\",\"columnComment\":\"年级\",\"columnId\":149,\"columnName\":\"grade\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 17:12:44\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"0\",\"javaField\":\"grade\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":14,\"updateBy\":\"\",\"usableColumn\":false}],\"crud\":true,\"functionAuthor\":\"hysro\",\"functionName\":\"年级\",\"genPath\":\"/\",\"genType\":\"0\",\"moduleName\":\"schools\",\"options\":\"{\\\"parentMenuId\\\":1143}\",\"packageName\":\"com.hysro.ajkeeping\",\"params\":{\"parentMenuId\":1143},\"parentMenuId\":\"1143\",\"sub\":false,\"tableComment\":\"年级\",\"tableId\":14,\"tableName\":\"aj_grade\",\"tplCategory\":\"crud\",\"tplWebType\":\"element-ui\",\"tree\":false}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:13:23', 43);
+INSERT INTO `sys_oper_log` VALUES (42, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', '行政部门', '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"school\",\"className\":\"AjSchool\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":150,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 17:12:44\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"SchoolName\",\"columnComment\":\"学校\",\"columnId\":151,\"columnName\":\"school_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 17:12:44\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"0\",\"javaField\":\"schoolName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false}],\"crud\":true,\"functionAuthor\":\"hysro\",\"functionName\":\"学校\",\"genPath\":\"/\",\"genType\":\"0\",\"moduleName\":\"schools\",\"options\":\"{\\\"parentMenuId\\\":1143}\",\"packageName\":\"com.hysro.ajkeeping\",\"params\":{\"parentMenuId\":1143},\"parentMenuId\":\"1143\",\"sub\":false,\"tableComment\":\"学校\",\"tableId\":15,\"tableName\":\"aj_school\",\"tplCategory\":\"crud\",\"tplWebType\":\"element-ui\",\"tree\":false}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:13:41', 3535);
+INSERT INTO `sys_oper_log` VALUES (43, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', '行政部门', '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"school\",\"className\":\"AjSchool\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":150,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 17:12:44\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"isRequired\":\"0\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"SchoolName\",\"columnComment\":\"学校\",\"columnId\":151,\"columnName\":\"school_name\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2024-08-04 17:12:44\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"0\",\"javaField\":\"schoolName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false}],\"crud\":true,\"functionAuthor\":\"hysro\",\"functionName\":\"学校\",\"genPath\":\"/\",\"genType\":\"0\",\"moduleName\":\"schools\",\"options\":\"{\\\"parentMenuId\\\":1143}\",\"packageName\":\"com.hysro.ajkeeping\",\"params\":{\"parentMenuId\":1143},\"parentMenuId\":\"1143\",\"sub\":false,\"tableComment\":\"学校\",\"tableId\":15,\"tableName\":\"aj_school\",\"tplCategory\":\"crud\",\"tplWebType\":\"element-ui\",\"tree\":false}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2024-08-04 17:13:41', 1583);
+INSERT INTO `sys_oper_log` VALUES (44, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', '行政部门', '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"aj_grade,aj_school\"}', NULL, 0, NULL, '2024-08-04 17:13:50', 56);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1308,7 +1364,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '爱家', '00', 'aj@qq.com', '15888888888', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2024-07-14 20:02:50', 'admin', '2024-07-14 20:02:50', '', '2024-08-04 13:38:12', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '爱家', '00', 'aj@qq.com', '15888888888', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2024-08-04 16:12:21', 'admin', '2024-07-14 20:02:50', '', '2024-08-04 16:12:20', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2', '127.0.0.1', '2024-07-14 20:02:50', 'admin', '2024-07-14 20:02:50', '', NULL, '测试员');
 
 -- ----------------------------
