@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hysro.ajkeeping.mapper.AjStudentInfoMapper">
+    
+    <resultMap type="AjStudentInfo" id="AjStudentInfoResult">
+        <result property="studentId"    column="student_id"    />
+        <result property="studentName"    column="student_name"    />
+        <result property="studentGender"    column="student_gender"    />
+        <result property="studentSchool"    column="student_school"    />
+        <result property="studentGrade"    column="student_grade"    />
+        <result property="studentClass"    column="student_class"    />
+        <result property="studentPhone"    column="student_phone"    />
+        <result property="studentFace"    column="student_face"    />
+        <result property="studentSource"    column="student_source"    />
+        <result property="studentRemark"    column="student_remark"    />
+        <result property="studentStatus"    column="student_status"    />
+    </resultMap>
+
+    <sql id="selectAjStudentInfoVo">
+        select student_id, student_name, student_gender, student_school, student_grade, student_class, student_phone, student_face, student_source, student_remark, student_status from aj_student_info
+    </sql>
+
+    <select id="selectAjStudentInfoList" parameterType="AjStudentInfo" resultMap="AjStudentInfoResult">
+        <include refid="selectAjStudentInfoVo"/>
+        <where>  
+            <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
+            <if test="studentGender != null "> and student_gender = #{studentGender}</if>
+            <if test="studentSchool != null  and studentSchool != ''"> and student_school = #{studentSchool}</if>
+            <if test="studentGrade != null  and studentGrade != ''"> and student_grade = #{studentGrade}</if>
+            <if test="studentClass != null  and studentClass != ''"> and student_class = #{studentClass}</if>
+            <if test="studentPhone != null  and studentPhone != ''"> and student_phone = #{studentPhone}</if>
+            <if test="studentFace != null  and studentFace != ''"> and student_face = #{studentFace}</if>
+            <if test="studentSource != null  and studentSource != ''"> and student_source = #{studentSource}</if>
+            <if test="studentStatus != null "> and student_status = #{studentStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectAjStudentInfoByStudentId" parameterType="Long" resultMap="AjStudentInfoResult">
+        <include refid="selectAjStudentInfoVo"/>
+        where student_id = #{studentId}
+    </select>
+
+    <insert id="insertAjStudentInfo" parameterType="AjStudentInfo" useGeneratedKeys="true" keyProperty="studentId">
+        insert into aj_student_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">student_name,</if>
+            <if test="studentGender != null">student_gender,</if>
+            <if test="studentSchool != null">student_school,</if>
+            <if test="studentGrade != null and studentGrade != ''">student_grade,</if>
+            <if test="studentClass != null">student_class,</if>
+            <if test="studentPhone != null and studentPhone != ''">student_phone,</if>
+            <if test="studentFace != null">student_face,</if>
+            <if test="studentSource != null">student_source,</if>
+            <if test="studentRemark != null">student_remark,</if>
+            <if test="studentStatus != null">student_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">#{studentName},</if>
+            <if test="studentGender != null">#{studentGender},</if>
+            <if test="studentSchool != null">#{studentSchool},</if>
+            <if test="studentGrade != null and studentGrade != ''">#{studentGrade},</if>
+            <if test="studentClass != null">#{studentClass},</if>
+            <if test="studentPhone != null and studentPhone != ''">#{studentPhone},</if>
+            <if test="studentFace != null">#{studentFace},</if>
+            <if test="studentSource != null">#{studentSource},</if>
+            <if test="studentRemark != null">#{studentRemark},</if>
+            <if test="studentStatus != null">#{studentStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAjStudentInfo" parameterType="AjStudentInfo">
+        update aj_student_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">student_name = #{studentName},</if>
+            <if test="studentGender != null">student_gender = #{studentGender},</if>
+            <if test="studentSchool != null">student_school = #{studentSchool},</if>
+            <if test="studentGrade != null and studentGrade != ''">student_grade = #{studentGrade},</if>
+            <if test="studentClass != null">student_class = #{studentClass},</if>
+            <if test="studentPhone != null and studentPhone != ''">student_phone = #{studentPhone},</if>
+            <if test="studentFace != null">student_face = #{studentFace},</if>
+            <if test="studentSource != null">student_source = #{studentSource},</if>
+            <if test="studentRemark != null">student_remark = #{studentRemark},</if>
+            <if test="studentStatus != null">student_status = #{studentStatus},</if>
+        </trim>
+        where student_id = #{studentId}
+    </update>
+
+    <delete id="deleteAjStudentInfoByStudentId" parameterType="Long">
+        delete from aj_student_info where student_id = #{studentId}
+    </delete>
+
+    <delete id="deleteAjStudentInfoByStudentIds" parameterType="String">
+        delete from aj_student_info where student_id in 
+        <foreach item="studentId" collection="array" open="(" separator="," close=")">
+            #{studentId}
+        </foreach>
+    </delete>
+</mapper>

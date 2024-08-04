@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hysro.ajkeeping.mapper.AjSalaryTemplateMapper">
+    
+    <resultMap type="AjSalaryTemplate" id="AjSalaryTemplateResult">
+        <result property="salaryId"    column="salary_id"    />
+        <result property="salaryTemplateName"    column="salary_template_name"    />
+        <result property="salaryPerMonth"    column="salary_per_month"    />
+        <result property="salaryUsePerMonth"    column="salary_use_per_month"    />
+        <result property="salaryPerDay"    column="salary_per_day"    />
+        <result property="salaryUserPerDay"    column="salary_user_per_day"    />
+        <result property="salaryOnDuty"    column="salary_on_duty"    />
+        <result property="salaryOffDutyFee"    column="salary_off_duty_fee"    />
+        <result property="salaryDefault"    column="salary_default"    />
+        <result property="salaryAllDuty"    column="salary_all_duty"    />
+    </resultMap>
+
+    <sql id="selectAjSalaryTemplateVo">
+        select salary_id, salary_template_name, salary_per_month, salary_use_per_month, salary_per_day, salary_user_per_day, salary_on_duty, salary_off_duty_fee, salary_default, salary_all_duty from aj_salary_template
+    </sql>
+
+    <select id="selectAjSalaryTemplateList" parameterType="AjSalaryTemplate" resultMap="AjSalaryTemplateResult">
+        <include refid="selectAjSalaryTemplateVo"/>
+        <where>  
+            <if test="salaryTemplateName != null  and salaryTemplateName != ''"> and salary_template_name like concat('%', #{salaryTemplateName}, '%')</if>
+            <if test="salaryPerMonth != null "> and salary_per_month = #{salaryPerMonth}</if>
+            <if test="salaryUsePerMonth != null "> and salary_use_per_month = #{salaryUsePerMonth}</if>
+            <if test="salaryPerDay != null "> and salary_per_day = #{salaryPerDay}</if>
+            <if test="salaryUserPerDay != null "> and salary_user_per_day = #{salaryUserPerDay}</if>
+            <if test="salaryOnDuty != null "> and salary_on_duty = #{salaryOnDuty}</if>
+            <if test="salaryOffDutyFee != null "> and salary_off_duty_fee = #{salaryOffDutyFee}</if>
+            <if test="salaryDefault != null "> and salary_default = #{salaryDefault}</if>
+            <if test="salaryAllDuty != null "> and salary_all_duty = #{salaryAllDuty}</if>
+        </where>
+    </select>
+    
+    <select id="selectAjSalaryTemplateBySalaryId" parameterType="Long" resultMap="AjSalaryTemplateResult">
+        <include refid="selectAjSalaryTemplateVo"/>
+        where salary_id = #{salaryId}
+    </select>
+
+    <insert id="insertAjSalaryTemplate" parameterType="AjSalaryTemplate" useGeneratedKeys="true" keyProperty="salaryId">
+        insert into aj_salary_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="salaryTemplateName != null">salary_template_name,</if>
+            <if test="salaryPerMonth != null">salary_per_month,</if>
+            <if test="salaryUsePerMonth != null">salary_use_per_month,</if>
+            <if test="salaryPerDay != null">salary_per_day,</if>
+            <if test="salaryUserPerDay != null">salary_user_per_day,</if>
+            <if test="salaryOnDuty != null">salary_on_duty,</if>
+            <if test="salaryOffDutyFee != null">salary_off_duty_fee,</if>
+            <if test="salaryDefault != null">salary_default,</if>
+            <if test="salaryAllDuty != null">salary_all_duty,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="salaryTemplateName != null">#{salaryTemplateName},</if>
+            <if test="salaryPerMonth != null">#{salaryPerMonth},</if>
+            <if test="salaryUsePerMonth != null">#{salaryUsePerMonth},</if>
+            <if test="salaryPerDay != null">#{salaryPerDay},</if>
+            <if test="salaryUserPerDay != null">#{salaryUserPerDay},</if>
+            <if test="salaryOnDuty != null">#{salaryOnDuty},</if>
+            <if test="salaryOffDutyFee != null">#{salaryOffDutyFee},</if>
+            <if test="salaryDefault != null">#{salaryDefault},</if>
+            <if test="salaryAllDuty != null">#{salaryAllDuty},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAjSalaryTemplate" parameterType="AjSalaryTemplate">
+        update aj_salary_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="salaryTemplateName != null">salary_template_name = #{salaryTemplateName},</if>
+            <if test="salaryPerMonth != null">salary_per_month = #{salaryPerMonth},</if>
+            <if test="salaryUsePerMonth != null">salary_use_per_month = #{salaryUsePerMonth},</if>
+            <if test="salaryPerDay != null">salary_per_day = #{salaryPerDay},</if>
+            <if test="salaryUserPerDay != null">salary_user_per_day = #{salaryUserPerDay},</if>
+            <if test="salaryOnDuty != null">salary_on_duty = #{salaryOnDuty},</if>
+            <if test="salaryOffDutyFee != null">salary_off_duty_fee = #{salaryOffDutyFee},</if>
+            <if test="salaryDefault != null">salary_default = #{salaryDefault},</if>
+            <if test="salaryAllDuty != null">salary_all_duty = #{salaryAllDuty},</if>
+        </trim>
+        where salary_id = #{salaryId}
+    </update>
+
+    <delete id="deleteAjSalaryTemplateBySalaryId" parameterType="Long">
+        delete from aj_salary_template where salary_id = #{salaryId}
+    </delete>
+
+    <delete id="deleteAjSalaryTemplateBySalaryIds" parameterType="String">
+        delete from aj_salary_template where salary_id in 
+        <foreach item="salaryId" collection="array" open="(" separator="," close=")">
+            #{salaryId}
+        </foreach>
+    </delete>
+</mapper>
