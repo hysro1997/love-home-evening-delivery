@@ -80,7 +80,6 @@
     <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.2.23" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.2.23" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jaxb:jaxb-runtime:2.3.8" level="project" />
-    <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jaxb:txw2:2.3.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.12" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.activation:jakarta.activation:1.2.2" level="project" />
@@ -153,6 +152,34 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-pool2:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: eu.bitwalker:UserAgentUtils:1.21" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:4.0.1" level="project" />
+    <orderEntry type="module" module-name="aj-keeping" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-test:2.5.15" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-test:2.5.15" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-test-autoconfigure:2.5.15" level="project" />
+    <orderEntry type="library" name="Maven: com.jayway.jsonpath:json-path:2.5.0" level="project" />
+    <orderEntry type="library" name="Maven: net.minidev:json-smart:2.4.10" level="project" />
+    <orderEntry type="library" name="Maven: net.minidev:accessors-smart:2.4.9" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:9.3" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
+    <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.assertj:assertj-core:3.19.0" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest:2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter:5.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-commons:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-params:5.7.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.7.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.junit.platform:junit-platform-engine:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mockito:mockito-core:3.9.0" level="project" />
+    <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy-agent:1.10.22" level="project" />
+    <orderEntry type="library" name="Maven: org.objenesis:objenesis:3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mockito:mockito-junit-jupiter:3.9.0" level="project" />
+    <orderEntry type="library" name="Maven: org.skyscreamer:jsonassert:1.5.1" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-test:5.3.33" level="project" />
+    <orderEntry type="library" name="Maven: org.xmlunit:xmlunit-core:2.8.4" level="project" />
     <orderEntry type="module" module-name="ruoyi-generator" />
     <orderEntry type="library" name="Maven: org.apache.velocity:velocity-engine-core:2.3" level="project" />
   </component>
