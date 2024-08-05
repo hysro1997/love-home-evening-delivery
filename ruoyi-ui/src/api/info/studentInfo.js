@@ -58,3 +58,11 @@ export function delStudentInfo(studentId) {
     method: 'delete'
   })
 }
+
+// 学生退学/复学
+export function updateStudentStatus(studentId) {
+  return request({
+    url: '/info/studentInfo/updateStudentStatus/' + studentId,
+    method: 'put'
+  })
+}

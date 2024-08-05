@@ -8,7 +8,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 学生费用模板对象 aj_cost_template
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -28,7 +28,7 @@ public class AjCostTemplate extends BaseEntity
     private BigDecimal costFeePerDay;
 
     /** 使用日收费（0不用，1用） */
-    @Excel(name = "使用日收费", readConverterExp = "0=不用，1用")
+    @Excel(name = "使用日收费", readConverterExp = "0=不用,1=用")
     private Integer costUseFeePerDay;
 
     /** 课时费 */
@@ -36,7 +36,7 @@ public class AjCostTemplate extends BaseEntity
     private BigDecimal costFeePerLesson;
 
     /** 使用课时费（0不用，1用） */
-    @Excel(name = "使用课时费", readConverterExp = "0=不用，1用")
+    @Excel(name = "使用课时费", readConverterExp = "0=不用,1=用")
     private Integer costUseFeePerLesson;
 
     /** 伙食费 */
@@ -52,7 +52,7 @@ public class AjCostTemplate extends BaseEntity
     private BigDecimal costFeePerMonth;
 
     /** 使用每月收费（0不用，1用） */
-    @Excel(name = "使用每月收费", readConverterExp = "0=不用，1用")
+    @Excel(name = "使用每月收费", readConverterExp = "0=不用,1=用")
     private Integer costUseFeePerMonth;
 
     /** 适合哪个年级用 */
@@ -60,114 +60,114 @@ public class AjCostTemplate extends BaseEntity
     private String costUseGrade;
 
     /** 默认（0不默认，1默认） */
-    @Excel(name = "默认", readConverterExp = "0=不默认，1默认")
+    @Excel(name = "默认", readConverterExp = "0=不默认,1=默认")
     private Integer costDefault;
 
-    public void setCostTemplateId(Long costTemplateId) 
+    public void setCostTemplateId(Long costTemplateId)
     {
         this.costTemplateId = costTemplateId;
     }
 
-    public Long getCostTemplateId() 
+    public Long getCostTemplateId()
     {
         return costTemplateId;
     }
-    public void setCostTemplateName(String costTemplateName) 
+    public void setCostTemplateName(String costTemplateName)
     {
         this.costTemplateName = costTemplateName;
     }
 
-    public String getCostTemplateName() 
+    public String getCostTemplateName()
     {
         return costTemplateName;
     }
-    public void setCostFeePerDay(BigDecimal costFeePerDay) 
+    public void setCostFeePerDay(BigDecimal costFeePerDay)
     {
         this.costFeePerDay = costFeePerDay;
     }
 
-    public BigDecimal getCostFeePerDay() 
+    public BigDecimal getCostFeePerDay()
     {
         return costFeePerDay;
     }
-    public void setCostUseFeePerDay(Integer costUseFeePerDay) 
+    public void setCostUseFeePerDay(Integer costUseFeePerDay)
     {
         this.costUseFeePerDay = costUseFeePerDay;
     }
 
-    public Integer getCostUseFeePerDay() 
+    public Integer getCostUseFeePerDay()
     {
         return costUseFeePerDay;
     }
-    public void setCostFeePerLesson(BigDecimal costFeePerLesson) 
+    public void setCostFeePerLesson(BigDecimal costFeePerLesson)
     {
         this.costFeePerLesson = costFeePerLesson;
     }
 
-    public BigDecimal getCostFeePerLesson() 
+    public BigDecimal getCostFeePerLesson()
     {
         return costFeePerLesson;
     }
-    public void setCostUseFeePerLesson(Integer costUseFeePerLesson) 
+    public void setCostUseFeePerLesson(Integer costUseFeePerLesson)
     {
         this.costUseFeePerLesson = costUseFeePerLesson;
     }
 
-    public Integer getCostUseFeePerLesson() 
+    public Integer getCostUseFeePerLesson()
     {
         return costUseFeePerLesson;
     }
-    public void setCostFoodFee(BigDecimal costFoodFee) 
+    public void setCostFoodFee(BigDecimal costFoodFee)
     {
         this.costFoodFee = costFoodFee;
     }
 
-    public BigDecimal getCostFoodFee() 
+    public BigDecimal getCostFoodFee()
     {
         return costFoodFee;
     }
-    public void setCostTextbooksFee(BigDecimal costTextbooksFee) 
+    public void setCostTextbooksFee(BigDecimal costTextbooksFee)
     {
         this.costTextbooksFee = costTextbooksFee;
     }
 
-    public BigDecimal getCostTextbooksFee() 
+    public BigDecimal getCostTextbooksFee()
     {
         return costTextbooksFee;
     }
-    public void setCostFeePerMonth(BigDecimal costFeePerMonth) 
+    public void setCostFeePerMonth(BigDecimal costFeePerMonth)
     {
         this.costFeePerMonth = costFeePerMonth;
     }
 
-    public BigDecimal getCostFeePerMonth() 
+    public BigDecimal getCostFeePerMonth()
     {
         return costFeePerMonth;
     }
-    public void setCostUseFeePerMonth(Integer costUseFeePerMonth) 
+    public void setCostUseFeePerMonth(Integer costUseFeePerMonth)
     {
         this.costUseFeePerMonth = costUseFeePerMonth;
     }
 
-    public Integer getCostUseFeePerMonth() 
+    public Integer getCostUseFeePerMonth()
     {
         return costUseFeePerMonth;
     }
-    public void setCostUseGrade(String costUseGrade) 
+    public void setCostUseGrade(String costUseGrade)
     {
         this.costUseGrade = costUseGrade;
     }
 
-    public String getCostUseGrade() 
+    public String getCostUseGrade()
     {
         return costUseGrade;
     }
-    public void setCostDefault(Integer costDefault) 
+    public void setCostDefault(Integer costDefault)
     {
         this.costDefault = costDefault;
     }
 
-    public Integer getCostDefault() 
+    public Integer getCostDefault()
     {
         return costDefault;
     }

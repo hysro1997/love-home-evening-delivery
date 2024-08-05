@@ -1,18 +1,42 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="教师姓名" prop="teacherName">
+      <el-form-item label="学生id" prop="studentId">
         <el-input
-          v-model="queryParams.teacherName"
-          placeholder="请输入教师姓名"
+          v-model="queryParams.studentId"
+          placeholder="请输入学生id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师电话" prop="teacherPhone">
+      <el-form-item label="考勤基表id" prop="baseCheckInId">
         <el-input
-          v-model="queryParams.teacherPhone"
-          placeholder="请输入教师电话"
+          v-model="queryParams.baseCheckInId"
+          placeholder="请输入考勤基表id"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="学生姓名" prop="studentName">
+        <el-input
+          v-model="queryParams.studentName"
+          placeholder="请输入学生姓名"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="预交费" prop="advanceFee">
+        <el-input
+          v-model="queryParams.advanceFee"
+          placeholder="请输入预交费"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="核实状态(0预交费, 1已核销, 2已退款作废)" prop="verifyAdvanceFee">
+        <el-input
+          v-model="queryParams.verifyAdvanceFee"
+          placeholder="请输入核实状态(0预交费, 1已核销, 2已退款作废)"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -31,7 +55,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['info:teacherInfo:add']"
+          v-hasPermi="['payment:advanceFee:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -42,7 +66,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['info:teacherInfo:edit']"
+          v-hasPermi="['payment:advanceFee:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,7 +77,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['info:teacherInfo:remove']"
+          v-hasPermi="['payment:advanceFee:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,28 +87,20 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['info:teacherInfo:export']"
+          v-hasPermi="['payment:advanceFee:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="teacherInfoList" @selection-change="handleSelectionChange"
-              :row-class-name="tableRowClassName">
+    <el-table v-loading="loading" :data="advanceFeeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="id" align="center" prop="teacherId" />
-      <el-table-column label="教师姓名" align="center" prop="teacherName" />
-      <el-table-column label="教师性别" align="center" prop="teacherGender">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.teacherGender===1">男</el-tag><el-tag v-if="scope.row.teacherGender===2" type="danger">女</el-tag><el-tag v-if="scope.row.teacherGender===0" type="info">默认</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="教师电话" align="center" prop="teacherPhone" />
-      <el-table-column label="用工类别" align="center" prop="teacherEmployType">
-        <template slot-scope="scope">
-          {{scope.row.teacherEmployType === 0 ? "兼职" : scope.row.teacherEmployType === 1 ? "全职" : scope.row.teacherEmployType === 2 ? "实习生" : "暑假工"}}
-        </template>
-      </el-table-column>
+      <el-table-column label="id" align="center" prop="id" />
+      <el-table-column label="学生id" align="center" prop="studentId" />
+      <el-table-column label="考勤基表id" align="center" prop="baseCheckInId" />
+      <el-table-column label="学生姓名" align="center" prop="studentName" />
+      <el-table-column label="预交费" align="center" prop="advanceFee" />
+      <el-table-column label="核实状态(0预交费, 1已核销, 2已退款作废)" align="center" prop="verifyAdvanceFee" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -92,19 +108,19 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['info:teacherInfo:edit']"
+            v-hasPermi="['payment:advanceFee:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['info:teacherInfo:remove']"
+            v-hasPermi="['payment:advanceFee:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+    
     <pagination
       v-show="total>0"
       :total="total"
@@ -113,28 +129,23 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改教师信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
+    <!-- 添加或修改预收费对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="教师姓名" prop="teacherName">
-          <el-input v-model="form.teacherName" placeholder="请输入教师姓名" />
+        <el-form-item label="学生id" prop="studentId">
+          <el-input v-model="form.studentId" placeholder="请输入学生id" />
         </el-form-item>
-        <el-form-item label="教师性别" prop="teacherGender">
-          <template>
-            <el-radio v-model="form.teacherGender" label="1">男</el-radio>
-            <el-radio v-model="form.teacherGender" label="2">女</el-radio>
-          </template>
+        <el-form-item label="考勤基表id" prop="baseCheckInId">
+          <el-input v-model="form.baseCheckInId" placeholder="请输入考勤基表id" />
         </el-form-item>
-        <el-form-item label="教师电话" prop="teacherPhone">
-          <el-input v-model="form.teacherPhone" placeholder="请输入教师电话" maxlength="11"/>
+        <el-form-item label="学生姓名" prop="studentName">
+          <el-input v-model="form.studentName" placeholder="请输入学生姓名" />
         </el-form-item>
-        <el-form-item label="用工类别" prop="teacherEmployType">
-          <template>
-            <el-radio v-model="form.teacherEmployType" label="1">全职</el-radio>
-            <el-radio v-model="form.teacherEmployType" label="0">兼职</el-radio>
-            <el-radio v-model="form.teacherEmployType" label="2">实习生</el-radio>
-            <el-radio v-model="form.teacherEmployType" label="3">暑假工</el-radio>
-          </template>
+        <el-form-item label="预交费" prop="advanceFee">
+          <el-input v-model="form.advanceFee" placeholder="请输入预交费" />
+        </el-form-item>
+        <el-form-item label="核实状态(0预交费, 1已核销, 2已退款作废)" prop="verifyAdvanceFee">
+          <el-input v-model="form.verifyAdvanceFee" placeholder="请输入核实状态(0预交费, 1已核销, 2已退款作废)" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -144,20 +155,12 @@
     </el-dialog>
   </div>
 </template>
-<style>
-  .el-table .warning-row {
-    background: oldlace;
-  }
 
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
-</style>
 <script>
-import { listTeacherInfo, getTeacherInfo, delTeacherInfo, addTeacherInfo, updateTeacherInfo } from "@/api/info/teacherInfo";
+import { listAdvanceFee, getAdvanceFee, delAdvanceFee, addAdvanceFee, updateAdvanceFee } from "@/api/payment/advanceFee";
 
 export default {
-  name: "TeacherInfo",
+  name: "AdvanceFee",
   data() {
     return {
       // 遮罩层
@@ -172,8 +175,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 教师信息表格数据
-      teacherInfoList: [],
+      // 预收费表格数据
+      advanceFeeList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -182,28 +185,16 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        teacherName: null,
-        teacherGender: null,
-        teacherPhone: null,
-        teacherEmployType: null,
-        teacherFace: null,
-        teacherStatus: null
+        studentId: null,
+        baseCheckInId: null,
+        studentName: null,
+        advanceFee: null,
+        verifyAdvanceFee: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        teacherName: [
-          { required: true, message: "教师姓名不能为空", trigger: "blur" }
-        ],
-        teacherPhone: [
-          { required: true, message: "教师电话不能为空", trigger: "blur" },
-          {
-            pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: "blur"
-          }
-        ],
       }
     };
   },
@@ -211,19 +202,11 @@ export default {
     this.getList();
   },
   methods: {
-    tableRowClassName({row, rowIndex}) {
-      if (rowIndex % 2 === 1) {
-        return 'warning-row';
-      } else if (rowIndex % 2 === 0) {
-        return 'success-row';
-      }
-      return '';
-    },
-    /** 查询教师信息列表 */
+    /** 查询预收费列表 */
     getList() {
       this.loading = true;
-      listTeacherInfo(this.queryParams).then(response => {
-        this.teacherInfoList = response.rows;
+      listAdvanceFee(this.queryParams).then(response => {
+        this.advanceFeeList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -236,13 +219,12 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        teacherId: null,
-        teacherName: null,
-        teacherGender: null,
-        teacherPhone: null,
-        teacherEmployType: null,
-        teacherFace: null,
-        teacherStatus: null
+        id: null,
+        studentId: null,
+        baseCheckInId: null,
+        studentName: null,
+        advanceFee: null,
+        verifyAdvanceFee: null
       };
       this.resetForm("form");
     },
@@ -258,7 +240,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.teacherId)
+      this.ids = selection.map(item => item.id)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -266,31 +248,30 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加教师信息";
+      this.title = "添加预收费";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const teacherId = row.teacherId || this.ids
-      getTeacherInfo(teacherId).then(response => {
+      const id = row.id || this.ids
+      getAdvanceFee(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改教师信息";
+        this.title = "修改预收费";
       });
     },
     /** 提交按钮 */
     submitForm() {
-      this.form.teacherName = this.form.teacherName.trim();
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.teacherId != null) {
-            updateTeacherInfo(this.form).then(response => {
+          if (this.form.id != null) {
+            updateAdvanceFee(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addTeacherInfo(this.form).then(response => {
+            addAdvanceFee(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -301,9 +282,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const teacherIds = row.teacherId || this.ids;
-      this.$modal.confirm('是否确认删除教师信息编号为"' + teacherIds + '"的数据项？').then(function() {
-        return delTeacherInfo(teacherIds);
+      const ids = row.id || this.ids;
+      this.$modal.confirm('是否确认删除预收费编号为"' + ids + '"的数据项？').then(function() {
+        return delAdvanceFee(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -311,9 +292,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('info/teacherInfo/export', {
+      this.download('payment/advanceFee/export', {
         ...this.queryParams
-      }, `教师信息_${new Date().getTime()}.xlsx`)
+      }, `advanceFee_${new Date().getTime()}.xlsx`)
     }
   }
 };

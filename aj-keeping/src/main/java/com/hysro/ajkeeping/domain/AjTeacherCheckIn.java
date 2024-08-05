@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 员工考勤对象 aj_teacher_check_in
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -34,78 +34,78 @@ public class AjTeacherCheckIn extends BaseEntity
     private Date checkInDate;
 
     /** 考勤状态（0未到，1签到，2迟到，3请假） */
-    @Excel(name = "考勤状态", readConverterExp = "0=未到，1签到，2迟到，3请假")
+    @Excel(name = "考勤状态", readConverterExp = "0=未到,1=签到,2=迟到,3=请假")
     private Integer checkInStatus;
 
     /** 签到时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date checkInDatetime;
 
     /** 当日值班次数 */
     @Excel(name = "当日值班次数")
     private Integer checkInDayOnDutyTimes;
 
-    public void setTeacherCheckInId(Long teacherCheckInId) 
+    public void setTeacherCheckInId(Long teacherCheckInId)
     {
         this.teacherCheckInId = teacherCheckInId;
     }
 
-    public Long getTeacherCheckInId() 
+    public Long getTeacherCheckInId()
     {
         return teacherCheckInId;
     }
-    public void setTeacherId(Long teacherId) 
+    public void setTeacherId(Long teacherId)
     {
         this.teacherId = teacherId;
     }
 
-    public Long getTeacherId() 
+    public Long getTeacherId()
     {
         return teacherId;
     }
-    public void setTeacherName(String teacherName) 
+    public void setTeacherName(String teacherName)
     {
         this.teacherName = teacherName;
     }
 
-    public String getTeacherName() 
+    public String getTeacherName()
     {
         return teacherName;
     }
-    public void setCheckInDate(Date checkInDate) 
+    public void setCheckInDate(Date checkInDate)
     {
         this.checkInDate = checkInDate;
     }
 
-    public Date getCheckInDate() 
+    public Date getCheckInDate()
     {
         return checkInDate;
     }
-    public void setCheckInStatus(Integer checkInStatus) 
+    public void setCheckInStatus(Integer checkInStatus)
     {
         this.checkInStatus = checkInStatus;
     }
 
-    public Integer getCheckInStatus() 
+    public Integer getCheckInStatus()
     {
         return checkInStatus;
     }
-    public void setCheckInDatetime(Date checkInDatetime) 
+    public void setCheckInDatetime(Date checkInDatetime)
     {
         this.checkInDatetime = checkInDatetime;
     }
 
-    public Date getCheckInDatetime() 
+    public Date getCheckInDatetime()
     {
         return checkInDatetime;
     }
-    public void setCheckInDayOnDutyTimes(Integer checkInDayOnDutyTimes) 
+    public void setCheckInDayOnDutyTimes(Integer checkInDayOnDutyTimes)
     {
         this.checkInDayOnDutyTimes = checkInDayOnDutyTimes;
     }
 
-    public Integer getCheckInDayOnDutyTimes() 
+    public Integer getCheckInDayOnDutyTimes()
     {
         return checkInDayOnDutyTimes;
     }

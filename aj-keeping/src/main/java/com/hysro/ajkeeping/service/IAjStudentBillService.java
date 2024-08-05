@@ -5,15 +5,15 @@ import com.hysro.ajkeeping.domain.AjStudentBill;
 
 /**
  * 学生账单明细Service接口
- * 
+ *
  * @author hysro
- * @date 2024-08-04
+ * @date 2024-08-05
  */
-public interface IAjStudentBillService 
+public interface IAjStudentBillService
 {
     /**
      * 查询学生账单明细
-     * 
+     *
      * @param id 学生账单明细主键
      * @return 学生账单明细
      */
@@ -21,7 +21,7 @@ public interface IAjStudentBillService
 
     /**
      * 查询学生账单明细列表
-     * 
+     *
      * @param ajStudentBill 学生账单明细
      * @return 学生账单明细集合
      */
@@ -29,7 +29,7 @@ public interface IAjStudentBillService
 
     /**
      * 新增学生账单明细
-     * 
+     *
      * @param ajStudentBill 学生账单明细
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface IAjStudentBillService
 
     /**
      * 修改学生账单明细
-     * 
+     *
      * @param ajStudentBill 学生账单明细
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface IAjStudentBillService
 
     /**
      * 批量删除学生账单明细
-     * 
+     *
      * @param ids 需要删除的学生账单明细主键集合
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface IAjStudentBillService
 
     /**
      * 删除学生账单明细信息
-     * 
+     *
      * @param id 学生账单明细主键
      * @return 结果
      */

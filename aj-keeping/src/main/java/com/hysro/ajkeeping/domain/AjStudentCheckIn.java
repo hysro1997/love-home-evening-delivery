@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 学生考勤对象 aj_student_check_in
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -42,83 +42,83 @@ public class AjStudentCheckIn extends BaseEntity
     private Date checkInDate;
 
     /** 签到状态（0未到，1签到，2请假） */
-    @Excel(name = "签到状态", readConverterExp = "0=未到，1签到，2请假")
+    @Excel(name = "签到状态", readConverterExp = "0=未到,1=签到,2=请假")
     private Integer checkInStatus;
 
     /** 签到时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "签到时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date checkInDatetime;
 
-    public void setStudentCheckInId(Long studentCheckInId) 
+    public void setStudentCheckInId(Long studentCheckInId)
     {
         this.studentCheckInId = studentCheckInId;
     }
 
-    public Long getStudentCheckInId() 
+    public Long getStudentCheckInId()
     {
         return studentCheckInId;
     }
-    public void setStudentId(Long studentId) 
+    public void setStudentId(Long studentId)
     {
         this.studentId = studentId;
     }
 
-    public Long getStudentId() 
+    public Long getStudentId()
     {
         return studentId;
     }
-    public void setBaseCheckInId(Long baseCheckInId) 
+    public void setBaseCheckInId(Long baseCheckInId)
     {
         this.baseCheckInId = baseCheckInId;
     }
 
-    public Long getBaseCheckInId() 
+    public Long getBaseCheckInId()
     {
         return baseCheckInId;
     }
-    public void setCheckInStudentName(String checkInStudentName) 
+    public void setCheckInStudentName(String checkInStudentName)
     {
         this.checkInStudentName = checkInStudentName;
     }
 
-    public String getCheckInStudentName() 
+    public String getCheckInStudentName()
     {
         return checkInStudentName;
     }
-    public void setCheckInStudentGrade(String checkInStudentGrade) 
+    public void setCheckInStudentGrade(String checkInStudentGrade)
     {
         this.checkInStudentGrade = checkInStudentGrade;
     }
 
-    public String getCheckInStudentGrade() 
+    public String getCheckInStudentGrade()
     {
         return checkInStudentGrade;
     }
-    public void setCheckInDate(Date checkInDate) 
+    public void setCheckInDate(Date checkInDate)
     {
         this.checkInDate = checkInDate;
     }
 
-    public Date getCheckInDate() 
+    public Date getCheckInDate()
     {
         return checkInDate;
     }
-    public void setCheckInStatus(Integer checkInStatus) 
+    public void setCheckInStatus(Integer checkInStatus)
     {
         this.checkInStatus = checkInStatus;
     }
 
-    public Integer getCheckInStatus() 
+    public Integer getCheckInStatus()
     {
         return checkInStatus;
     }
-    public void setCheckInDatetime(Date checkInDatetime) 
+    public void setCheckInDatetime(Date checkInDatetime)
     {
         this.checkInDatetime = checkInDatetime;
     }
 
-    public Date getCheckInDatetime() 
+    public Date getCheckInDatetime()
     {
         return checkInDatetime;
     }

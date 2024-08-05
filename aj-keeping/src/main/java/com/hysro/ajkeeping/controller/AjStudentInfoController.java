@@ -112,6 +112,17 @@ public class AjStudentInfoController extends BaseController
     }
 
     /**
+     * 学生退学/复学
+     */
+    @PreAuthorize("@ss.hasPermi('info:studentInfo:edit')")
+    @Log(title = "学生信息", businessType = BusinessType.UPDATE)
+    @PutMapping("/updateStudentStatus/{studentIds}")
+    public AjaxResult updateStudentStatus(@PathVariable Long[] studentIds)
+    {
+        return toAjax(ajStudentInfoService.updateStudentStatus(studentIds));
+    }
+
+    /**
      * 删除学生信息
      */
     @PreAuthorize("@ss.hasPermi('info:studentInfo:remove')")

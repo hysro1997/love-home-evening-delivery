@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 考勤总表对象 aj_base_check_in
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -55,96 +55,96 @@ public class AjBaseCheckIn extends BaseEntity
     private Integer baseCheckInWeeks;
 
     /** 考勤状态（0默认，1考勤中，2考勤结束） */
-    @Excel(name = "考勤状态", readConverterExp = "0=默认，1考勤中，2考勤结束")
+    @Excel(name = "考勤状态", readConverterExp = "0=默认,1=考勤中,2=考勤结束")
     private Integer baseCheckInStatus;
 
-    public void setBaseCheckInId(Long baseCheckInId) 
+    public void setBaseCheckInId(Long baseCheckInId)
     {
         this.baseCheckInId = baseCheckInId;
     }
 
-    public Long getBaseCheckInId() 
+    public Long getBaseCheckInId()
     {
         return baseCheckInId;
     }
-    public void setBaseCheckInName(String baseCheckInName) 
+    public void setBaseCheckInName(String baseCheckInName)
     {
         this.baseCheckInName = baseCheckInName;
     }
 
-    public String getBaseCheckInName() 
+    public String getBaseCheckInName()
     {
         return baseCheckInName;
     }
-    public void setBaseCheckInStudents(String baseCheckInStudents) 
+    public void setBaseCheckInStudents(String baseCheckInStudents)
     {
         this.baseCheckInStudents = baseCheckInStudents;
     }
 
-    public String getBaseCheckInStudents() 
+    public String getBaseCheckInStudents()
     {
         return baseCheckInStudents;
     }
-    public void setBaseCheckInTeachers(String baseCheckInTeachers) 
+    public void setBaseCheckInTeachers(String baseCheckInTeachers)
     {
         this.baseCheckInTeachers = baseCheckInTeachers;
     }
 
-    public String getBaseCheckInTeachers() 
+    public String getBaseCheckInTeachers()
     {
         return baseCheckInTeachers;
     }
-    public void setBaseCheckInBeginDate(Date baseCheckInBeginDate) 
+    public void setBaseCheckInBeginDate(Date baseCheckInBeginDate)
     {
         this.baseCheckInBeginDate = baseCheckInBeginDate;
     }
 
-    public Date getBaseCheckInBeginDate() 
+    public Date getBaseCheckInBeginDate()
     {
         return baseCheckInBeginDate;
     }
-    public void setBaseCheckInEndDate(Date baseCheckInEndDate) 
+    public void setBaseCheckInEndDate(Date baseCheckInEndDate)
     {
         this.baseCheckInEndDate = baseCheckInEndDate;
     }
 
-    public Date getBaseCheckInEndDate() 
+    public Date getBaseCheckInEndDate()
     {
         return baseCheckInEndDate;
     }
-    public void setBaseCheckInDaysOneWeek(Integer baseCheckInDaysOneWeek) 
+    public void setBaseCheckInDaysOneWeek(Integer baseCheckInDaysOneWeek)
     {
         this.baseCheckInDaysOneWeek = baseCheckInDaysOneWeek;
     }
 
-    public Integer getBaseCheckInDaysOneWeek() 
+    public Integer getBaseCheckInDaysOneWeek()
     {
         return baseCheckInDaysOneWeek;
     }
-    public void setBaseCheckInSumDays(Integer baseCheckInSumDays) 
+    public void setBaseCheckInSumDays(Integer baseCheckInSumDays)
     {
         this.baseCheckInSumDays = baseCheckInSumDays;
     }
 
-    public Integer getBaseCheckInSumDays() 
+    public Integer getBaseCheckInSumDays()
     {
         return baseCheckInSumDays;
     }
-    public void setBaseCheckInWeeks(Integer baseCheckInWeeks) 
+    public void setBaseCheckInWeeks(Integer baseCheckInWeeks)
     {
         this.baseCheckInWeeks = baseCheckInWeeks;
     }
 
-    public Integer getBaseCheckInWeeks() 
+    public Integer getBaseCheckInWeeks()
     {
         return baseCheckInWeeks;
     }
-    public void setBaseCheckInStatus(Integer baseCheckInStatus) 
+    public void setBaseCheckInStatus(Integer baseCheckInStatus)
     {
         this.baseCheckInStatus = baseCheckInStatus;
     }
 
-    public Integer getBaseCheckInStatus() 
+    public Integer getBaseCheckInStatus()
     {
         return baseCheckInStatus;
     }

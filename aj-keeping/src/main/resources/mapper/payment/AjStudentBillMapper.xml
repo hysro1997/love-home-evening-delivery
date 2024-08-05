@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjStudentBillMapper">
-    
+
     <resultMap type="AjStudentBill" id="AjStudentBillResult">
         <result property="id"    column="id"    />
         <result property="studentId"    column="student_id"    />
@@ -19,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="textbookFee"    column="textbook_fee"    />
         <result property="foodFee"    column="food_fee"    />
         <result property="billFee"    column="bill_fee"    />
+        <result property="advanceFee"    column="advance_fee"    />
         <result property="coupon"    column="coupon"    />
         <result property="actualPerMonthFee"    column="actual_per_month_fee"    />
         <result property="actualPerDayFee"    column="actual_per_day_fee"    />
@@ -26,15 +27,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="actualFoodFee"    column="actual_food_fee"    />
         <result property="acutalBillFee"    column="acutal_bill_fee"    />
         <result property="billStatus"    column="bill_status"    />
+        <result property="billMode"    column="bill_mode"    />
+        <result property="billEvidence"    column="bill_evidence"    />
     </resultMap>
 
     <sql id="selectAjStudentBillVo">
-        select id, student_id, student_name, check_in_statistic_id, check_in_begin_date, check_in_end_date, check_in_times, leave_times, count_as_check_in_times, per_month_fee, per_day_fee, textbook_fee, food_fee, bill_fee, coupon, actual_per_month_fee, actual_per_day_fee, actual_textbook_fee, actual_food_fee, acutal_bill_fee, bill_status from aj_student_bill
+        select id, student_id, student_name, check_in_statistic_id, check_in_begin_date, check_in_end_date, check_in_times, leave_times, count_as_check_in_times, per_month_fee, per_day_fee, textbook_fee, food_fee, bill_fee, advance_fee, coupon, actual_per_month_fee, actual_per_day_fee, actual_textbook_fee, actual_food_fee, acutal_bill_fee, bill_status, bill_mode, bill_evidence from aj_student_bill
     </sql>
 
     <select id="selectAjStudentBillList" parameterType="AjStudentBill" resultMap="AjStudentBillResult">
         <include refid="selectAjStudentBillVo"/>
-        <where>  
+        <where>
             <if test="studentId != null "> and student_id = #{studentId}</if>
             <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
             <if test="checkInStatisticId != null "> and check_in_statistic_id = #{checkInStatisticId}</if>
@@ -48,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="textbookFee != null "> and textbook_fee = #{textbookFee}</if>
             <if test="foodFee != null "> and food_fee = #{foodFee}</if>
             <if test="billFee != null "> and bill_fee = #{billFee}</if>
+            <if test="advanceFee != null "> and advance_fee = #{advanceFee}</if>
             <if test="coupon != null "> and coupon = #{coupon}</if>
             <if test="actualPerMonthFee != null "> and actual_per_month_fee = #{actualPerMonthFee}</if>
             <if test="actualPerDayFee != null "> and actual_per_day_fee = #{actualPerDayFee}</if>
@@ -55,9 +59,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="actualFoodFee != null "> and actual_food_fee = #{actualFoodFee}</if>
             <if test="acutalBillFee != null "> and acutal_bill_fee = #{acutalBillFee}</if>
             <if test="billStatus != null "> and bill_status = #{billStatus}</if>
+            <if test="billMode != null "> and bill_mode = #{billMode}</if>
+            <if test="billEvidence != null  and billEvidence != ''"> and bill_evidence = #{billEvidence}</if>
         </where>
     </select>
-    
+
     <select id="selectAjStudentBillById" parameterType="Long" resultMap="AjStudentBillResult">
         <include refid="selectAjStudentBillVo"/>
         where id = #{id}
@@ -80,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="textbookFee != null">textbook_fee,</if>
             <if test="foodFee != null">food_fee,</if>
             <if test="billFee != null">bill_fee,</if>
+            <if test="advanceFee != null">advance_fee,</if>
             <if test="coupon != null">coupon,</if>
             <if test="actualPerMonthFee != null">actual_per_month_fee,</if>
             <if test="actualPerDayFee != null">actual_per_day_fee,</if>
@@ -87,7 +94,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="actualFoodFee != null">actual_food_fee,</if>
             <if test="acutalBillFee != null">acutal_bill_fee,</if>
             <if test="billStatus != null">bill_status,</if>
-         </trim>
+            <if test="billMode != null">bill_mode,</if>
+            <if test="billEvidence != null">bill_evidence,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="studentId != null">#{studentId},</if>
@@ -103,6 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="textbookFee != null">#{textbookFee},</if>
             <if test="foodFee != null">#{foodFee},</if>
             <if test="billFee != null">#{billFee},</if>
+            <if test="advanceFee != null">#{advanceFee},</if>
             <if test="coupon != null">#{coupon},</if>
             <if test="actualPerMonthFee != null">#{actualPerMonthFee},</if>
             <if test="actualPerDayFee != null">#{actualPerDayFee},</if>
@@ -110,7 +120,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="actualFoodFee != null">#{actualFoodFee},</if>
             <if test="acutalBillFee != null">#{acutalBillFee},</if>
             <if test="billStatus != null">#{billStatus},</if>
-         </trim>
+            <if test="billMode != null">#{billMode},</if>
+            <if test="billEvidence != null">#{billEvidence},</if>
+        </trim>
     </insert>
 
     <update id="updateAjStudentBill" parameterType="AjStudentBill">
@@ -129,6 +141,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="textbookFee != null">textbook_fee = #{textbookFee},</if>
             <if test="foodFee != null">food_fee = #{foodFee},</if>
             <if test="billFee != null">bill_fee = #{billFee},</if>
+            <if test="advanceFee != null">advance_fee = #{advanceFee},</if>
             <if test="coupon != null">coupon = #{coupon},</if>
             <if test="actualPerMonthFee != null">actual_per_month_fee = #{actualPerMonthFee},</if>
             <if test="actualPerDayFee != null">actual_per_day_fee = #{actualPerDayFee},</if>
@@ -136,6 +149,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="actualFoodFee != null">actual_food_fee = #{actualFoodFee},</if>
             <if test="acutalBillFee != null">acutal_bill_fee = #{acutalBillFee},</if>
             <if test="billStatus != null">bill_status = #{billStatus},</if>
+            <if test="billMode != null">bill_mode = #{billMode},</if>
+            <if test="billEvidence != null">bill_evidence = #{billEvidence},</if>
         </trim>
         where id = #{id}
     </update>
@@ -145,7 +160,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjStudentBillByIds" parameterType="String">
-        delete from aj_student_bill where id in 
+        delete from aj_student_bill where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

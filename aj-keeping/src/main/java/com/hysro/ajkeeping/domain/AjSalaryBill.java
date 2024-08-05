@@ -10,7 +10,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 工资明细对象 aj_salary_bill
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -64,7 +64,7 @@ public class AjSalaryBill extends BaseEntity
     private BigDecimal onDutyPension;
 
     /** 全勤（0全勤，1未全勤） */
-    @Excel(name = "全勤", readConverterExp = "0=全勤，1未全勤")
+    @Excel(name = "全勤", readConverterExp = "0=全勤,1=未全勤")
     private Integer fullCheckIn;
 
     /** 全勤奖 */
@@ -83,147 +83,147 @@ public class AjSalaryBill extends BaseEntity
     @Excel(name = "实际工资")
     private BigDecimal acutalSalary;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setTeacherId(Long teacherId) 
+    public void setTeacherId(Long teacherId)
     {
         this.teacherId = teacherId;
     }
 
-    public Long getTeacherId() 
+    public Long getTeacherId()
     {
         return teacherId;
     }
-    public void setTeacherName(String teacherName) 
+    public void setTeacherName(String teacherName)
     {
         this.teacherName = teacherName;
     }
 
-    public String getTeacherName() 
+    public String getTeacherName()
     {
         return teacherName;
     }
-    public void setTeacherCheckInStatistciId(Long teacherCheckInStatistciId) 
+    public void setTeacherCheckInStatistciId(Long teacherCheckInStatistciId)
     {
         this.teacherCheckInStatistciId = teacherCheckInStatistciId;
     }
 
-    public Long getTeacherCheckInStatistciId() 
+    public Long getTeacherCheckInStatistciId()
     {
         return teacherCheckInStatistciId;
     }
-    public void setCheckInBeginDate(Date checkInBeginDate) 
+    public void setCheckInBeginDate(Date checkInBeginDate)
     {
         this.checkInBeginDate = checkInBeginDate;
     }
 
-    public Date getCheckInBeginDate() 
+    public Date getCheckInBeginDate()
     {
         return checkInBeginDate;
     }
-    public void setCheckInEndDate(Date checkInEndDate) 
+    public void setCheckInEndDate(Date checkInEndDate)
     {
         this.checkInEndDate = checkInEndDate;
     }
 
-    public Date getCheckInEndDate() 
+    public Date getCheckInEndDate()
     {
         return checkInEndDate;
     }
-    public void setCheckInSumDays(Integer checkInSumDays) 
+    public void setCheckInSumDays(Integer checkInSumDays)
     {
         this.checkInSumDays = checkInSumDays;
     }
 
-    public Integer getCheckInSumDays() 
+    public Integer getCheckInSumDays()
     {
         return checkInSumDays;
     }
-    public void setCheckInTimes(Integer checkInTimes) 
+    public void setCheckInTimes(Integer checkInTimes)
     {
         this.checkInTimes = checkInTimes;
     }
 
-    public Integer getCheckInTimes() 
+    public Integer getCheckInTimes()
     {
         return checkInTimes;
     }
-    public void setLeaveDays(Integer leaveDays) 
+    public void setLeaveDays(Integer leaveDays)
     {
         this.leaveDays = leaveDays;
     }
 
-    public Integer getLeaveDays() 
+    public Integer getLeaveDays()
     {
         return leaveDays;
     }
-    public void setOnDutyTimes(Integer onDutyTimes) 
+    public void setOnDutyTimes(Integer onDutyTimes)
     {
         this.onDutyTimes = onDutyTimes;
     }
 
-    public Integer getOnDutyTimes() 
+    public Integer getOnDutyTimes()
     {
         return onDutyTimes;
     }
-    public void setOnDutyPension(BigDecimal onDutyPension) 
+    public void setOnDutyPension(BigDecimal onDutyPension)
     {
         this.onDutyPension = onDutyPension;
     }
 
-    public BigDecimal getOnDutyPension() 
+    public BigDecimal getOnDutyPension()
     {
         return onDutyPension;
     }
-    public void setFullCheckIn(Integer fullCheckIn) 
+    public void setFullCheckIn(Integer fullCheckIn)
     {
         this.fullCheckIn = fullCheckIn;
     }
 
-    public Integer getFullCheckIn() 
+    public Integer getFullCheckIn()
     {
         return fullCheckIn;
     }
-    public void setFullCheckInPension(BigDecimal fullCheckInPension) 
+    public void setFullCheckInPension(BigDecimal fullCheckInPension)
     {
         this.fullCheckInPension = fullCheckInPension;
     }
 
-    public BigDecimal getFullCheckInPension() 
+    public BigDecimal getFullCheckInPension()
     {
         return fullCheckInPension;
     }
-    public void setOtherPension(BigDecimal otherPension) 
+    public void setOtherPension(BigDecimal otherPension)
     {
         this.otherPension = otherPension;
     }
 
-    public BigDecimal getOtherPension() 
+    public BigDecimal getOtherPension()
     {
         return otherPension;
     }
-    public void setDeduckMoney(BigDecimal deduckMoney) 
+    public void setDeduckMoney(BigDecimal deduckMoney)
     {
         this.deduckMoney = deduckMoney;
     }
 
-    public BigDecimal getDeduckMoney() 
+    public BigDecimal getDeduckMoney()
     {
         return deduckMoney;
     }
-    public void setAcutalSalary(BigDecimal acutalSalary) 
+    public void setAcutalSalary(BigDecimal acutalSalary)
     {
         this.acutalSalary = acutalSalary;
     }
 
-    public BigDecimal getAcutalSalary() 
+    public BigDecimal getAcutalSalary()
     {
         return acutalSalary;
     }

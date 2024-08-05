@@ -59,6 +59,16 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="学习状态" prop="studentSource">
+        <el-select v-model="queryParams.studentStatus" placeholder="请选择学生学习状态"
+                   @change="handleQuery">
+          <el-option
+            v-for="item in studentStatus"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -94,6 +104,17 @@
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
+          @click="handleStudentStatusUpdate"
+          v-hasPermi="['info:studentInfo:edit']"
+        >退学/复学</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['info:studentInfo:remove']"
         >删除</el-button>
@@ -111,27 +132,27 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="studentInfoList" @selection-change="handleSelectionChange"
+    <el-table v-loading="loading" :data="studentInfoList" border @selection-change="handleSelectionChange"
               :row-class-name="tableRowClassName">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="id" align="center" prop="studentId" />
-      <el-table-column label="学生姓名" align="center" prop="studentName" />
-      <el-table-column label="学生性别" align="center" prop="studentGender">
+      <el-table-column type="selection" width="40" align="center" />
+      <el-table-column label="id" align="center" prop="studentId" width="80" />
+      <el-table-column label="姓名" align="center" prop="studentName" width="90" />
+      <el-table-column label="性别" align="center" prop="studentGender" width="70">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.studentGender===1">男</el-tag><el-tag v-if="scope.row.studentGender===2" type="danger">女</el-tag><el-tag v-if="scope.row.studentGender===0" type="info">默认</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="学生学校" align="center" prop="studentSchool" />
-      <el-table-column label="学生年级" align="center" prop="studentGrade" />
-      <el-table-column label="学生班级" align="center" prop="studentClass" />
-      <el-table-column label="联系电话" align="center" prop="studentPhone" />
-      <el-table-column label="学生来源" align="center" prop="studentSource" />
+      <el-table-column label="学校" align="center" prop="studentSchool" />
+      <el-table-column label="年级" align="center" prop="studentGrade" width="80" />
+      <el-table-column label="班级" align="center" prop="studentClass" width="80" />
+      <el-table-column label="联系电话" align="center" prop="studentPhone" width="120" />
+      <el-table-column label="来源" align="center" prop="studentSource" width="80" />
       <el-table-column label="备注信息" align="center" prop="studentRemark" />
-      <!-- el-table-column-- label="学生状态" align="center" prop="studentStatus">
+      <el-table-column label="状态" align="center" prop="studentStatus" width="80">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.studentStatus===0" type="success">在学</el-tag><el-tag v-if="scope.row.studentStatus===1" type="warning">退学</el-tag>
         </template>
-      </el-table-column -->
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -141,6 +162,13 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['info:studentInfo:edit']"
           >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-sort"
+            @click="handleStudentStatusUpdate(scope.row)"
+            v-hasPermi="['info:studentInfo:edit']"
+          ><span v-if="scope.row.studentStatus===0">使退学</span><span v-if="scope.row.studentStatus===1">使复学</span></el-button>
           <el-button
             size="mini"
             type="text"
@@ -162,7 +190,7 @@
 
     <!-- 添加或修改学生信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="学生姓名" prop="studentName">
           <el-input v-model="form.studentName" placeholder="请输入学生姓名（如果重复，请添加后缀）" />
         </el-form-item>
@@ -234,8 +262,7 @@
   }
 </style>
 <script>
-import { listStudentInfo, getStudentInfo, delStudentInfo, addStudentInfo, updateStudentInfo } from "@/api/info/studentInfo";
-import { getGrades, getSchools } from '../../../api/info/studentInfo'
+import { listStudentInfo, getStudentInfo, delStudentInfo, addStudentInfo, updateStudentInfo, updateStudentStatus, getGrades, getSchools } from "@/api/info/studentInfo";
 
 export default {
   name: "StudentInfo",
@@ -296,6 +323,7 @@ export default {
       grades:[],
       studentClasses: [{label:"1班",value:"1班"},{label:"2班",value:"2班"},{label:"3班",value:"3班"},{label:"4班",value:"4班"},{label:"5班",value:"5班"},{label:"6班",value:"6班"},{label:"7班",value:"7班"},{label:"8班",value:"8,班"},{label:"9班",value:"9班"},{label:"10班",value:"10班"}],
       studentSource: [{label:"自然",value:"自然"},{label:"宣传",value:"宣传"},{label:"学员推荐",value:"学员推荐"},{label:"其他",value:"其他"}],
+      studentStatus: [{label:"在学", value:"0"},{label:"退学", value:"1"}],
     };
   },
   created() {
@@ -385,6 +413,16 @@ export default {
         this.title = "修改学生信息";
       });
     },
+    /** 退复学按钮操作 */
+    handleStudentStatusUpdate(row) {
+      const studentIds = row.studentId || this.ids;
+      this.$modal.confirm('是否确认学生信息编号为"' + studentIds + '"的学生进行退学/复学操作？').then(function() {
+        return updateStudentStatus(studentIds);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("退学/复学成功");
+      }).catch(() => {});
+    },
     /** 提交按钮 */
     submitForm() {
       this.form.studentName = this.form.studentName.trim();
@@ -392,7 +430,6 @@ export default {
         if (valid) {
           if (this.form.studentId != null) {
             updateStudentInfo(this.form).then(response => {
-              console.log(response)
               if (response.data !== 2){
                 this.$modal.msgSuccess("修改成功");
                 this.open = false;

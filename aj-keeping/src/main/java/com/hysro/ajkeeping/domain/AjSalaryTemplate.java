@@ -8,7 +8,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 老师工资模板对象 aj_salary_template
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -28,7 +28,7 @@ public class AjSalaryTemplate extends BaseEntity
     private BigDecimal salaryPerMonth;
 
     /** 使用月工资（0不用，1用） */
-    @Excel(name = "使用月工资", readConverterExp = "0=不用，1用")
+    @Excel(name = "使用月工资", readConverterExp = "0=不用,1=用")
     private Integer salaryUsePerMonth;
 
     /** 日工资 */
@@ -36,7 +36,7 @@ public class AjSalaryTemplate extends BaseEntity
     private BigDecimal salaryPerDay;
 
     /** 使用日工资（0不用，1用） */
-    @Excel(name = "使用日工资", readConverterExp = "0=不用，1用")
+    @Excel(name = "使用日工资", readConverterExp = "0=不用,1=用")
     private Integer salaryUserPerDay;
 
     /** 值班费 */
@@ -48,100 +48,100 @@ public class AjSalaryTemplate extends BaseEntity
     private BigDecimal salaryOffDutyFee;
 
     /** 默认（0不默认，1默认） */
-    @Excel(name = "默认", readConverterExp = "0=不默认，1默认")
+    @Excel(name = "默认", readConverterExp = "0=不默认,1=默认")
     private Integer salaryDefault;
 
     /** 全勤奖 */
     @Excel(name = "全勤奖")
     private BigDecimal salaryAllDuty;
 
-    public void setSalaryId(Long salaryId) 
+    public void setSalaryId(Long salaryId)
     {
         this.salaryId = salaryId;
     }
 
-    public Long getSalaryId() 
+    public Long getSalaryId()
     {
         return salaryId;
     }
-    public void setSalaryTemplateName(String salaryTemplateName) 
+    public void setSalaryTemplateName(String salaryTemplateName)
     {
         this.salaryTemplateName = salaryTemplateName;
     }
 
-    public String getSalaryTemplateName() 
+    public String getSalaryTemplateName()
     {
         return salaryTemplateName;
     }
-    public void setSalaryPerMonth(BigDecimal salaryPerMonth) 
+    public void setSalaryPerMonth(BigDecimal salaryPerMonth)
     {
         this.salaryPerMonth = salaryPerMonth;
     }
 
-    public BigDecimal getSalaryPerMonth() 
+    public BigDecimal getSalaryPerMonth()
     {
         return salaryPerMonth;
     }
-    public void setSalaryUsePerMonth(Integer salaryUsePerMonth) 
+    public void setSalaryUsePerMonth(Integer salaryUsePerMonth)
     {
         this.salaryUsePerMonth = salaryUsePerMonth;
     }
 
-    public Integer getSalaryUsePerMonth() 
+    public Integer getSalaryUsePerMonth()
     {
         return salaryUsePerMonth;
     }
-    public void setSalaryPerDay(BigDecimal salaryPerDay) 
+    public void setSalaryPerDay(BigDecimal salaryPerDay)
     {
         this.salaryPerDay = salaryPerDay;
     }
 
-    public BigDecimal getSalaryPerDay() 
+    public BigDecimal getSalaryPerDay()
     {
         return salaryPerDay;
     }
-    public void setSalaryUserPerDay(Integer salaryUserPerDay) 
+    public void setSalaryUserPerDay(Integer salaryUserPerDay)
     {
         this.salaryUserPerDay = salaryUserPerDay;
     }
 
-    public Integer getSalaryUserPerDay() 
+    public Integer getSalaryUserPerDay()
     {
         return salaryUserPerDay;
     }
-    public void setSalaryOnDuty(BigDecimal salaryOnDuty) 
+    public void setSalaryOnDuty(BigDecimal salaryOnDuty)
     {
         this.salaryOnDuty = salaryOnDuty;
     }
 
-    public BigDecimal getSalaryOnDuty() 
+    public BigDecimal getSalaryOnDuty()
     {
         return salaryOnDuty;
     }
-    public void setSalaryOffDutyFee(BigDecimal salaryOffDutyFee) 
+    public void setSalaryOffDutyFee(BigDecimal salaryOffDutyFee)
     {
         this.salaryOffDutyFee = salaryOffDutyFee;
     }
 
-    public BigDecimal getSalaryOffDutyFee() 
+    public BigDecimal getSalaryOffDutyFee()
     {
         return salaryOffDutyFee;
     }
-    public void setSalaryDefault(Integer salaryDefault) 
+    public void setSalaryDefault(Integer salaryDefault)
     {
         this.salaryDefault = salaryDefault;
     }
 
-    public Integer getSalaryDefault() 
+    public Integer getSalaryDefault()
     {
         return salaryDefault;
     }
-    public void setSalaryAllDuty(BigDecimal salaryAllDuty) 
+    public void setSalaryAllDuty(BigDecimal salaryAllDuty)
     {
         this.salaryAllDuty = salaryAllDuty;
     }
 
-    public BigDecimal getSalaryAllDuty() 
+    public BigDecimal getSalaryAllDuty()
     {
         return salaryAllDuty;
     }

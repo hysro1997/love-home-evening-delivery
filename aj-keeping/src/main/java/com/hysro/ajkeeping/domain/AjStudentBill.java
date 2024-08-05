@@ -10,9 +10,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 学生账单明细对象 aj_student_bill
- * 
+ *
  * @author hysro
- * @date 2024-08-04
+ * @date 2024-08-05
  */
 public class AjStudentBill extends BaseEntity
 {
@@ -75,6 +75,10 @@ public class AjStudentBill extends BaseEntity
     @Excel(name = "账单费用")
     private BigDecimal billFee;
 
+    /** 预收费 */
+    @Excel(name = "预收费")
+    private BigDecimal advanceFee;
+
     /** 优惠金额 */
     @Excel(name = "优惠金额")
     private BigDecimal coupon;
@@ -100,223 +104,261 @@ public class AjStudentBill extends BaseEntity
     private BigDecimal acutalBillFee;
 
     /** 缴费状态（0未缴费，1已缴费） */
-    @Excel(name = "缴费状态", readConverterExp = "0=未缴费，1已缴费")
+    @Excel(name = "缴费状态", readConverterExp = "0=未缴费,1=已缴费")
     private Integer billStatus;
 
-    public void setId(Long id) 
+    /** 缴费方式(0微信, 1支付宝, 2现金, 3其他) */
+    @Excel(name = "缴费方式", readConverterExp = "0=微信,1=支付宝,2=现金,3=其他")
+    private Integer billMode;
+
+    /** 缴费证明 */
+    @Excel(name = "缴费证明")
+    private String billEvidence;
+
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setStudentId(Long studentId) 
+    public void setStudentId(Long studentId)
     {
         this.studentId = studentId;
     }
 
-    public Long getStudentId() 
+    public Long getStudentId()
     {
         return studentId;
     }
-    public void setStudentName(String studentName) 
+    public void setStudentName(String studentName)
     {
         this.studentName = studentName;
     }
 
-    public String getStudentName() 
+    public String getStudentName()
     {
         return studentName;
     }
-    public void setCheckInStatisticId(Long checkInStatisticId) 
+    public void setCheckInStatisticId(Long checkInStatisticId)
     {
         this.checkInStatisticId = checkInStatisticId;
     }
 
-    public Long getCheckInStatisticId() 
+    public Long getCheckInStatisticId()
     {
         return checkInStatisticId;
     }
-    public void setCheckInBeginDate(Date checkInBeginDate) 
+    public void setCheckInBeginDate(Date checkInBeginDate)
     {
         this.checkInBeginDate = checkInBeginDate;
     }
 
-    public Date getCheckInBeginDate() 
+    public Date getCheckInBeginDate()
     {
         return checkInBeginDate;
     }
-    public void setCheckInEndDate(Date checkInEndDate) 
+    public void setCheckInEndDate(Date checkInEndDate)
     {
         this.checkInEndDate = checkInEndDate;
     }
 
-    public Date getCheckInEndDate() 
+    public Date getCheckInEndDate()
     {
         return checkInEndDate;
     }
-    public void setCheckInTimes(Integer checkInTimes) 
+    public void setCheckInTimes(Integer checkInTimes)
     {
         this.checkInTimes = checkInTimes;
     }
 
-    public Integer getCheckInTimes() 
+    public Integer getCheckInTimes()
     {
         return checkInTimes;
     }
-    public void setLeaveTimes(Integer leaveTimes) 
+    public void setLeaveTimes(Integer leaveTimes)
     {
         this.leaveTimes = leaveTimes;
     }
 
-    public Integer getLeaveTimes() 
+    public Integer getLeaveTimes()
     {
         return leaveTimes;
     }
-    public void setCountAsCheckInTimes(Integer countAsCheckInTimes) 
+    public void setCountAsCheckInTimes(Integer countAsCheckInTimes)
     {
         this.countAsCheckInTimes = countAsCheckInTimes;
     }
 
-    public Integer getCountAsCheckInTimes() 
+    public Integer getCountAsCheckInTimes()
     {
         return countAsCheckInTimes;
     }
-    public void setPerMonthFee(BigDecimal perMonthFee) 
+    public void setPerMonthFee(BigDecimal perMonthFee)
     {
         this.perMonthFee = perMonthFee;
     }
 
-    public BigDecimal getPerMonthFee() 
+    public BigDecimal getPerMonthFee()
     {
         return perMonthFee;
     }
-    public void setPerDayFee(BigDecimal perDayFee) 
+    public void setPerDayFee(BigDecimal perDayFee)
     {
         this.perDayFee = perDayFee;
     }
 
-    public BigDecimal getPerDayFee() 
+    public BigDecimal getPerDayFee()
     {
         return perDayFee;
     }
-    public void setTextbookFee(BigDecimal textbookFee) 
+    public void setTextbookFee(BigDecimal textbookFee)
     {
         this.textbookFee = textbookFee;
     }
 
-    public BigDecimal getTextbookFee() 
+    public BigDecimal getTextbookFee()
     {
         return textbookFee;
     }
-    public void setFoodFee(BigDecimal foodFee) 
+    public void setFoodFee(BigDecimal foodFee)
     {
         this.foodFee = foodFee;
     }
 
-    public BigDecimal getFoodFee() 
+    public BigDecimal getFoodFee()
     {
         return foodFee;
     }
-    public void setBillFee(BigDecimal billFee) 
+    public void setBillFee(BigDecimal billFee)
     {
         this.billFee = billFee;
     }
 
-    public BigDecimal getBillFee() 
+    public BigDecimal getBillFee()
     {
         return billFee;
     }
-    public void setCoupon(BigDecimal coupon) 
+    public void setAdvanceFee(BigDecimal advanceFee)
+    {
+        this.advanceFee = advanceFee;
+    }
+
+    public BigDecimal getAdvanceFee()
+    {
+        return advanceFee;
+    }
+    public void setCoupon(BigDecimal coupon)
     {
         this.coupon = coupon;
     }
 
-    public BigDecimal getCoupon() 
+    public BigDecimal getCoupon()
     {
         return coupon;
     }
-    public void setActualPerMonthFee(BigDecimal actualPerMonthFee) 
+    public void setActualPerMonthFee(BigDecimal actualPerMonthFee)
     {
         this.actualPerMonthFee = actualPerMonthFee;
     }
 
-    public BigDecimal getActualPerMonthFee() 
+    public BigDecimal getActualPerMonthFee()
     {
         return actualPerMonthFee;
     }
-    public void setActualPerDayFee(BigDecimal actualPerDayFee) 
+    public void setActualPerDayFee(BigDecimal actualPerDayFee)
     {
         this.actualPerDayFee = actualPerDayFee;
     }
 
-    public BigDecimal getActualPerDayFee() 
+    public BigDecimal getActualPerDayFee()
     {
         return actualPerDayFee;
     }
-    public void setActualTextbookFee(BigDecimal actualTextbookFee) 
+    public void setActualTextbookFee(BigDecimal actualTextbookFee)
     {
         this.actualTextbookFee = actualTextbookFee;
     }
 
-    public BigDecimal getActualTextbookFee() 
+    public BigDecimal getActualTextbookFee()
     {
         return actualTextbookFee;
     }
-    public void setActualFoodFee(BigDecimal actualFoodFee) 
+    public void setActualFoodFee(BigDecimal actualFoodFee)
     {
         this.actualFoodFee = actualFoodFee;
     }
 
-    public BigDecimal getActualFoodFee() 
+    public BigDecimal getActualFoodFee()
     {
         return actualFoodFee;
     }
-    public void setAcutalBillFee(BigDecimal acutalBillFee) 
+    public void setAcutalBillFee(BigDecimal acutalBillFee)
     {
         this.acutalBillFee = acutalBillFee;
     }
 
-    public BigDecimal getAcutalBillFee() 
+    public BigDecimal getAcutalBillFee()
     {
         return acutalBillFee;
     }
-    public void setBillStatus(Integer billStatus) 
+    public void setBillStatus(Integer billStatus)
     {
         this.billStatus = billStatus;
     }
 
-    public Integer getBillStatus() 
+    public Integer getBillStatus()
     {
         return billStatus;
+    }
+    public void setBillMode(Integer billMode)
+    {
+        this.billMode = billMode;
+    }
+
+    public Integer getBillMode()
+    {
+        return billMode;
+    }
+    public void setBillEvidence(String billEvidence)
+    {
+        this.billEvidence = billEvidence;
+    }
+
+    public String getBillEvidence()
+    {
+        return billEvidence;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("studentId", getStudentId())
-            .append("studentName", getStudentName())
-            .append("checkInStatisticId", getCheckInStatisticId())
-            .append("checkInBeginDate", getCheckInBeginDate())
-            .append("checkInEndDate", getCheckInEndDate())
-            .append("checkInTimes", getCheckInTimes())
-            .append("leaveTimes", getLeaveTimes())
-            .append("countAsCheckInTimes", getCountAsCheckInTimes())
-            .append("perMonthFee", getPerMonthFee())
-            .append("perDayFee", getPerDayFee())
-            .append("textbookFee", getTextbookFee())
-            .append("foodFee", getFoodFee())
-            .append("billFee", getBillFee())
-            .append("coupon", getCoupon())
-            .append("actualPerMonthFee", getActualPerMonthFee())
-            .append("actualPerDayFee", getActualPerDayFee())
-            .append("actualTextbookFee", getActualTextbookFee())
-            .append("actualFoodFee", getActualFoodFee())
-            .append("acutalBillFee", getAcutalBillFee())
-            .append("billStatus", getBillStatus())
-            .toString();
+                .append("id", getId())
+                .append("studentId", getStudentId())
+                .append("studentName", getStudentName())
+                .append("checkInStatisticId", getCheckInStatisticId())
+                .append("checkInBeginDate", getCheckInBeginDate())
+                .append("checkInEndDate", getCheckInEndDate())
+                .append("checkInTimes", getCheckInTimes())
+                .append("leaveTimes", getLeaveTimes())
+                .append("countAsCheckInTimes", getCountAsCheckInTimes())
+                .append("perMonthFee", getPerMonthFee())
+                .append("perDayFee", getPerDayFee())
+                .append("textbookFee", getTextbookFee())
+                .append("foodFee", getFoodFee())
+                .append("billFee", getBillFee())
+                .append("advanceFee", getAdvanceFee())
+                .append("coupon", getCoupon())
+                .append("actualPerMonthFee", getActualPerMonthFee())
+                .append("actualPerDayFee", getActualPerDayFee())
+                .append("actualTextbookFee", getActualTextbookFee())
+                .append("actualFoodFee", getActualFoodFee())
+                .append("acutalBillFee", getAcutalBillFee())
+                .append("billStatus", getBillStatus())
+                .append("billMode", getBillMode())
+                .append("billEvidence", getBillEvidence())
+                .toString();
     }
 }

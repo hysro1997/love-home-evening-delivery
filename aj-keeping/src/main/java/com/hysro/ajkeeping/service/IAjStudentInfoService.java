@@ -70,6 +70,13 @@ public interface IAjStudentInfoService
     public int deleteAjStudentInfoByStudentIds(Long[] studentIds);
 
     /**
+     * 批量退学复学学生信息
+     *
+     * @param studentIds 需要退学复学的学生信息主键集合
+     * @return 结果
+     */
+    public int updateStudentStatus(Long[] studentIds);
+    /**
      * 删除学生信息信息
      *
      * @param studentId 学生信息主键

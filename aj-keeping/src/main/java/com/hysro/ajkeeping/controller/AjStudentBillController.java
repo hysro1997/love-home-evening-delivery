@@ -23,9 +23,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 学生账单明细Controller
- * 
+ *
  * @author hysro
- * @date 2024-08-04
+ * @date 2024-08-05
  */
 @RestController
 @RequestMapping("/payment/studentBill")
@@ -96,7 +96,7 @@ public class AjStudentBillController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('payment:studentBill:remove')")
     @Log(title = "学生账单明细", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(ajStudentBillService.deleteAjStudentBillByIds(ids));

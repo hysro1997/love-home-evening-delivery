@@ -1,93 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="模板名次" prop="costTemplateName">
+      <el-form-item label="模板名称" prop="costTemplateName">
         <el-input
           v-model="queryParams.costTemplateName"
-          placeholder="请输入模板名次"
+          placeholder="请输入模板名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="每天费用" prop="costFeePerDay">
-        <el-input
-          v-model="queryParams.costFeePerDay"
-          placeholder="请输入每天费用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="使用日收费" prop="costUseFeePerDay">
-        <el-input
-          v-model="queryParams.costUseFeePerDay"
-          placeholder="请输入使用日收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="课时费" prop="costFeePerLesson">
-        <el-input
-          v-model="queryParams.costFeePerLesson"
-          placeholder="请输入课时费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="使用课时费" prop="costUseFeePerLesson">
-        <el-input
-          v-model="queryParams.costUseFeePerLesson"
-          placeholder="请输入使用课时费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="伙食费" prop="costFoodFee">
-        <el-input
-          v-model="queryParams.costFoodFee"
-          placeholder="请输入伙食费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="材料费" prop="costTextbooksFee">
-        <el-input
-          v-model="queryParams.costTextbooksFee"
-          placeholder="请输入材料费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每月收费" prop="costFeePerMonth">
-        <el-input
-          v-model="queryParams.costFeePerMonth"
-          placeholder="请输入每月收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="使用每月收费" prop="costUseFeePerMonth">
-        <el-input
-          v-model="queryParams.costUseFeePerMonth"
-          placeholder="请输入使用每月收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="适合哪个年级用" prop="costUseGrade">
-        <el-input
-          v-model="queryParams.costUseGrade"
-          placeholder="请输入适合哪个年级用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="默认" prop="costDefault">
-        <el-input
-          v-model="queryParams.costDefault"
-          placeholder="请输入默认"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="适用年级" prop="costUseGrade">
+        <el-select v-model="queryParams.costUseGrade" placeholder="请选择适用年级"
+                   @change="handleQuery">
+          <el-option
+            v-for="item in grades"
+            :key="item.id"
+            :label="item.grade"
+            :value="item.grade">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -141,20 +72,21 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="studentBillTemplateList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="studentBillTemplateList" @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="costTemplateId" />
-      <el-table-column label="模板名次" align="center" prop="costTemplateName" />
-      <el-table-column label="每天费用" align="center" prop="costFeePerDay" />
-      <el-table-column label="使用日收费" align="center" prop="costUseFeePerDay" />
+      <el-table-column label="模板名称" align="center" prop="costTemplateName" />
+      <el-table-column label=" 日收费" align="center" prop="costFeePerDay" />
+      <!--el-table-column label="使用日收费" align="center" prop="costUseFeePerDay" /-->
+      <el-table-column label="考勤周期收费" align="center" prop="costFeePerMonth" />
+      <!--el-table-column label="使用每月收费" align="center" prop="costUseFeePerMonth" /-->
       <el-table-column label="课时费" align="center" prop="costFeePerLesson" />
-      <el-table-column label="使用课时费" align="center" prop="costUseFeePerLesson" />
+      <!--el-table-column label="使用课时费" align="center" prop="costUseFeePerLesson" /-->
       <el-table-column label="伙食费" align="center" prop="costFoodFee" />
       <el-table-column label="材料费" align="center" prop="costTextbooksFee" />
-      <el-table-column label="每月收费" align="center" prop="costFeePerMonth" />
-      <el-table-column label="使用每月收费" align="center" prop="costUseFeePerMonth" />
-      <el-table-column label="适合哪个年级用" align="center" prop="costUseGrade" />
-      <el-table-column label="默认" align="center" prop="costDefault" />
+      <el-table-column label="适用年级" align="center" prop="costUseGrade" />
+      <!--el-table-column label="默认" align="center" prop="costDefault" /-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -174,7 +106,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -184,22 +116,37 @@
     />
 
     <!-- 添加或修改学生费用模板对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="模板名次" prop="costTemplateName">
-          <el-input v-model="form.costTemplateName" placeholder="请输入模板名次" />
+    <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+        <el-form-item label="模板名称" prop="costTemplateName">
+          <el-input v-model="form.costTemplateName" placeholder="请输入模板名称" />
         </el-form-item>
         <el-form-item label="每天费用" prop="costFeePerDay">
           <el-input v-model="form.costFeePerDay" placeholder="请输入每天费用" />
         </el-form-item>
         <el-form-item label="使用日收费" prop="costUseFeePerDay">
-          <el-input v-model="form.costUseFeePerDay" placeholder="请输入使用日收费" />
+          <template>
+            <el-radio v-model="form.costUseFeePerDay" label="0">不使用</el-radio>
+            <el-radio v-model="form.costUseFeePerDay" label="1">使用</el-radio>
+          </template>
+        </el-form-item>
+        <el-form-item label="考勤周期收费" prop="costFeePerMonth">
+          <el-input v-model="form.costFeePerMonth" placeholder="请输入每月收费" />
+        </el-form-item>
+        <el-form-item label="使用考勤周期收费" prop="costUseFeePerMonth">
+          <template>
+            <el-radio v-model="form.costUseFeePerMonth" label="0">不使用</el-radio>
+            <el-radio v-model="form.costUseFeePerMonth" label="1">使用</el-radio>
+          </template>
         </el-form-item>
         <el-form-item label="课时费" prop="costFeePerLesson">
           <el-input v-model="form.costFeePerLesson" placeholder="请输入课时费" />
         </el-form-item>
         <el-form-item label="使用课时费" prop="costUseFeePerLesson">
-          <el-input v-model="form.costUseFeePerLesson" placeholder="请输入使用课时费" />
+          <template>
+            <el-radio v-model="form.costUseFeePerLesson" label="0">不使用</el-radio>
+            <el-radio v-model="form.costUseFeePerLesson" label="1">使用</el-radio>
+          </template>
         </el-form-item>
         <el-form-item label="伙食费" prop="costFoodFee">
           <el-input v-model="form.costFoodFee" placeholder="请输入伙食费" />
@@ -207,18 +154,20 @@
         <el-form-item label="材料费" prop="costTextbooksFee">
           <el-input v-model="form.costTextbooksFee" placeholder="请输入材料费" />
         </el-form-item>
-        <el-form-item label="每月收费" prop="costFeePerMonth">
-          <el-input v-model="form.costFeePerMonth" placeholder="请输入每月收费" />
-        </el-form-item>
-        <el-form-item label="使用每月收费" prop="costUseFeePerMonth">
-          <el-input v-model="form.costUseFeePerMonth" placeholder="请输入使用每月收费" />
-        </el-form-item>
         <el-form-item label="适合哪个年级用" prop="costUseGrade">
-          <el-input v-model="form.costUseGrade" placeholder="请输入适合哪个年级用" />
+          <el-select v-model="form.costUseGrade" placeholder="请选择适用年级"
+                     @change="handleQuery">
+            <el-option
+              v-for="item in grades"
+              :key="item.id"
+              :label="item.grade"
+              :value="item.grade">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="默认" prop="costDefault">
+        <!--el-form-item-- label="默认" prop="costDefault">
           <el-input v-model="form.costDefault" placeholder="请输入默认" />
-        </el-form-item>
+        </el-form-item-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -227,9 +176,18 @@
     </el-dialog>
   </div>
 </template>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
 
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
 import { listStudentBillTemplate, getStudentBillTemplate, delStudentBillTemplate, addStudentBillTemplate, updateStudentBillTemplate } from "@/api/bill/studentBillTemplate";
+import { getGrades } from '@/api/info/studentInfo'
 
 export default {
   name: "StudentBillTemplate",
@@ -273,13 +231,28 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      grades:[],
     };
   },
   created() {
     this.getList();
+    this.initGrades();
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row';
+      } else if (rowIndex % 2 === 0) {
+        return 'success-row';
+      }
+      return '';
+    },
+    initGrades(){
+      getGrades().then(response => {
+        this.grades = response.data;
+      })
+    },
     /** 查询学生费用模板列表 */
     getList() {
       this.loading = true;

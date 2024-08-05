@@ -28,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacherFace != null  and teacherFace != ''"> and teacher_face = #{teacherFace}</if>
             <if test="teacherStatus != null "> and teacher_status = #{teacherStatus}</if>
         </where>
+        ORDER BY teacher_id DESC
     </select>
 
     <select id="selectAjTeacherInfoByTeacherId" parameterType="Long" resultMap="AjTeacherInfoResult">

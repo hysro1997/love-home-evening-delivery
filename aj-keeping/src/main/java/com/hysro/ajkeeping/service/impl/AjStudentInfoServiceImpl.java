@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.hysro.ajkeeping.mapper.AjStudentInfoMapper;
 import com.hysro.ajkeeping.domain.AjStudentInfo;
 import com.hysro.ajkeeping.service.IAjStudentInfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 学生信息Service业务层处理
@@ -115,6 +116,17 @@ public class AjStudentInfoServiceImpl implements IAjStudentInfoService
     public int deleteAjStudentInfoByStudentIds(Long[] studentIds)
     {
         return ajStudentInfoMapper.deleteAjStudentInfoByStudentIds(studentIds);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateStudentStatus(Long[] studentIds) {
+        for (long id: studentIds){
+            AjStudentInfo ajStudentInfo = ajStudentInfoMapper.selectAjStudentInfoByStudentId(id);
+            ajStudentInfo.setStudentStatus(ajStudentInfo.getStudentStatus()==0? 1:0);
+            ajStudentInfoMapper.updateAjStudentInfo(ajStudentInfo);
+        }
+        return 1;
     }
 
     /**

@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 教师考勤汇总对象 aj_teacher_check_in_statistic
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -59,118 +59,118 @@ public class AjTeacherCheckInStatistic extends BaseEntity
     private Integer onDutyTimes;
 
     /** 账单状态（0未生成，1已生成） */
-    @Excel(name = "账单状态", readConverterExp = "0=未生成，1已生成")
+    @Excel(name = "账单状态", readConverterExp = "0=未生成,1=已生成")
     private Integer billStatus;
 
     /** 工资付款状态（0未付，1已付） */
-    @Excel(name = "工资付款状态", readConverterExp = "0=未付，1已付")
+    @Excel(name = "工资付款状态", readConverterExp = "0=未付,1=已付")
     private Integer paymentStatus;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setBaseCheckInId(Long baseCheckInId) 
+    public void setBaseCheckInId(Long baseCheckInId)
     {
         this.baseCheckInId = baseCheckInId;
     }
 
-    public Long getBaseCheckInId() 
+    public Long getBaseCheckInId()
     {
         return baseCheckInId;
     }
-    public void setTeacherId(Long teacherId) 
+    public void setTeacherId(Long teacherId)
     {
         this.teacherId = teacherId;
     }
 
-    public Long getTeacherId() 
+    public Long getTeacherId()
     {
         return teacherId;
     }
-    public void setTeacherName(String teacherName) 
+    public void setTeacherName(String teacherName)
     {
         this.teacherName = teacherName;
     }
 
-    public String getTeacherName() 
+    public String getTeacherName()
     {
         return teacherName;
     }
-    public void setCheckInSumDays(Integer checkInSumDays) 
+    public void setCheckInSumDays(Integer checkInSumDays)
     {
         this.checkInSumDays = checkInSumDays;
     }
 
-    public Integer getCheckInSumDays() 
+    public Integer getCheckInSumDays()
     {
         return checkInSumDays;
     }
-    public void setCheckInTimes(Integer checkInTimes) 
+    public void setCheckInTimes(Integer checkInTimes)
     {
         this.checkInTimes = checkInTimes;
     }
 
-    public Integer getCheckInTimes() 
+    public Integer getCheckInTimes()
     {
         return checkInTimes;
     }
-    public void setCheckInBeginDate(Date checkInBeginDate) 
+    public void setCheckInBeginDate(Date checkInBeginDate)
     {
         this.checkInBeginDate = checkInBeginDate;
     }
 
-    public Date getCheckInBeginDate() 
+    public Date getCheckInBeginDate()
     {
         return checkInBeginDate;
     }
-    public void setCheckInEndDate(Date checkInEndDate) 
+    public void setCheckInEndDate(Date checkInEndDate)
     {
         this.checkInEndDate = checkInEndDate;
     }
 
-    public Date getCheckInEndDate() 
+    public Date getCheckInEndDate()
     {
         return checkInEndDate;
     }
-    public void setLeaveDays(Integer leaveDays) 
+    public void setLeaveDays(Integer leaveDays)
     {
         this.leaveDays = leaveDays;
     }
 
-    public Integer getLeaveDays() 
+    public Integer getLeaveDays()
     {
         return leaveDays;
     }
-    public void setOnDutyTimes(Integer onDutyTimes) 
+    public void setOnDutyTimes(Integer onDutyTimes)
     {
         this.onDutyTimes = onDutyTimes;
     }
 
-    public Integer getOnDutyTimes() 
+    public Integer getOnDutyTimes()
     {
         return onDutyTimes;
     }
-    public void setBillStatus(Integer billStatus) 
+    public void setBillStatus(Integer billStatus)
     {
         this.billStatus = billStatus;
     }
 
-    public Integer getBillStatus() 
+    public Integer getBillStatus()
     {
         return billStatus;
     }
-    public void setPaymentStatus(Integer paymentStatus) 
+    public void setPaymentStatus(Integer paymentStatus)
     {
         this.paymentStatus = paymentStatus;
     }
 
-    public Integer getPaymentStatus() 
+    public Integer getPaymentStatus()
     {
         return paymentStatus;
     }

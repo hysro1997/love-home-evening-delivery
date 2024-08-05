@@ -27,18 +27,18 @@
       </el-form-item>
       <el-form-item label="考勤开始日期" prop="checkInBeginDate">
         <el-date-picker clearable
-          v-model="queryParams.checkInBeginDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择考勤开始日期">
+                        v-model="queryParams.checkInBeginDate"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择考勤开始日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="考勤结束日期" prop="checkInEndDate">
         <el-date-picker clearable
-          v-model="queryParams.checkInEndDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择考勤结束日期">
+                        v-model="queryParams.checkInEndDate"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="请选择考勤结束日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="考勤次数" prop="checkInTimes">
@@ -105,6 +105,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="预收费" prop="advanceFee">
+        <el-input
+          v-model="queryParams.advanceFee"
+          placeholder="请输入预收费"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="优惠金额" prop="coupon">
         <el-input
           v-model="queryParams.coupon"
@@ -149,6 +157,22 @@
         <el-input
           v-model="queryParams.acutalBillFee"
           placeholder="请输入实际账单费用"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="缴费方式(0微信, 1支付宝, 2现金, 3其他)" prop="billMode">
+        <el-input
+          v-model="queryParams.billMode"
+          placeholder="请输入缴费方式(0微信, 1支付宝, 2现金, 3其他)"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="缴费证明" prop="billEvidence">
+        <el-input
+          v-model="queryParams.billEvidence"
+          placeholder="请输入缴费证明"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -229,6 +253,7 @@
       <el-table-column label="资料费" align="center" prop="textbookFee" />
       <el-table-column label="伙食费" align="center" prop="foodFee" />
       <el-table-column label="账单费用" align="center" prop="billFee" />
+      <el-table-column label="预收费" align="center" prop="advanceFee" />
       <el-table-column label="优惠金额" align="center" prop="coupon" />
       <el-table-column label="实际每月收费" align="center" prop="actualPerMonthFee" />
       <el-table-column label="实际每日收费" align="center" prop="actualPerDayFee" />
@@ -236,6 +261,8 @@
       <el-table-column label="实际伙食费" align="center" prop="actualFoodFee" />
       <el-table-column label="实际账单费用" align="center" prop="acutalBillFee" />
       <el-table-column label="缴费状态" align="center" prop="billStatus" />
+      <el-table-column label="缴费方式(0微信, 1支付宝, 2现金, 3其他)" align="center" prop="billMode" />
+      <el-table-column label="缴费证明" align="center" prop="billEvidence" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -255,7 +282,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -278,18 +305,18 @@
         </el-form-item>
         <el-form-item label="考勤开始日期" prop="checkInBeginDate">
           <el-date-picker clearable
-            v-model="form.checkInBeginDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择考勤开始日期">
+                          v-model="form.checkInBeginDate"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择考勤开始日期">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="考勤结束日期" prop="checkInEndDate">
           <el-date-picker clearable
-            v-model="form.checkInEndDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择考勤结束日期">
+                          v-model="form.checkInEndDate"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择考勤结束日期">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="考勤次数" prop="checkInTimes">
@@ -316,6 +343,9 @@
         <el-form-item label="账单费用" prop="billFee">
           <el-input v-model="form.billFee" placeholder="请输入账单费用" />
         </el-form-item>
+        <el-form-item label="预收费" prop="advanceFee">
+          <el-input v-model="form.advanceFee" placeholder="请输入预收费" />
+        </el-form-item>
         <el-form-item label="优惠金额" prop="coupon">
           <el-input v-model="form.coupon" placeholder="请输入优惠金额" />
         </el-form-item>
@@ -334,6 +364,12 @@
         <el-form-item label="实际账单费用" prop="acutalBillFee">
           <el-input v-model="form.acutalBillFee" placeholder="请输入实际账单费用" />
         </el-form-item>
+        <el-form-item label="缴费方式(0微信, 1支付宝, 2现金, 3其他)" prop="billMode">
+          <el-input v-model="form.billMode" placeholder="请输入缴费方式(0微信, 1支付宝, 2现金, 3其他)" />
+        </el-form-item>
+        <el-form-item label="缴费证明" prop="billEvidence">
+          <el-input v-model="form.billEvidence" placeholder="请输入缴费证明" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -344,175 +380,181 @@
 </template>
 
 <script>
-import { listStudentBill, getStudentBill, delStudentBill, addStudentBill, updateStudentBill } from "@/api/payment/studentBill";
+  import { listStudentBill, getStudentBill, delStudentBill, addStudentBill, updateStudentBill } from "@/api/payment/studentBill";
 
-export default {
-  name: "StudentBill",
-  data() {
-    return {
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 显示搜索条件
-      showSearch: true,
-      // 总条数
-      total: 0,
-      // 学生账单明细表格数据
-      studentBillList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        studentId: null,
-        studentName: null,
-        checkInStatisticId: null,
-        checkInBeginDate: null,
-        checkInEndDate: null,
-        checkInTimes: null,
-        leaveTimes: null,
-        countAsCheckInTimes: null,
-        perMonthFee: null,
-        perDayFee: null,
-        textbookFee: null,
-        foodFee: null,
-        billFee: null,
-        coupon: null,
-        actualPerMonthFee: null,
-        actualPerDayFee: null,
-        actualTextbookFee: null,
-        actualFoodFee: null,
-        acutalBillFee: null,
-        billStatus: null
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-      }
-    };
-  },
-  created() {
-    this.getList();
-  },
-  methods: {
-    /** 查询学生账单明细列表 */
-    getList() {
-      this.loading = true;
-      listStudentBill(this.queryParams).then(response => {
-        this.studentBillList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        studentId: null,
-        studentName: null,
-        checkInStatisticId: null,
-        checkInBeginDate: null,
-        checkInEndDate: null,
-        checkInTimes: null,
-        leaveTimes: null,
-        countAsCheckInTimes: null,
-        perMonthFee: null,
-        perDayFee: null,
-        textbookFee: null,
-        foodFee: null,
-        billFee: null,
-        coupon: null,
-        actualPerMonthFee: null,
-        actualPerDayFee: null,
-        actualTextbookFee: null,
-        actualFoodFee: null,
-        acutalBillFee: null,
-        billStatus: null
+  export default {
+    name: "StudentBill",
+    data() {
+      return {
+        // 遮罩层
+        loading: true,
+        // 选中数组
+        ids: [],
+        // 非单个禁用
+        single: true,
+        // 非多个禁用
+        multiple: true,
+        // 显示搜索条件
+        showSearch: true,
+        // 总条数
+        total: 0,
+        // 学生账单明细表格数据
+        studentBillList: [],
+        // 弹出层标题
+        title: "",
+        // 是否显示弹出层
+        open: false,
+        // 查询参数
+        queryParams: {
+          pageNum: 1,
+          pageSize: 10,
+          studentId: null,
+          studentName: null,
+          checkInStatisticId: null,
+          checkInBeginDate: null,
+          checkInEndDate: null,
+          checkInTimes: null,
+          leaveTimes: null,
+          countAsCheckInTimes: null,
+          perMonthFee: null,
+          perDayFee: null,
+          textbookFee: null,
+          foodFee: null,
+          billFee: null,
+          advanceFee: null,
+          coupon: null,
+          actualPerMonthFee: null,
+          actualPerDayFee: null,
+          actualTextbookFee: null,
+          actualFoodFee: null,
+          acutalBillFee: null,
+          billStatus: null,
+          billMode: null,
+          billEvidence: null
+        },
+        // 表单参数
+        form: {},
+        // 表单校验
+        rules: {
+        }
       };
-      this.resetForm("form");
     },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
+    created() {
       this.getList();
     },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加学生账单明细";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const id = row.id || this.ids
-      getStudentBill(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改学生账单明细";
-      });
-    },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          if (this.form.id != null) {
-            updateStudentBill(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addStudentBill(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除学生账单明细编号为"' + ids + '"的数据项？').then(function() {
-        return delStudentBill(ids);
-      }).then(() => {
+    methods: {
+      /** 查询学生账单明细列表 */
+      getList() {
+        this.loading = true;
+        listStudentBill(this.queryParams).then(response => {
+          this.studentBillList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        });
+      },
+      // 取消按钮
+      cancel() {
+        this.open = false;
+        this.reset();
+      },
+      // 表单重置
+      reset() {
+        this.form = {
+          id: null,
+          studentId: null,
+          studentName: null,
+          checkInStatisticId: null,
+          checkInBeginDate: null,
+          checkInEndDate: null,
+          checkInTimes: null,
+          leaveTimes: null,
+          countAsCheckInTimes: null,
+          perMonthFee: null,
+          perDayFee: null,
+          textbookFee: null,
+          foodFee: null,
+          billFee: null,
+          advanceFee: null,
+          coupon: null,
+          actualPerMonthFee: null,
+          actualPerDayFee: null,
+          actualTextbookFee: null,
+          actualFoodFee: null,
+          acutalBillFee: null,
+          billStatus: null,
+          billMode: null,
+          billEvidence: null
+        };
+        this.resetForm("form");
+      },
+      /** 搜索按钮操作 */
+      handleQuery() {
+        this.queryParams.pageNum = 1;
         this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('payment/studentBill/export', {
-        ...this.queryParams
-      }, `studentBill_${new Date().getTime()}.xlsx`)
+      },
+      /** 重置按钮操作 */
+      resetQuery() {
+        this.resetForm("queryForm");
+        this.handleQuery();
+      },
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.ids = selection.map(item => item.id)
+        this.single = selection.length!==1
+        this.multiple = !selection.length
+      },
+      /** 新增按钮操作 */
+      handleAdd() {
+        this.reset();
+        this.open = true;
+        this.title = "添加学生账单明细";
+      },
+      /** 修改按钮操作 */
+      handleUpdate(row) {
+        this.reset();
+        const id = row.id || this.ids
+        getStudentBill(id).then(response => {
+          this.form = response.data;
+          this.open = true;
+          this.title = "修改学生账单明细";
+        });
+      },
+      /** 提交按钮 */
+      submitForm() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            if (this.form.id != null) {
+              updateStudentBill(this.form).then(response => {
+                this.$modal.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+              });
+            } else {
+              addStudentBill(this.form).then(response => {
+                this.$modal.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
+              });
+            }
+          }
+        });
+      },
+      /** 删除按钮操作 */
+      handleDelete(row) {
+        const ids = row.id || this.ids;
+        this.$modal.confirm('是否确认删除学生账单明细编号为"' + ids + '"的数据项？').then(function() {
+          return delStudentBill(ids);
+        }).then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        }).catch(() => {});
+      },
+      /** 导出按钮操作 */
+      handleExport() {
+        this.download('payment/studentBill/export', {
+          ...this.queryParams
+        }, `studentBill_${new Date().getTime()}.xlsx`)
+      }
     }
-  }
-};
+  };
 </script>

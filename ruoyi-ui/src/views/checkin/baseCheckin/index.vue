@@ -9,54 +9,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="考勤教师的id数组" prop="baseCheckInTeachers">
-        <el-input
-          v-model="queryParams.baseCheckInTeachers"
-          placeholder="请输入考勤教师的id数组"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤开始日期" prop="baseCheckInBeginDate">
-        <el-date-picker clearable
-          v-model="queryParams.baseCheckInBeginDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择考勤开始日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="考勤结束日期" prop="baseCheckInEndDate">
-        <el-date-picker clearable
-          v-model="queryParams.baseCheckInEndDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择考勤结束日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="每周考勤天数" prop="baseCheckInDaysOneWeek">
-        <el-input
-          v-model="queryParams.baseCheckInDaysOneWeek"
-          placeholder="请输入每周考勤天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤总天数" prop="baseCheckInSumDays">
-        <el-input
-          v-model="queryParams.baseCheckInSumDays"
-          placeholder="请输入考勤总天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤周数" prop="baseCheckInWeeks">
-        <el-input
-          v-model="queryParams.baseCheckInWeeks"
-          placeholder="请输入考勤周数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -113,8 +65,8 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="baseCheckInId" />
       <el-table-column label="考勤名称" align="center" prop="baseCheckInName" />
-      <el-table-column label="考勤学生的id数组" align="center" prop="baseCheckInStudents" />
-      <el-table-column label="考勤教师的id数组" align="center" prop="baseCheckInTeachers" />
+      <el-table-column label="考勤学生" align="center" prop="baseCheckInStudents" />
+      <el-table-column label="考勤教师" align="center" prop="baseCheckInTeachers" />
       <el-table-column label="考勤开始日期" align="center" prop="baseCheckInBeginDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.baseCheckInBeginDate, '{y}-{m}-{d}') }}</span>
@@ -148,7 +100,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

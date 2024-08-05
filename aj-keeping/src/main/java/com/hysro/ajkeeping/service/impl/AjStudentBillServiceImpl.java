@@ -9,19 +9,19 @@ import com.hysro.ajkeeping.service.IAjStudentBillService;
 
 /**
  * 学生账单明细Service业务层处理
- * 
+ *
  * @author hysro
- * @date 2024-08-04
+ * @date 2024-08-05
  */
 @Service
-public class AjStudentBillServiceImpl implements IAjStudentBillService 
+public class AjStudentBillServiceImpl implements IAjStudentBillService
 {
     @Autowired
     private AjStudentBillMapper ajStudentBillMapper;
 
     /**
      * 查询学生账单明细
-     * 
+     *
      * @param id 学生账单明细主键
      * @return 学生账单明细
      */
@@ -33,7 +33,7 @@ public class AjStudentBillServiceImpl implements IAjStudentBillService
 
     /**
      * 查询学生账单明细列表
-     * 
+     *
      * @param ajStudentBill 学生账单明细
      * @return 学生账单明细
      */
@@ -45,7 +45,7 @@ public class AjStudentBillServiceImpl implements IAjStudentBillService
 
     /**
      * 新增学生账单明细
-     * 
+     *
      * @param ajStudentBill 学生账单明细
      * @return 结果
      */
@@ -57,7 +57,7 @@ public class AjStudentBillServiceImpl implements IAjStudentBillService
 
     /**
      * 修改学生账单明细
-     * 
+     *
      * @param ajStudentBill 学生账单明细
      * @return 结果
      */
@@ -69,7 +69,7 @@ public class AjStudentBillServiceImpl implements IAjStudentBillService
 
     /**
      * 批量删除学生账单明细
-     * 
+     *
      * @param ids 需要删除的学生账单明细主键
      * @return 结果
      */
@@ -81,7 +81,7 @@ public class AjStudentBillServiceImpl implements IAjStudentBillService
 
     /**
      * 删除学生账单明细信息
-     * 
+     *
      * @param id 学生账单明细主键
      * @return 结果
      */
