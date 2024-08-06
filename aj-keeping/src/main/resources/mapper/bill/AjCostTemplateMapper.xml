@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjCostTemplateMapper">
-    
+
     <resultMap type="AjCostTemplate" id="AjCostTemplateResult">
         <result property="costTemplateId"    column="cost_template_id"    />
         <result property="costTemplateName"    column="cost_template_name"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAjCostTemplateList" parameterType="AjCostTemplate" resultMap="AjCostTemplateResult">
         <include refid="selectAjCostTemplateVo"/>
-        <where>  
+        <where>
             <if test="costTemplateName != null  and costTemplateName != ''"> and cost_template_name like concat('%', #{costTemplateName}, '%')</if>
             <if test="costFeePerDay != null "> and cost_fee_per_day = #{costFeePerDay}</if>
             <if test="costUseFeePerDay != null "> and cost_use_fee_per_day = #{costUseFeePerDay}</if>
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="costDefault != null "> and cost_default = #{costDefault}</if>
         </where>
     </select>
-    
+
     <select id="selectAjCostTemplateByCostTemplateId" parameterType="Long" resultMap="AjCostTemplateResult">
         <include refid="selectAjCostTemplateVo"/>
         where cost_template_id = #{costTemplateId}
@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjCostTemplateByCostTemplateIds" parameterType="String">
-        delete from aj_cost_template where cost_template_id in 
+        delete from aj_cost_template where cost_template_id in
         <foreach item="costTemplateId" collection="array" open="(" separator="," close=")">
             #{costTemplateId}
         </foreach>

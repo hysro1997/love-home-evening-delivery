@@ -116,45 +116,79 @@
     />
 
     <!-- 添加或修改学生费用模板对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="150px">
-        <el-form-item label="模板名称" prop="costTemplateName">
-          <el-input v-model="form.costTemplateName" placeholder="请输入模板名称" />
-        </el-form-item>
-        <el-form-item label="每天费用" prop="costFeePerDay">
-          <el-input v-model="form.costFeePerDay" placeholder="请输入每天费用" />
-        </el-form-item>
-        <el-form-item label="使用日收费" prop="costUseFeePerDay">
-          <template>
-            <el-radio v-model="form.costUseFeePerDay" label="0">不使用</el-radio>
-            <el-radio v-model="form.costUseFeePerDay" label="1">使用</el-radio>
-          </template>
-        </el-form-item>
-        <el-form-item label="考勤周期收费" prop="costFeePerMonth">
-          <el-input v-model="form.costFeePerMonth" placeholder="请输入每月收费" />
-        </el-form-item>
-        <el-form-item label="使用考勤周期收费" prop="costUseFeePerMonth">
-          <template>
-            <el-radio v-model="form.costUseFeePerMonth" label="0">不使用</el-radio>
-            <el-radio v-model="form.costUseFeePerMonth" label="1">使用</el-radio>
-          </template>
-        </el-form-item>
-        <el-form-item label="课时费" prop="costFeePerLesson">
-          <el-input v-model="form.costFeePerLesson" placeholder="请输入课时费" />
-        </el-form-item>
-        <el-form-item label="使用课时费" prop="costUseFeePerLesson">
-          <template>
-            <el-radio v-model="form.costUseFeePerLesson" label="0">不使用</el-radio>
-            <el-radio v-model="form.costUseFeePerLesson" label="1">使用</el-radio>
-          </template>
-        </el-form-item>
-        <el-form-item label="伙食费" prop="costFoodFee">
-          <el-input v-model="form.costFoodFee" placeholder="请输入伙食费" />
-        </el-form-item>
-        <el-form-item label="材料费" prop="costTextbooksFee">
-          <el-input v-model="form.costTextbooksFee" placeholder="请输入材料费" />
-        </el-form-item>
-        <el-form-item label="适合哪个年级用" prop="costUseGrade">
+    <el-dialog :title="title" :visible.sync="open" center width="1000px" :closeOnClickModal="false" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="170px">
+        <el-row :gutter="20">
+          <el-col :span="18">
+            <el-form-item label="模板名称：" prop="costTemplateName">
+              <el-input v-model="form.costTemplateName" placeholder="请输入模板名称" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="日收费（元）：" prop="costFeePerDay">
+              <el-input v-model="form.costFeePerDay" @input="form.costFeePerDay = form.costFeePerDay.replace(/[^\d.]/g,'')" placeholder="请输入每天费用" @blur="verifyFeeUse(1)"><template slot="append">元</template></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="使用日收费：" prop="costUseFeePerDay">
+              <template>
+                <el-radio-group v-model="form.costUseFeePerDay" size="small" @change="verifyFeeUse(1)">
+                  <el-radio :label="1">使用</el-radio>&nbsp;&nbsp;&nbsp;
+                  <el-radio :label="0">不使用</el-radio>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="考勤周期收费（元）：" prop="costFeePerMonth">
+              <el-input v-model="form.costFeePerMonth" @input="form.costFeePerMonth = form.costFeePerMonth.replace(/[^\d.]/g,'')" placeholder="请输入每月收费" @blur="verifyFeeUse(2)"><template slot="append">元</template></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="使用考勤周期收费：" prop="costUseFeePerMonth">
+              <template>
+                <el-radio-group v-model="form.costUseFeePerMonth" size="small" @change="verifyFeeUse(2)">
+                  <el-radio :label="1">使用</el-radio>
+                  <el-radio :label="0">不使用</el-radio>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="课时费（元）：" prop="costFeePerLesson">
+              <el-input v-model="form.costFeePerLesson" @input="form.costFeePerLesson = form.costFeePerLesson.replace(/[^\d.]/g,'')" placeholder="请输入课时费" @blur="verifyFeeUse(3)"><template slot="append">元</template></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="使用课时费：" prop="costUseFeePerLesson">
+              <template>
+                <el-radio-group v-model="form.costUseFeePerLesson" size="small" @change="verifyFeeUse(3)">
+                  <el-radio :label="1">使用</el-radio>
+                  <el-radio :label="0">不使用</el-radio>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="伙食费（元）：" prop="costFoodFee">
+              <el-input v-model="form.costFoodFee" @input="form.costFoodFee = form.costFoodFee.replace(/[^\d.]/g,'')" placeholder="请输入伙食费"><template slot="append">元</template></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="材料费（元）：" prop="costTextbooksFee">
+              <el-input v-model="form.costTextbooksFee" @input="form.costTextbooksFee = form.costTextbooksFee.replace(/[^\d.]/g,'')" placeholder="请输入材料费"><template slot="append">元</template></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="适合哪个年级用：" prop="costUseGrade">
           <el-select v-model="form.costUseGrade" placeholder="请选择适用年级"
                      @change="handleQuery">
             <el-option
@@ -231,6 +265,15 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        costTemplateName: [
+          { required: true, message: "模板名称不能为空", trigger: "blur" }
+        ],
+        costUseGrade: [
+          { required: true, message: "适用年级不能为空", trigger: "blur" }
+        ],
+        costFeePerDay: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerMonth: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerLesson: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/, message: "只能输入最多带两位小数的金额"}],
       },
       grades:[],
     };
@@ -240,6 +283,21 @@ export default {
     this.initGrades();
   },
   methods: {
+    verifyFeeUse(index){
+      if (1 === index){
+        console.log(this.form.costUseFeePerDay)
+        null !== this.form.costFeePerDay && '' !== this.form.costFeePerDay ? this.changeUseAble(1,0,0) : this.changeUseAble(0,0,0);
+      } else if (2 === index){
+        null !== this.form.costFeePerMonth && '' !== this.form.costFeePerMonth ? this.changeUseAble(0,1,0) : this.changeUseAble(0,0,0);
+      } else {
+        null !== this.form.costFeePerLesson && '' !== this.form.costFeePerLesson ? this.changeUseAble(0,0,1) : this.changeUseAble(0,0,0);
+      }
+    },
+    changeUseAble(useDay,useMonth,useLesson){
+      this.form.costUseFeePerDay = useDay;
+      this.form.costUseFeePerMonth = useMonth;
+      this.form.costUseFeePerLesson = useLesson;
+    },
     tableRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 1) {
         return 'warning-row';
