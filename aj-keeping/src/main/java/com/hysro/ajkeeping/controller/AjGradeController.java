@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 年级Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -75,7 +76,7 @@ public class AjGradeController extends BaseController
     @PreAuthorize("@ss.hasPermi('schools:grade:add')")
     @Log(title = "年级", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AjGrade ajGrade)
+    public AjaxResult add(@Validated @RequestBody AjGrade ajGrade)
     {
         return toAjax(ajGradeService.insertAjGrade(ajGrade));
     }
@@ -86,7 +87,7 @@ public class AjGradeController extends BaseController
     @PreAuthorize("@ss.hasPermi('schools:grade:edit')")
     @Log(title = "年级", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AjGrade ajGrade)
+    public AjaxResult edit(@Validated @RequestBody AjGrade ajGrade)
     {
         return toAjax(ajGradeService.updateAjGrade(ajGrade));
     }

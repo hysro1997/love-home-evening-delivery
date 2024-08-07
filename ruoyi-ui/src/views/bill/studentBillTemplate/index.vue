@@ -77,11 +77,23 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="costTemplateId" />
       <el-table-column label="模板名称" align="center" prop="costTemplateName" />
-      <el-table-column label=" 日收费" align="center" prop="costFeePerDay" />
+      <el-table-column label=" 日收费" align="center" prop="costFeePerDay">
+        <template slot-scope="scope">
+          <i v-if="1===scope.row.costUseFeePerDay" class="el-icon-star-on"></i>{{scope.row.costFeePerDay}}
+        </template>
+      </el-table-column>
       <!--el-table-column label="使用日收费" align="center" prop="costUseFeePerDay" /-->
-      <el-table-column label="考勤周期收费" align="center" prop="costFeePerMonth" />
+      <el-table-column label="考勤周期收费" align="center" prop="costFeePerMonth">
+        <template slot-scope="scope">
+          <i v-if="1===scope.row.costUseFeePerMonth" class="el-icon-star-on"></i>{{scope.row.costFeePerMonth}}
+        </template>
+      </el-table-column>
       <!--el-table-column label="使用每月收费" align="center" prop="costUseFeePerMonth" /-->
-      <el-table-column label="课时费" align="center" prop="costFeePerLesson" />
+      <el-table-column label="课时费" align="center" prop="costFeePerLesson">
+        <template slot-scope="scope">
+          <i v-if="1===scope.row.costUseFeePerLesson" class="el-icon-star-on"></i>{{scope.row.costFeePerLesson}}
+        </template>
+      </el-table-column>
       <!--el-table-column label="使用课时费" align="center" prop="costUseFeePerLesson" /-->
       <el-table-column label="伙食费" align="center" prop="costFoodFee" />
       <el-table-column label="材料费" align="center" prop="costTextbooksFee" />
@@ -271,9 +283,9 @@ export default {
         costUseGrade: [
           { required: true, message: "适用年级不能为空", trigger: "blur" }
         ],
-        costFeePerDay: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/, message: "只能输入最多带两位小数的金额"}],
-        costFeePerMonth: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/, message: "只能输入最多带两位小数的金额"}],
-        costFeePerLesson: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerDay: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerMonth: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerLesson: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)/, message: "只能输入最多带两位小数的金额"}],
       },
       grades:[],
     };
@@ -285,7 +297,6 @@ export default {
   methods: {
     verifyFeeUse(index){
       if (1 === index){
-        console.log(this.form.costUseFeePerDay)
         null !== this.form.costFeePerDay && '' !== this.form.costFeePerDay ? this.changeUseAble(1,0,0) : this.changeUseAble(0,0,0);
       } else if (2 === index){
         null !== this.form.costFeePerMonth && '' !== this.form.costFeePerMonth ? this.changeUseAble(0,1,0) : this.changeUseAble(0,0,0);

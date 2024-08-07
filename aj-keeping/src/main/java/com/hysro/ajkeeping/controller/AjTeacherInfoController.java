@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 教师信息Controller
- * 
+ *
  * @author ruoyi
  * @date 2024-08-04
  */
@@ -75,7 +76,7 @@ public class AjTeacherInfoController extends BaseController
     @PreAuthorize("@ss.hasPermi('info:teacherInfo:add')")
     @Log(title = "教师信息", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AjTeacherInfo ajTeacherInfo)
+    public AjaxResult add(@Validated @RequestBody AjTeacherInfo ajTeacherInfo)
     {
         return toAjax(ajTeacherInfoService.insertAjTeacherInfo(ajTeacherInfo));
     }
@@ -86,7 +87,7 @@ public class AjTeacherInfoController extends BaseController
     @PreAuthorize("@ss.hasPermi('info:teacherInfo:edit')")
     @Log(title = "教师信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AjTeacherInfo ajTeacherInfo)
+    public AjaxResult edit(@Validated @RequestBody AjTeacherInfo ajTeacherInfo)
     {
         return toAjax(ajTeacherInfoService.updateAjTeacherInfo(ajTeacherInfo));
     }

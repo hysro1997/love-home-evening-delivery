@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -95,7 +96,7 @@ public class AjStudentInfoController extends BaseController
     @PreAuthorize("@ss.hasPermi('info:studentInfo:add')")
     @Log(title = "学生信息", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AjStudentInfo ajStudentInfo)
+    public AjaxResult add(@Validated @RequestBody AjStudentInfo ajStudentInfo)
     {
         return success(ajStudentInfoService.insertAjStudentInfo(ajStudentInfo));
     }
@@ -106,7 +107,7 @@ public class AjStudentInfoController extends BaseController
     @PreAuthorize("@ss.hasPermi('info:studentInfo:edit')")
     @Log(title = "学生信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AjStudentInfo ajStudentInfo)
+    public AjaxResult edit(@Validated @RequestBody AjStudentInfo ajStudentInfo)
     {
         return success(ajStudentInfoService.updateAjStudentInfo(ajStudentInfo));
     }

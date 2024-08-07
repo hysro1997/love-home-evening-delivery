@@ -189,58 +189,77 @@
     />
 
     <!-- 添加或修改学生信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="1000px" :closeOnClickModal="false" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="学生姓名" prop="studentName">
-          <el-input v-model="form.studentName" placeholder="请输入学生姓名（如果重复，请添加后缀）" />
-        </el-form-item>
-        <el-form-item label="学生性别" prop="studentGender">
-          <template>
-            <el-radio v-model="form.studentGender" label="1">男</el-radio>
-            <el-radio v-model="form.studentGender" label="2">女</el-radio>
-          </template>
-        </el-form-item>
-        <el-form-item label="学生学校" prop="studentSchool">
-          <el-select v-model="form.studentSchool" placeholder="请选择学校">
-            <el-option
-              v-for="item in schools"
-              :key="item.id"
-              :label="item.schoolName"
-              :value="item.schoolName">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="学生年级" prop="studentGrade">
-          <el-select v-model="form.studentGrade" placeholder="请选择年级">
-            <el-option
-              v-for="item in grades"
-              :key="item.id"
-              :label="item.grade"
-              :value="item.grade">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="学生班级" prop="studentClass">
-          <el-select v-model="form.studentClass" placeholder="请选择班级">
-            <el-option
-              v-for="item in studentClasses"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="联系电话" prop="studentPhone">
-          <el-input v-model="form.studentPhone" placeholder="请输入联系电话" maxlength="11"/>
-        </el-form-item>
-        <el-form-item label="学生来源" prop="studentSource">
-          <el-select v-model="form.studentSource" placeholder="请选择学生来源">
-            <el-option
-              v-for="item in studentSource"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="10"><el-form-item label="学生姓名" prop="studentName">
+            <el-input v-model="form.studentName" placeholder="请输入学生姓名（如果重复，请添加后缀）" />
+          </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="学生性别" prop="studentGender">
+              <template>
+                <el-radio v-model="form.studentGender" label="1">男</el-radio>
+                <el-radio v-model="form.studentGender" label="2">女</el-radio>
+              </template>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="学生学校" prop="studentSchool">
+              <el-select v-model="form.studentSchool" placeholder="请选择学校">
+                <el-option
+                  v-for="item in schools"
+                  :key="item.id"
+                  :label="item.schoolName"
+                  :value="item.schoolName">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="学生年级" prop="studentGrade">
+              <el-select v-model="form.studentGrade" placeholder="请选择年级">
+                <el-option
+                  v-for="item in grades"
+                  :key="item.id"
+                  :label="item.grade"
+                  :value="item.grade">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="学生班级" prop="studentClass">
+              <el-select v-model="form.studentClass" placeholder="请选择班级">
+                <el-option
+                  v-for="item in studentClasses"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="联系电话" prop="studentPhone">
+              <el-input v-model="form.studentPhone" placeholder="请输入联系电话" maxlength="11"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="学生来源" prop="studentSource">
+              <el-select v-model="form.studentSource" placeholder="请选择学生来源">
+                <el-option
+                  v-for="item in studentSource"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="备注信息" prop="studentRemark">
           <el-input v-model="form.studentRemark" type="textarea" :rows="2" placeholder="请输入备注信息" />
         </el-form-item>

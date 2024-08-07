@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 老师工资模板Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -75,7 +76,7 @@ public class AjSalaryTemplateController extends BaseController
     @PreAuthorize("@ss.hasPermi('bill:teacherBillTemplate:add')")
     @Log(title = "老师工资模板", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AjSalaryTemplate ajSalaryTemplate)
+    public AjaxResult add(@Validated @RequestBody AjSalaryTemplate ajSalaryTemplate)
     {
         return toAjax(ajSalaryTemplateService.insertAjSalaryTemplate(ajSalaryTemplate));
     }
@@ -86,7 +87,7 @@ public class AjSalaryTemplateController extends BaseController
     @PreAuthorize("@ss.hasPermi('bill:teacherBillTemplate:edit')")
     @Log(title = "老师工资模板", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AjSalaryTemplate ajSalaryTemplate)
+    public AjaxResult edit(@Validated @RequestBody AjSalaryTemplate ajSalaryTemplate)
     {
         return toAjax(ajSalaryTemplateService.updateAjSalaryTemplate(ajSalaryTemplate));
     }

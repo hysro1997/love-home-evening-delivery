@@ -6,6 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 /**
  * 老师工资模板对象 aj_salary_template
  *
@@ -20,11 +24,13 @@ public class AjSalaryTemplate extends BaseEntity
     private Long salaryId;
 
     /** 工资模板名次 */
-    @Excel(name = "工资模板名次")
+    @Excel(name = "工资模板名称")
+    @NotBlank
     private String salaryTemplateName;
 
     /** 月工资 */
     @Excel(name = "月工资")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal salaryPerMonth;
 
     /** 使用月工资（0不用，1用） */
@@ -33,6 +39,7 @@ public class AjSalaryTemplate extends BaseEntity
 
     /** 日工资 */
     @Excel(name = "日工资")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal salaryPerDay;
 
     /** 使用日工资（0不用，1用） */
@@ -41,10 +48,12 @@ public class AjSalaryTemplate extends BaseEntity
 
     /** 值班费 */
     @Excel(name = "值班费")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal salaryOnDuty;
 
     /** 请假工资 */
     @Excel(name = "请假工资")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal salaryOffDutyFee;
 
     /** 默认（0不默认，1默认） */
@@ -53,7 +62,21 @@ public class AjSalaryTemplate extends BaseEntity
 
     /** 全勤奖 */
     @Excel(name = "全勤奖")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal salaryAllDuty;
+
+    /** 默认（0不默认，1默认） */
+    @Excel(name = "适用工作类型", readConverterExp = "0=兼职,1=全职,2=实习生,3=暑假工")
+    @NotBlank
+    private Integer salaryEmployType;
+
+    public Integer getSalaryEmployType() {
+        return salaryEmployType;
+    }
+
+    public void setSalaryEmployType(Integer salaryEmployType) {
+        this.salaryEmployType = salaryEmployType;
+    }
 
     public void setSalaryId(Long salaryId)
     {
@@ -159,6 +182,7 @@ public class AjSalaryTemplate extends BaseEntity
             .append("salaryOffDutyFee", getSalaryOffDutyFee())
             .append("salaryDefault", getSalaryDefault())
             .append("salaryAllDuty", getSalaryAllDuty())
+            .append("salaryEmployType", getSalaryEmployType())
             .toString();
     }
 }

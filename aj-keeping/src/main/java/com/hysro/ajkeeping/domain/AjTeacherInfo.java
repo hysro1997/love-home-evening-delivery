@@ -5,6 +5,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 /**
  * 教师信息对象 aj_teacher_info
  *
@@ -20,6 +23,7 @@ public class AjTeacherInfo extends BaseEntity
 
     /** 教师姓名（可重复，建议添加后缀） */
     @Excel(name = "教师姓名")
+    @NotBlank
     private String teacherName;
 
     /** 教师性别 */
@@ -28,6 +32,8 @@ public class AjTeacherInfo extends BaseEntity
 
     /** 教师电话 */
     @Excel(name = "教师电话")
+    @NotBlank
+    @Pattern(regexp = "^1[3|4|5|6|7|8|9][0-9]\\d{8}$", message = "只能输入最多带两位小数的金额")
     private String teacherPhone;
 
     /** 用工类别（0兼职，1全职，2暑假工） */

@@ -6,6 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 /**
  * 学生费用模板对象 aj_cost_template
  *
@@ -20,11 +24,13 @@ public class AjCostTemplate extends BaseEntity
     private Long costTemplateId;
 
     /** 模板名次 */
-    @Excel(name = "模板名次")
+    @Excel(name = "模板名称")
+    @NotBlank
     private String costTemplateName;
 
     /** 每天费用 */
     @Excel(name = "每天费用")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal costFeePerDay;
 
     /** 使用日收费（0不用，1用） */
@@ -33,6 +39,7 @@ public class AjCostTemplate extends BaseEntity
 
     /** 课时费 */
     @Excel(name = "课时费")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal costFeePerLesson;
 
     /** 使用课时费（0不用，1用） */
@@ -41,14 +48,17 @@ public class AjCostTemplate extends BaseEntity
 
     /** 伙食费 */
     @Excel(name = "伙食费")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal costFoodFee;
 
     /** 材料费 */
     @Excel(name = "材料费")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal costTextbooksFee;
 
     /** 每月收费 */
     @Excel(name = "每月收费")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal costFeePerMonth;
 
     /** 使用每月收费（0不用，1用） */
@@ -57,6 +67,7 @@ public class AjCostTemplate extends BaseEntity
 
     /** 适合哪个年级用 */
     @Excel(name = "适合哪个年级用")
+    @NotBlank
     private String costUseGrade;
 
     /** 默认（0不默认，1默认） */

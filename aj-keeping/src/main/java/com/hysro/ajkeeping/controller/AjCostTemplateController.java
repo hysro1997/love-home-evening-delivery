@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 学生费用模板Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -75,7 +76,7 @@ public class AjCostTemplateController extends BaseController
     @PreAuthorize("@ss.hasPermi('bill:studentBillTemplate:add')")
     @Log(title = "学生费用模板", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AjCostTemplate ajCostTemplate)
+    public AjaxResult add(@Validated @RequestBody AjCostTemplate ajCostTemplate)
     {
         return toAjax(ajCostTemplateService.insertAjCostTemplate(ajCostTemplate));
     }
@@ -86,7 +87,7 @@ public class AjCostTemplateController extends BaseController
     @PreAuthorize("@ss.hasPermi('bill:studentBillTemplate:edit')")
     @Log(title = "学生费用模板", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AjCostTemplate ajCostTemplate)
+    public AjaxResult edit(@Validated @RequestBody AjCostTemplate ajCostTemplate)
     {
         return toAjax(ajCostTemplateService.updateAjCostTemplate(ajCostTemplate));
     }

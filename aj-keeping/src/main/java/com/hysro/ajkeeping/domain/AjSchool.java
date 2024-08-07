@@ -5,9 +5,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 学校对象 aj_school
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -20,23 +22,24 @@ public class AjSchool extends BaseEntity
 
     /** 学校 */
     @Excel(name = "学校")
+    @NotBlank
     private String schoolName;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setSchoolName(String schoolName) 
+    public void setSchoolName(String schoolName)
     {
         this.schoolName = schoolName;
     }
 
-    public String getSchoolName() 
+    public String getSchoolName()
     {
         return schoolName;
     }

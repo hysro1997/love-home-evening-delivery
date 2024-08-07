@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +24,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 学校Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -75,7 +76,7 @@ public class AjSchoolController extends BaseController
     @PreAuthorize("@ss.hasPermi('schools:school:add')")
     @Log(title = "学校", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody AjSchool ajSchool)
+    public AjaxResult add(@Validated @RequestBody AjSchool ajSchool)
     {
         return toAjax(ajSchoolService.insertAjSchool(ajSchool));
     }
@@ -86,7 +87,7 @@ public class AjSchoolController extends BaseController
     @PreAuthorize("@ss.hasPermi('schools:school:edit')")
     @Log(title = "学校", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody AjSchool ajSchool)
+    public AjaxResult edit(@Validated @RequestBody AjSchool ajSchool)
     {
         return toAjax(ajSchoolService.updateAjSchool(ajSchool));
     }
