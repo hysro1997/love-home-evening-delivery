@@ -85,6 +85,16 @@
           {{scope.row.teacherEmployType === 0 ? "兼职" : scope.row.teacherEmployType === 1 ? "全职" : scope.row.teacherEmployType === 2 ? "实习生" : "暑假工"}}
         </template>
       </el-table-column>
+      <el-table-column label="在职状态" align="center" prop="teacherStatus">
+        <template slot-scope="scope">
+          <el-tag effect="plain" type="success" v-if="scope.row.teacherStatus === 0">
+            在职
+          </el-tag>
+          <el-tag effect="plain" type="warning" v-else>
+            离职
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -98,9 +108,9 @@
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['info:teacherInfo:remove']"
-          >删除</el-button>
+            @click="handleTeacherUpdate(scope.row)"
+            v-hasPermi="['info:teacherInfo:edit']"
+          >{{scope.row.teacherStatus === 0 ? "使离职" : "使复职"}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -276,6 +286,15 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改教师信息";
+      });
+    },
+    handleTeacherUpdate(row){
+      let data = row;
+      data.teacherStatus = row.teacherStatus === 0 ? 1 : 0;
+      updateTeacherInfo(data).then(response => {
+        this.$modal.msgSuccess("操作成功");
+        this.open = false;
+        this.getList();
       });
     },
     /** 提交按钮 */

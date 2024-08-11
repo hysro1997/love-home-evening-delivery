@@ -1,6 +1,8 @@
 package com.hysro.ajkeeping.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -57,6 +59,28 @@ public class AjBaseCheckIn extends BaseEntity
     /** 考勤状态（0默认，1考勤中，2考勤结束） */
     @Excel(name = "考勤状态", readConverterExp = "0=默认,1=考勤中,2=考勤结束")
     private Integer baseCheckInStatus;
+
+    private Long[] checkinStudents;
+
+    private Long[] checkinTeachers;
+    /** 参与考勤的列表 */
+    private List<AjHomoInBaseCheckIn> ajHomoInBaseCheckIns;
+
+    public Long[] getCheckinStudents() {
+        return checkinStudents;
+    }
+
+    public void setCheckinStudents(Long[] checkinStudents) {
+        this.checkinStudents = checkinStudents;
+    }
+
+    public Long[] getCheckinTeachers() {
+        return checkinTeachers;
+    }
+
+    public void setCheckinTeachers(Long[] checkinTeachers) {
+        this.checkinTeachers = checkinTeachers;
+    }
 
     public void setBaseCheckInId(Long baseCheckInId)
     {
@@ -147,6 +171,14 @@ public class AjBaseCheckIn extends BaseEntity
     public Integer getBaseCheckInStatus()
     {
         return baseCheckInStatus;
+    }
+
+    public List<AjHomoInBaseCheckIn> getAjHomoInBaseCheckIns() {
+        return ajHomoInBaseCheckIns;
+    }
+
+    public void setAjHomoInBaseCheckIns(List<AjHomoInBaseCheckIn> ajHomoInBaseCheckIns) {
+        this.ajHomoInBaseCheckIns = ajHomoInBaseCheckIns;
     }
 
     @Override

@@ -23,7 +23,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 考勤总表Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -45,6 +45,26 @@ public class AjBaseCheckInController extends BaseController
         List<AjBaseCheckIn> list = ajBaseCheckInService.selectAjBaseCheckInList(ajBaseCheckIn);
         return getDataTable(list);
     }
+
+
+    /**
+     * 获取在学的学生
+     */
+    @PreAuthorize("@ss.hasPermi('checkin:homoInBaseCheckin:list')")
+    @GetMapping("/schoolStudents")
+    public AjaxResult getInSchoolStudents(){
+        return success(ajBaseCheckInService.selectSchoolStudents());
+    }
+
+    /**
+     * 获取在岗的老师
+     */
+    @PreAuthorize("@ss.hasPermi('checkin:homoInBaseCheckin:list')")
+    @GetMapping("/schoolTeachers")
+    public AjaxResult getInSchoolTeachers(){
+        return success(ajBaseCheckInService.selectSchoolTeachers());
+    }
+
 
     /**
      * 导出考勤总表列表

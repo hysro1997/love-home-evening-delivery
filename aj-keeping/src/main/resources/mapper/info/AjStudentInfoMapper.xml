@@ -38,6 +38,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY student_id DESC
     </select>
 
+    <select id="selectAjStudentSimpleInfoList"  resultMap="AjStudentInfoResult">
+        select student_id, student_name, student_grade, student_status from aj_student_info
+        where student_status = 0
+    </select>
+
     <select id="selectAjStudentInfoByStudentId" parameterType="Long" resultMap="AjStudentInfoResult">
         <include refid="selectAjStudentInfoVo"/>
         where student_id = #{studentId}

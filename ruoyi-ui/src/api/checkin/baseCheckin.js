@@ -9,6 +9,22 @@ export function listBaseCheckin(query) {
   })
 }
 
+// 查询在考勤中的老师与学生详细
+export function getInSchoolStudents() {
+  return request({
+    url: '/checkin/baseCheckin/schoolStudents',
+    method: 'get'
+  })
+}
+
+// 查询在考勤中的老师与学生详细
+export function getInSchoolTeachers() {
+  return request({
+    url: '/checkin/baseCheckin/schoolTeachers',
+    method: 'get'
+  })
+}
+
 // 查询考勤总表详细
 export function getBaseCheckin(baseCheckInId) {
   return request({

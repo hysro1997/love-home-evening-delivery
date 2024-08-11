@@ -27,6 +27,14 @@ public interface AjStudentInfoMapper
      */
     public AjStudentInfo selectAjStudentInfoByStudentName(String studentName);
 
+
+    /**
+     * 查询学生信息列表
+     *
+     * @return 学生信息集合
+     */
+    public List<AjStudentInfo> selectAjStudentSimpleInfoList();
+
     /**
      * 查询学生信息列表
      *

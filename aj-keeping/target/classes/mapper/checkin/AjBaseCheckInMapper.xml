@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjBaseCheckInMapper">
-    
+
     <resultMap type="AjBaseCheckIn" id="AjBaseCheckInResult">
         <result property="baseCheckInId"    column="base_check_in_id"    />
         <result property="baseCheckInName"    column="base_check_in_name"    />
@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAjBaseCheckInList" parameterType="AjBaseCheckIn" resultMap="AjBaseCheckInResult">
         <include refid="selectAjBaseCheckInVo"/>
-        <where>  
+        <where>
             <if test="baseCheckInName != null  and baseCheckInName != ''"> and base_check_in_name like concat('%', #{baseCheckInName}, '%')</if>
             <if test="baseCheckInStudents != null  and baseCheckInStudents != ''"> and base_check_in_students = #{baseCheckInStudents}</if>
             <if test="baseCheckInTeachers != null  and baseCheckInTeachers != ''"> and base_check_in_teachers = #{baseCheckInTeachers}</if>
@@ -34,8 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="baseCheckInWeeks != null "> and base_check_in_weeks = #{baseCheckInWeeks}</if>
             <if test="baseCheckInStatus != null "> and base_check_in_status = #{baseCheckInStatus}</if>
         </where>
+        ORDER BY base_check_in_id DESC
     </select>
-    
+
     <select id="selectAjBaseCheckInByBaseCheckInId" parameterType="Long" resultMap="AjBaseCheckInResult">
         <include refid="selectAjBaseCheckInVo"/>
         where base_check_in_id = #{baseCheckInId}
@@ -88,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjBaseCheckInByBaseCheckInIds" parameterType="String">
-        delete from aj_base_check_in where base_check_in_id in 
+        delete from aj_base_check_in where base_check_in_id in
         <foreach item="baseCheckInId" collection="array" open="(" separator="," close=")">
             #{baseCheckInId}
         </foreach>

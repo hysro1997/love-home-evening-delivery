@@ -65,8 +65,41 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="baseCheckInId" />
       <el-table-column label="考勤名称" align="center" prop="baseCheckInName" />
-      <el-table-column label="考勤学生" align="center" prop="baseCheckInStudents" />
-      <el-table-column label="考勤教师" align="center" prop="baseCheckInTeachers" />
+      <el-table-column label="考勤学生" align="center" prop="students">
+        <tempalte slot-scope="scope">
+          <el-popover
+            placement="right"
+            title="考勤学生"
+            width="200"
+            trigger="click"
+            v-if="null !== scope.row.students">
+            <el-table :data="scope.row.students">
+              <el-table-column width="150" property="studentName" label="姓名"></el-table-column>
+            </el-table>
+            <el-button slot="reference">
+              <span>{{scope.row.students[0].studentName}}...</span>
+            </el-button>
+          </el-popover>
+          <!--span-- v-for="item in scope.row.students">{{item.studentName}}</span-->
+        </tempalte>
+      </el-table-column>
+      <el-table-column label="考勤教师" align="center" prop="teachers">
+        <tempalte slot-scope="scope">
+          <el-popover
+            placement="right"
+            title="考勤教师"
+            width="200"
+            trigger="click"
+            v-if="null !== scope.row.teachers">
+            <el-table :data="scope.row.teachers">
+              <el-table-column width="150" property="teacherName" label="姓名"></el-table-column>
+            </el-table>
+            <el-button slot="reference">
+              <span>{{scope.row.teachers[0].teacherName}}...</span>
+            </el-button>
+          </el-popover>
+        </tempalte>
+      </el-table-column>
       <el-table-column label="考勤开始日期" align="center" prop="baseCheckInBeginDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.baseCheckInBeginDate, '{y}-{m}-{d}') }}</span>
@@ -79,7 +112,7 @@
       </el-table-column>
       <el-table-column label="每周考勤天数" align="center" prop="baseCheckInDaysOneWeek" />
       <el-table-column label="考勤总天数" align="center" prop="baseCheckInSumDays" />
-      <el-table-column label="考勤周数" align="center" prop="baseCheckInWeeks" />
+      <!-- el-table-column label="考勤周数" align="center" prop="baseCheckInWeeks" /-->
       <el-table-column label="考勤状态" align="center" prop="baseCheckInStatus" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -110,45 +143,127 @@
     />
 
     <!-- 添加或修改考勤总表对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="考勤名称" prop="baseCheckInName">
-          <el-input v-model="form.baseCheckInName" placeholder="请输入考勤名称" />
-        </el-form-item>
-        <el-form-item label="考勤学生的id数组" prop="baseCheckInStudents">
-          <el-input v-model="form.baseCheckInStudents" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="考勤教师的id数组" prop="baseCheckInTeachers">
-          <el-input v-model="form.baseCheckInTeachers" placeholder="请输入考勤教师的id数组" />
-        </el-form-item>
-        <el-form-item label="考勤开始日期" prop="baseCheckInBeginDate">
-          <el-date-picker clearable
-            v-model="form.baseCheckInBeginDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择考勤开始日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="考勤结束日期" prop="baseCheckInEndDate">
-          <el-date-picker clearable
-            v-model="form.baseCheckInEndDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择考勤结束日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="每周考勤天数" prop="baseCheckInDaysOneWeek">
-          <el-input v-model="form.baseCheckInDaysOneWeek" placeholder="请输入每周考勤天数" />
-        </el-form-item>
-        <el-form-item label="考勤总天数" prop="baseCheckInSumDays">
-          <el-input v-model="form.baseCheckInSumDays" placeholder="请输入考勤总天数" />
-        </el-form-item>
-        <el-form-item label="考勤周数" prop="baseCheckInWeeks">
+    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+        <el-steps :active="active" finish-status="success">
+          <el-step title="考勤时间"></el-step>
+          <el-step title="学生考勤名单"></el-step>
+          <el-step title="教师考勤名单"></el-step>
+          <el-step title="确认考勤"></el-step>
+        </el-steps>
+        <div v-show="0 === active">
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="考勤名称" prop="baseCheckInName">
+                <el-input v-model="form.baseCheckInName" placeholder="请输入考勤名称" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <div v-show="form.baseCheckInName">
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <el-form-item label="考勤开始日期" prop="baseCheckInBeginDate">
+                  <el-date-picker clearable
+                                  v-model="form.baseCheckInBeginDate"
+                                  type="date"
+                                  placeholder="请选择考勤开始日期">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="考勤结束日期" prop="baseCheckInEndDate">
+                  <el-date-picker clearable
+                                  v-model="form.baseCheckInEndDate"
+                                  type="date"
+                                  placeholder="请选择考勤结束日期">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row v-show="form.baseCheckInBeginDate && form.baseCheckInEndDate">
+              <el-col>
+                <el-form-item label="周几考勤：" prop="baseCheckWeekenDay">
+                  <el-checkbox-group v-model="baseCheckWeekenDay">
+                    <el-checkbox-button :label="1">星期一</el-checkbox-button>
+                    <el-checkbox-button :label="2">星期二</el-checkbox-button>
+                    <el-checkbox-button :label="3">星期三</el-checkbox-button>
+                    <el-checkbox-button :label="4">星期四</el-checkbox-button>
+                    <el-checkbox-button :label="5">星期五</el-checkbox-button>
+                    <el-checkbox-button :label="6">星期六</el-checkbox-button>
+                    <el-checkbox-button :label="0">星期日</el-checkbox-button>
+                  </el-checkbox-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row v-show="form.baseCheckInBeginDate && form.baseCheckInEndDate">
+              <el-col>
+                <el-form-item  label="周几考勤快捷键">
+                  <el-button @click="baseCheckWeekenDay = [1,2,3,4,5]">工作日</el-button><el-button @click="baseCheckWeekenDay = [1,2,3,4,5,6]">6天</el-button><el-button @click="baseCheckWeekenDay = [0,1,2,3,4,5,6]">整周</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+          <el-row v-show="form.baseCheckInBeginDate && form.baseCheckInEndDate">
+            <el-col :span="10">
+              <el-form-item label="每周考勤天数" prop="baseCheckInDaysOneWeek">
+                <el-input @input="form.baseCheckInDaysOneWeek = form.baseCheckInDaysOneWeek.replace(/[^\d]/g,'')" style="width: 120px" :disabled="disableBaseCheckInDaysOneWeek" v-model="form.baseCheckInDaysOneWeek" /><el-button type="text" @click="disableBaseCheckInDaysOneWeek=!disableBaseCheckInDaysOneWeek">手动修改天数</el-button>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="考勤总天数" prop="baseCheckInSumDays">
+                <el-input @input="form.baseCheckInSumDays = form.baseCheckInSumDays.replace(/[^\d]/g,'')" style="width: 120px" :disabled="disableBaseCheckInSumDays" v-model="form.baseCheckInSumDays" /><el-button type="text" @click="disableBaseCheckInSumDays=!disableBaseCheckInSumDays">手动修改天数</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-show="1 === active">
+          <el-form-item label="考勤学生" prop="baseCheckInStudents">
+            <el-transfer
+              style="text-align: left; display: inline-block"
+              v-model="form.checkinStudents"
+              :titles="['学生列表', '考勤']"
+              :button-texts="['取消考勤','进入考勤']"
+              :data="studentsInSchool"
+              :props="{key:'studentId',label:'studentName',disabled:false}">
+              <span slot-scope="{ option }">{{ option.studentGrade }} - {{ option.studentName }}</span>
+            </el-transfer>
+          </el-form-item>
+        </div>
+        <div v-show="2 === active">
+          <el-form-item label="考勤教师" prop="baseCheckInTeachers">
+            <el-transfer
+              style="text-align: left; display: inline-block"
+              v-model="form.checkinTeachers"
+              :titles="['教师列表', '考勤']"
+              :button-texts="['取消考勤','进入考勤']"
+              :data="teachersInSchool"
+              :props="{key:'teacherId',label:'teacherName',disabled:false}">
+            </el-transfer>
+          </el-form-item>
+        </div>
+        <div v-show="3 === active">
+          <el-descriptions title="考勤信息确认列表" direction="vertical" :column="4" border>
+            <el-descriptions-item label="考勤名称" :span="4">{{form.baseCheckInName}}</el-descriptions-item>
+            <el-descriptions-item label="开始日期" :span="1">{{confirmBeginDate}}</el-descriptions-item>
+            <el-descriptions-item label="结束日期" :span="1">{{confirmEndDate}}</el-descriptions-item>
+            <el-descriptions-item label="每周考勤天数" :span="1">{{form.baseCheckInDaysOneWeek}}</el-descriptions-item>
+            <el-descriptions-item label="考勤总天数" :span="1">{{form.baseCheckInSumDays}}</el-descriptions-item>
+            <el-descriptions-item label="考勤学生" :span="2">
+              <el-tag effect="light" style="margin-right:5px" v-for="item in confirmStudentNames">{{item}}&nbsp;</el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="考勤老师" :span="2">
+              <el-tag effect="plain" style="margin-right:5px" v-for="item in confirmTeacherNames">{{item}}&nbsp;</el-tag>
+            </el-descriptions-item>
+          </el-descriptions>
+        </div>
+        <!-- el-form-item label="考勤周数" prop="baseCheckInWeeks">
           <el-input v-model="form.baseCheckInWeeks" placeholder="请输入考勤周数" />
-        </el-form-item>
+        </el-form-item -->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button style="margin-top: 12px;" @click="previous" v-show="1 === active || 2 === active || 3 === active">上一步</el-button>
+        <el-button style="margin-top: 12px;" @click="next" v-show="0 === active || 1 === active || 2 === active">下一步</el-button>
+        <el-button type="primary" @click="submitForm" v-show="3 === active">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -156,7 +271,7 @@
 </template>
 
 <script>
-import { listBaseCheckin, getBaseCheckin, delBaseCheckin, addBaseCheckin, updateBaseCheckin } from "@/api/checkin/baseCheckin";
+import { listBaseCheckin, getBaseCheckin, delBaseCheckin, addBaseCheckin, updateBaseCheckin, getInSchoolStudents, getInSchoolTeachers } from "@/api/checkin/baseCheckin";
 
 export default {
   name: "BaseCheckin",
@@ -185,33 +300,189 @@ export default {
         pageNum: 1,
         pageSize: 10,
         baseCheckInName: null,
-        baseCheckInStudents: null,
-        baseCheckInTeachers: null,
+        baseCheckInStudents: [],
+        baseCheckInTeachers: [],
         baseCheckInBeginDate: null,
         baseCheckInEndDate: null,
         baseCheckInDaysOneWeek: null,
         baseCheckInSumDays: null,
         baseCheckInWeeks: null,
-        baseCheckInStatus: null
+        baseCheckInStatus: null,
+        ajHomoInBaseCheckIns: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      disableBaseCheckInDaysOneWeek: true,
+      disableBaseCheckInSumDays: true,
+      baseCheckWeekenDay: [],
+      studentsInSchool: [],
+      teachersInSchool: [],
+      active: 0,
+      confirmBeginDate: null,
+      confirmEndDate: null,
+      confirmStudentNames: [],
+      confirmTeacherNames: []
     };
   },
   created() {
     this.getList();
+    this.getStudentsAndTeachers();
+  },
+  watch: {
+    baseCheckWeekenDay: {
+      immediate: false,
+      handler() {
+        if (this.baseCheckWeekenDay.length !== 0){
+          this.calculateCheckInInfo();
+        }
+      }
+    }
   },
   methods: {
+    previous(){
+      if (this.active > 0) {
+        this.active -- ;
+      }
+    },
+    next() {
+      let that = this;
+      switch (this.active) {
+        case 0:
+          if(!this.form.baseCheckInName){
+            this.$modal.msgWarning("没有输入考勤名称");
+            return;
+          }
+          if(!this.form.baseCheckInBeginDate){
+            this.$modal.msgWarning("没有选择考勤开始日期");
+            this.form.baseCheckInDaysOneWeek = null;
+            this.form.baseCheckInSumDays = null;
+            this.baseCheckWeekenDay = [];
+            return;
+          }
+          if(!this.form.baseCheckInEndDate){
+            this.$modal.msgWarning("没有输入考勤结束日期");
+            this.form.baseCheckInDaysOneWeek = null;
+            this.form.baseCheckInSumDays = null;
+            this.baseCheckWeekenDay = [];
+            return;
+          }
+          if(!this.form.baseCheckInDaysOneWeek){
+            this.$modal.msgWarning("没有生成或输入每周考勤天数");
+            return;
+          }
+          if(!this.form.baseCheckInSumDays){
+            this.$modal.msgWarning("没有生成或输入考勤总天数");
+            return;
+          }
+          this.confirmBeginDate = this.form.baseCheckInBeginDate.toLocaleDateString();
+          this.confirmEndDate = this.form.baseCheckInEndDate.toLocaleDateString();
+          break;
+        case 1:
+          if(this.form.checkinStudents <= 0){
+            this.$modal.msgWarning("没有选择考勤的学生");
+            return;
+          }
+          that.confirmStudentNames = [];
+          this.form.checkinStudents.forEach(function(e) {
+            that.studentsInSchool.forEach(function(a){
+              if (a.studentId === e){
+                that.confirmStudentNames.push(a.studentName);
+              }
+            });
+          });
+          break;
+        case 2:
+          if(this.form.checkinTeachers <= 0){
+            this.$modal.msgWarning("没有选择考勤的老师");
+            return;
+          }
+          that.confirmTeacherNames = [];
+          this.form.checkinTeachers.forEach(function(e) {
+            that.teachersInSchool.forEach(function(a){
+              if (a.teacherId === e){
+                that.confirmTeacherNames.push(a.teacherName);
+              }
+            });
+          });
+          break;
+        default:
+          break;
+      }
+      this.active ++;
+    },
+    /** 获取在学在岗的学生老师 */
+    getStudentsAndTeachers(){
+      let that = this;
+      getInSchoolStudents().then(response => {
+        this.studentsInSchool = response.data;
+      });
+      getInSchoolTeachers().then(response => {
+        this.teachersInSchool = response.data;
+      });
+    },
+    /** 计算考勤信息 */
+    calculateCheckInInfo(){
+      if (null !== this.form.baseCheckInBeginDate) {
+        if (null !== this.form.baseCheckInEndDate) {
+          if (this.form.baseCheckInEndDate < this.form.baseCheckInBeginDate){
+          this.$modal.msgWarning("结束日期比开始日期更早");
+          return;
+        }
+          if (0 < this.baseCheckWeekenDay.length) {
+            let sumDays = 0;
+            let startWeekDay = new Date(this.form.baseCheckInBeginDate);
+            let endWeekDay = new Date(this.form.baseCheckInEndDate);
+              this.form.baseCheckInDaysOneWeek = this.baseCheckWeekenDay.length;
+              while (startWeekDay <= endWeekDay){
+                if (0 <= this.baseCheckWeekenDay.indexOf(startWeekDay.getDay())){
+                  sumDays++;
+                }
+                startWeekDay.setDate(startWeekDay.getDate() + 1);
+              }
+            this.form.baseCheckInSumDays = sumDays;
+          } else {
+            this.$modal.msgWarning("没有设置每周考勤天数");
+            this.form.baseCheckInSumDays = null;
+          }
+        } else {
+          this.$modal.msgWarning("没有选择考勤结束日期");
+        }
+      } else {
+        this.$modal.msgWarning("没有选择考勤开始日期");
+      }
+    },
     /** 查询考勤总表列表 */
     getList() {
       this.loading = true;
+      let that = this;
       listBaseCheckin(this.queryParams).then(response => {
-        this.baseCheckinList = response.rows;
-        this.total = response.total;
-        this.loading = false;
+        that.baseCheckinList = response.rows;
+        if (this.baseCheckinList.length > 0){
+          that.baseCheckinList.forEach(function(e) {
+            e.students = [];
+            e.teachers = [];
+            e.ajHomoInBaseCheckIns.forEach(function(element) {
+              if (null !== element.studentId){
+                e.students.push(element)
+              } else {
+                e.teachers.push(element);
+              }
+            });
+            if (0 === e.students.length){
+              e.students = null;
+            }
+            if (0 === e.teachers.length){
+              e.teachers = null;
+            }
+          })
+        } else {
+          this.baseCheckinList = null;
+        }
+        that.total = response.total;
+        that.loading = false;
       });
     },
     // 取消按钮
@@ -231,8 +502,17 @@ export default {
         baseCheckInDaysOneWeek: null,
         baseCheckInSumDays: null,
         baseCheckInWeeks: null,
-        baseCheckInStatus: null
+        baseCheckInStatus: null,
+        ajHomoInBaseCheckIns: null,
+        students: null,
+        teachers: null,
+        checkinStudents: [],
+        checkinTeachers: []
       };
+      this.confirmStudentNames = [];
+      this.confirmTeacherNames = [];
+      this.active = 0;
+      this.baseCheckWeekenDay = [];
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -253,12 +533,14 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+      //this.getStudentsAndTeachers();
       this.reset();
       this.open = true;
       this.title = "添加考勤总表";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      //this.getStudentsAndTeachers();
       this.reset();
       const baseCheckInId = row.baseCheckInId || this.ids
       getBaseCheckin(baseCheckInId).then(response => {
