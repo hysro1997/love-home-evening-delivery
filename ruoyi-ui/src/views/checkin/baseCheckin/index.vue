@@ -113,7 +113,11 @@
       <el-table-column label="每周考勤天数" align="center" prop="baseCheckInDaysOneWeek" />
       <el-table-column label="考勤总天数" align="center" prop="baseCheckInSumDays" />
       <!-- el-table-column label="考勤周数" align="center" prop="baseCheckInWeeks" /-->
-      <el-table-column label="考勤状态" align="center" prop="baseCheckInStatus" />
+      <el-table-column label="考勤状态" align="center" prop="baseCheckInStatus">
+        <template slot-scope="scope">
+          <span>{{ scope.row.baseCheckInStatus === 0 ? "未开始" : scope.row.baseCheckInStatus === 1 ? "考勤中" : "考勤结束" }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -383,7 +387,7 @@ export default {
         case 1:
           if(this.form.checkinStudents <= 0){
             this.$modal.msgWarning("没有选择考勤的学生");
-            return;
+            break;
           }
           that.confirmStudentNames = [];
           this.form.checkinStudents.forEach(function(e) {
@@ -397,7 +401,7 @@ export default {
         case 2:
           if(this.form.checkinTeachers <= 0){
             this.$modal.msgWarning("没有选择考勤的老师");
-            return;
+            break;
           }
           that.confirmTeacherNames = [];
           this.form.checkinTeachers.forEach(function(e) {
@@ -502,7 +506,7 @@ export default {
         baseCheckInDaysOneWeek: null,
         baseCheckInSumDays: null,
         baseCheckInWeeks: null,
-        baseCheckInStatus: null,
+        baseCheckInStatus: 0,
         ajHomoInBaseCheckIns: null,
         students: null,
         teachers: null,
@@ -542,17 +546,42 @@ export default {
     handleUpdate(row) {
       //this.getStudentsAndTeachers();
       this.reset();
+      let that = this;
       const baseCheckInId = row.baseCheckInId || this.ids
       getBaseCheckin(baseCheckInId).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改考勤总表";
+        let temp = response.data;
+        temp.students = [];
+        temp.teachers = [];
+        temp.checkinStudents = [];
+        temp.checkinTeachers = [];
+        temp.baseCheckInBeginDate = new Date(temp.baseCheckInBeginDate);
+        temp.baseCheckInEndDate = new Date(temp.baseCheckInEndDate);
+        temp.ajHomoInBaseCheckIns.forEach(function(element) {
+          if (null !== element.studentId){
+            temp.students.push(element);
+            temp.checkinStudents.push(element.studentId);
+          } else {
+            temp.teachers.push(element);
+            temp.checkinTeachers.push(element.teacherId);
+          }
+        });
+        if (0 === temp.students.length){
+          temp.students = null;
+        }
+        if (0 === temp.teachers.length){
+          temp.teachers = null;
+        }
+        that.form = temp;
+        that.open = true;
+        that.title = "修改考勤总表";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.baseCheckInBeginDate = this.form.baseCheckInBeginDate.setDate(this.form.baseCheckInBeginDate.getDate());
+          this.form.baseCheckInEndDate = this.form.baseCheckInEndDate.setDate(this.form.baseCheckInEndDate.getDate());
           if (this.form.baseCheckInId != null) {
             updateBaseCheckin(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

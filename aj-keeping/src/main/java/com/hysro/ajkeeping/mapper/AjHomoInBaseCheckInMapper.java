@@ -65,6 +65,15 @@ public interface AjHomoInBaseCheckInMapper
      */
     public int deleteAjHomoInBaseCheckInById(Long id);
 
+
+    /**
+     * 依据考勤基表id删除在考勤中的老师与学生
+     *
+     * @param baseCheckInId 在考勤中的老师与学生主键
+     * @return 结果
+     */
+    public int deleteAjHomoInBaseCheckInByBaseCheckInId(Long baseCheckInId);
+
     /**
      * 批量删除在考勤中的老师与学生
      *

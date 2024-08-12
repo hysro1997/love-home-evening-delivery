@@ -9,6 +9,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 考勤总表对象 aj_base_check_in
  *
@@ -24,6 +26,7 @@ public class AjBaseCheckIn extends BaseEntity
 
     /** 考勤名称 */
     @Excel(name = "考勤名称")
+    @NotBlank
     private String baseCheckInName;
 
     /** 考勤学生的id数组 */
@@ -37,19 +40,23 @@ public class AjBaseCheckIn extends BaseEntity
     /** 考勤开始日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "考勤开始日期", width = 30, dateFormat = "yyyy-MM-dd")
+    @NotBlank
     private Date baseCheckInBeginDate;
 
     /** 考勤结束日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "考勤结束日期", width = 30, dateFormat = "yyyy-MM-dd")
+    @NotBlank
     private Date baseCheckInEndDate;
 
     /** 每周考勤天数 */
     @Excel(name = "每周考勤天数")
+    @NotBlank
     private Integer baseCheckInDaysOneWeek;
 
     /** 考勤总天数 */
     @Excel(name = "考勤总天数")
+    @NotBlank
     private Integer baseCheckInSumDays;
 
     /** 考勤周数 */

@@ -79,6 +79,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from aj_homo_in_base_check_in where id = #{id}
     </delete>
 
+    <delete id="deleteAjHomoInBaseCheckInByBaseCheckInId" parameterType="Long">
+        delete from aj_homo_in_base_check_in where base_check_in_id = #{baseCheckInId}
+    </delete>
+
     <delete id="deleteAjHomoInBaseCheckInByIds" parameterType="String">
         delete from aj_homo_in_base_check_in where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">

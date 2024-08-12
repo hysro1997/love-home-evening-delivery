@@ -1,5 +1,6 @@
 package com.hysro.ajkeeping.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.hysro.ajkeeping.domain.AjHomoInBaseCheckIn;
@@ -88,21 +89,9 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     @Transactional(rollbackFor = Exception.class)
     public int insertAjBaseCheckIn(AjBaseCheckIn ajBaseCheckIn)
     {
+        this.calculateCheckInStatus(ajBaseCheckIn);
         ajBaseCheckInMapper.insertAjBaseCheckIn(ajBaseCheckIn);
-        AjHomoInBaseCheckIn ajHomoInBaseCheckIn = new AjHomoInBaseCheckIn();
-        ajHomoInBaseCheckIn.setBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
-        if (0 < ajBaseCheckIn.getCheckinStudents().length){
-            for(Long id : ajBaseCheckIn.getCheckinStudents()){
-                ajHomoInBaseCheckIn.setStudentId(id);
-                ajHomoInBaseCheckInMapper.insertAjHomoInBaseCheckInStudents(ajHomoInBaseCheckIn);
-            }
-        }
-        if (0 < ajBaseCheckIn.getCheckinTeachers().length){
-            for(Long id : ajBaseCheckIn.getCheckinTeachers()){
-                ajHomoInBaseCheckIn.setTeacherId(id);
-                ajHomoInBaseCheckInMapper.insertAjHomoInBaseCheckInTeachers(ajHomoInBaseCheckIn);
-            }
-        }
+        this.insertBaseHomoTeachersAndStudents(ajBaseCheckIn);
         return 1;
     }
 
@@ -113,9 +102,14 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateAjBaseCheckIn(AjBaseCheckIn ajBaseCheckIn)
     {
-        return ajBaseCheckInMapper.updateAjBaseCheckIn(ajBaseCheckIn);
+        this.calculateCheckInStatus(ajBaseCheckIn);
+        ajBaseCheckInMapper.updateAjBaseCheckIn(ajBaseCheckIn);
+        ajHomoInBaseCheckInMapper.deleteAjHomoInBaseCheckInByBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
+        this.insertBaseHomoTeachersAndStudents(ajBaseCheckIn);
+        return 1;
     }
 
     /**
@@ -140,5 +134,43 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     public int deleteAjBaseCheckInByBaseCheckInId(Long baseCheckInId)
     {
         return ajBaseCheckInMapper.deleteAjBaseCheckInByBaseCheckInId(baseCheckInId);
+    }
+
+    /**
+     * 计算考勤状态
+     *
+     * @param ajBaseCheckIn 考勤总表
+     */
+    private void calculateCheckInStatus(AjBaseCheckIn ajBaseCheckIn){
+        Date nowDate = new Date();
+        if (nowDate.before(ajBaseCheckIn.getBaseCheckInBeginDate())){
+            ajBaseCheckIn.setBaseCheckInStatus(0);
+        } else if (nowDate.after(ajBaseCheckIn.getBaseCheckInEndDate())){
+            ajBaseCheckIn.setBaseCheckInStatus(2);
+        } else {
+            ajBaseCheckIn.setBaseCheckInStatus(1);
+        }
+    }
+
+    /**
+     * 把考勤的教师和学生存入homo考勤表
+     *
+     * @param ajBaseCheckIn 考勤总表
+     */
+    private void insertBaseHomoTeachersAndStudents(AjBaseCheckIn ajBaseCheckIn){
+        AjHomoInBaseCheckIn ajHomoInBaseCheckIn = new AjHomoInBaseCheckIn();
+        ajHomoInBaseCheckIn.setBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
+        if (0 < ajBaseCheckIn.getCheckinStudents().length){
+            for(Long id : ajBaseCheckIn.getCheckinStudents()){
+                ajHomoInBaseCheckIn.setStudentId(id);
+                ajHomoInBaseCheckInMapper.insertAjHomoInBaseCheckInStudents(ajHomoInBaseCheckIn);
+            }
+        }
+        if (0 < ajBaseCheckIn.getCheckinTeachers().length){
+            for(Long id : ajBaseCheckIn.getCheckinTeachers()){
+                ajHomoInBaseCheckIn.setTeacherId(id);
+                ajHomoInBaseCheckInMapper.insertAjHomoInBaseCheckInTeachers(ajHomoInBaseCheckIn);
+            }
+        }
     }
 }
