@@ -70,8 +70,30 @@ public class AjBaseCheckIn extends BaseEntity
     private Long[] checkinStudents;
 
     private Long[] checkinTeachers;
+
+    @NotBlank
+    private int[] baseCheckWeekenDay;
+
+    private String baseCheckWeekenDayString;
+
     /** 参与考勤的列表 */
     private List<AjHomoInBaseCheckIn> ajHomoInBaseCheckIns;
+
+    public String getBaseCheckWeekenDayString() {
+        return baseCheckWeekenDayString;
+    }
+
+    public void setBaseCheckWeekenDayString(String baseCheckWeekenDayString) {
+        this.baseCheckWeekenDayString = baseCheckWeekenDayString;
+    }
+
+    public int[] getBaseCheckWeekenDay() {
+        return baseCheckWeekenDay;
+    }
+
+    public void setBaseCheckWeekenDay(int[] baseCheckWeekenDay) {
+        this.baseCheckWeekenDay = baseCheckWeekenDay;
+    }
 
     public Long[] getCheckinStudents() {
         return checkinStudents;

@@ -5,15 +5,15 @@ import com.hysro.ajkeeping.domain.AjStudentCheckIn;
 
 /**
  * 学生考勤Mapper接口
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
-public interface AjStudentCheckInMapper 
+public interface AjStudentCheckInMapper
 {
     /**
      * 查询学生考勤
-     * 
+     *
      * @param studentCheckInId 学生考勤主键
      * @return 学生考勤
      */
@@ -21,7 +21,7 @@ public interface AjStudentCheckInMapper
 
     /**
      * 查询学生考勤列表
-     * 
+     *
      * @param ajStudentCheckIn 学生考勤
      * @return 学生考勤集合
      */
@@ -29,7 +29,7 @@ public interface AjStudentCheckInMapper
 
     /**
      * 新增学生考勤
-     * 
+     *
      * @param ajStudentCheckIn 学生考勤
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface AjStudentCheckInMapper
 
     /**
      * 修改学生考勤
-     * 
+     *
      * @param ajStudentCheckIn 学生考勤
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface AjStudentCheckInMapper
 
     /**
      * 删除学生考勤
-     * 
+     *
      * @param studentCheckInId 学生考勤主键
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface AjStudentCheckInMapper
 
     /**
      * 批量删除学生考勤
-     * 
+     *
      * @param studentCheckInIds 需要删除的数据主键集合
      * @return 结果
      */

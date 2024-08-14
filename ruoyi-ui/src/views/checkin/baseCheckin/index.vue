@@ -207,7 +207,7 @@
               </el-col>
             </el-row>
           </div>
-          <el-row v-show="form.baseCheckInBeginDate && form.baseCheckInEndDate">
+          <el-row v-show="baseCheckWeekenDay.length > 0">
             <el-col :span="10">
               <el-form-item label="每周考勤天数" prop="baseCheckInDaysOneWeek">
                 <el-input @input="form.baseCheckInDaysOneWeek = form.baseCheckInDaysOneWeek.replace(/[^\d]/g,'')" style="width: 120px" :disabled="disableBaseCheckInDaysOneWeek" v-model="form.baseCheckInDaysOneWeek" /><el-button type="text" @click="disableBaseCheckInDaysOneWeek=!disableBaseCheckInDaysOneWeek">手动修改天数</el-button>
@@ -250,7 +250,17 @@
             <el-descriptions-item label="考勤名称" :span="4">{{form.baseCheckInName}}</el-descriptions-item>
             <el-descriptions-item label="开始日期" :span="1">{{confirmBeginDate}}</el-descriptions-item>
             <el-descriptions-item label="结束日期" :span="1">{{confirmEndDate}}</el-descriptions-item>
-            <el-descriptions-item label="每周考勤天数" :span="1">{{form.baseCheckInDaysOneWeek}}</el-descriptions-item>
+            <el-descriptions-item label="每周考勤天数" :span="1">
+              <el-checkbox-group v-model="form.baseCheckWeekenDay" disabled>
+                <el-checkbox :label="1">星期一</el-checkbox>
+                <el-checkbox :label="2">星期二</el-checkbox>
+                <el-checkbox :label="3">星期三</el-checkbox>
+                <el-checkbox :label="4">星期四</el-checkbox>
+                <el-checkbox :label="5">星期五</el-checkbox>
+                <el-checkbox :label="6">星期六</el-checkbox>
+                <el-checkbox :label="0">星期日</el-checkbox>
+              </el-checkbox-group>
+            </el-descriptions-item>
             <el-descriptions-item label="考勤总天数" :span="1">{{form.baseCheckInSumDays}}</el-descriptions-item>
             <el-descriptions-item label="考勤学生" :span="2">
               <el-tag effect="light" style="margin-right:5px" v-for="item in confirmStudentNames">{{item}}&nbsp;</el-tag>
@@ -312,7 +322,7 @@ export default {
         baseCheckInSumDays: null,
         baseCheckInWeeks: null,
         baseCheckInStatus: null,
-        ajHomoInBaseCheckIns: null,
+        ajHomoInBaseCheckIns: null
       },
       // 表单参数
       form: {},
@@ -341,6 +351,9 @@ export default {
       handler() {
         if (this.baseCheckWeekenDay.length !== 0){
           this.calculateCheckInInfo();
+        } else {
+          this.form.baseCheckInDaysOneWeek = null;
+          this.form.baseCheckInSumDays = null;
         }
       }
     }
@@ -367,10 +380,22 @@ export default {
             return;
           }
           if(!this.form.baseCheckInEndDate){
-            this.$modal.msgWarning("没有输入考勤结束日期");
+            this.$modal.msgWarning("没有选择考勤结束日期");
             this.form.baseCheckInDaysOneWeek = null;
             this.form.baseCheckInSumDays = null;
             this.baseCheckWeekenDay = [];
+            return;
+          }
+          if (this.form.baseCheckInEndDate < this.form.baseCheckInBeginDate) {
+            this.$modal.msgWarning("结束日期比开始日期更早");
+            return;
+          }
+          if(!this.baseCheckWeekenDay || this.baseCheckWeekenDay.length === 0){
+            this.$modal.msgWarning("没有选择考勤天");
+            return;
+          }
+          if(!this.form.baseCheckInDaysOneWeek){
+            this.$modal.msgWarning("没有生成或输入每周考勤天数");
             return;
           }
           if(!this.form.baseCheckInDaysOneWeek){
@@ -447,6 +472,7 @@ export default {
                 startWeekDay.setDate(startWeekDay.getDate() + 1);
               }
             this.form.baseCheckInSumDays = sumDays;
+            this.form.baseCheckWeekenDay = this.baseCheckWeekenDay;
           } else {
             this.$modal.msgWarning("没有设置每周考勤天数");
             this.form.baseCheckInSumDays = null;
@@ -511,7 +537,8 @@ export default {
         students: null,
         teachers: null,
         checkinStudents: [],
-        checkinTeachers: []
+        checkinTeachers: [],
+        baseCheckWeekenDay: [],
       };
       this.confirmStudentNames = [];
       this.confirmTeacherNames = [];
@@ -554,6 +581,7 @@ export default {
         temp.teachers = [];
         temp.checkinStudents = [];
         temp.checkinTeachers = [];
+        that.baseCheckWeekenDay = temp.baseCheckWeekenDay;
         temp.baseCheckInBeginDate = new Date(temp.baseCheckInBeginDate);
         temp.baseCheckInEndDate = new Date(temp.baseCheckInEndDate);
         temp.ajHomoInBaseCheckIns.forEach(function(element) {

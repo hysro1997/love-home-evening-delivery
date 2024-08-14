@@ -180,6 +180,7 @@
     <orderEntry type="library" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-test:5.3.33" level="project" />
     <orderEntry type="library" name="Maven: org.xmlunit:xmlunit-core:2.8.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:24.0.1" level="project" />
     <orderEntry type="module" module-name="ruoyi-generator" />
     <orderEntry type="library" name="Maven: org.apache.velocity:velocity-engine-core:2.3" level="project" />
   </component>

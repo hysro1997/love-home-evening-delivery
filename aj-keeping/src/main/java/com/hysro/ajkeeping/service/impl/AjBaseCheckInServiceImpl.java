@@ -1,18 +1,14 @@
 package com.hysro.ajkeeping.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import com.hysro.ajkeeping.domain.AjHomoInBaseCheckIn;
-import com.hysro.ajkeeping.domain.AjStudentInfo;
-import com.hysro.ajkeeping.domain.AjTeacherInfo;
-import com.hysro.ajkeeping.mapper.AjHomoInBaseCheckInMapper;
-import com.hysro.ajkeeping.mapper.AjStudentInfoMapper;
-import com.hysro.ajkeeping.mapper.AjTeacherInfoMapper;
+import com.hysro.ajkeeping.domain.*;
+import com.hysro.ajkeeping.mapper.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.hysro.ajkeeping.mapper.AjBaseCheckInMapper;
-import com.hysro.ajkeeping.domain.AjBaseCheckIn;
 import com.hysro.ajkeeping.service.IAjBaseCheckInService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +50,7 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     {
         AjBaseCheckIn ajBaseCheckIn = ajBaseCheckInMapper.selectAjBaseCheckInByBaseCheckInId(baseCheckInId);
         this.selectBaseHomoStudentsAndTeachers(baseCheckInId,ajBaseCheckIn);
+        this.setWeekendayStringToArray(ajBaseCheckIn);
         return ajBaseCheckIn;
     }
 
@@ -73,7 +70,20 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
         return ajBaseCheckIns;
     }
 
-    public void selectBaseHomoStudentsAndTeachers(Long baseCheckInId, AjBaseCheckIn ajBaseCheckIn){
+    private void setWeekendayStringToArray(@NotNull AjBaseCheckIn ajBaseCheckIn){
+        if (null != ajBaseCheckIn.getBaseCheckWeekenDayString() && 0 < ajBaseCheckIn.getBaseCheckWeekenDayString().length()){
+            String stringTeamp = ajBaseCheckIn.getBaseCheckWeekenDayString().replace("[","");
+            stringTeamp = stringTeamp.replace("]","");
+            String[] temp = stringTeamp.split(",");
+            int[] intTempArray = new int[temp.length];
+            for (int i = 0; i < temp.length; i++){
+                intTempArray[i] = Integer.parseInt(temp[i].trim());
+            }
+            ajBaseCheckIn.setBaseCheckWeekenDay(intTempArray);
+        }
+    }
+
+    public void selectBaseHomoStudentsAndTeachers(Long baseCheckInId, @NotNull AjBaseCheckIn ajBaseCheckIn){
         AjHomoInBaseCheckIn ajHomoInBaseCheckIn = new AjHomoInBaseCheckIn();
         ajHomoInBaseCheckIn.setBaseCheckInId(baseCheckInId);
         ajBaseCheckIn.setAjHomoInBaseCheckIns(ajHomoInBaseCheckInMapper.selectAjHomoInBaseCheckInList(ajHomoInBaseCheckIn));
@@ -90,6 +100,7 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     public int insertAjBaseCheckIn(AjBaseCheckIn ajBaseCheckIn)
     {
         this.calculateCheckInStatus(ajBaseCheckIn);
+        ajBaseCheckIn.setBaseCheckWeekenDayString(Arrays.toString(ajBaseCheckIn.getBaseCheckWeekenDay()));
         ajBaseCheckInMapper.insertAjBaseCheckIn(ajBaseCheckIn);
         this.insertBaseHomoTeachersAndStudents(ajBaseCheckIn);
         return 1;
@@ -106,6 +117,7 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     public int updateAjBaseCheckIn(AjBaseCheckIn ajBaseCheckIn)
     {
         this.calculateCheckInStatus(ajBaseCheckIn);
+        ajBaseCheckIn.setBaseCheckWeekenDayString(Arrays.toString(ajBaseCheckIn.getBaseCheckWeekenDay()));
         ajBaseCheckInMapper.updateAjBaseCheckIn(ajBaseCheckIn);
         ajHomoInBaseCheckInMapper.deleteAjHomoInBaseCheckInByBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
         this.insertBaseHomoTeachersAndStudents(ajBaseCheckIn);

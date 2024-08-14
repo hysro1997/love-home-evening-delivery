@@ -5,15 +5,15 @@ import com.hysro.ajkeeping.domain.AjBaseCheckIn;
 
 /**
  * 考勤总表Mapper接口
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
-public interface AjBaseCheckInMapper 
+public interface AjBaseCheckInMapper
 {
     /**
      * 查询考勤总表
-     * 
+     *
      * @param baseCheckInId 考勤总表主键
      * @return 考勤总表
      */
@@ -21,7 +21,7 @@ public interface AjBaseCheckInMapper
 
     /**
      * 查询考勤总表列表
-     * 
+     *
      * @param ajBaseCheckIn 考勤总表
      * @return 考勤总表集合
      */
@@ -29,7 +29,7 @@ public interface AjBaseCheckInMapper
 
     /**
      * 新增考勤总表
-     * 
+     *
      * @param ajBaseCheckIn 考勤总表
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface AjBaseCheckInMapper
 
     /**
      * 修改考勤总表
-     * 
+     *
      * @param ajBaseCheckIn 考勤总表
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface AjBaseCheckInMapper
 
     /**
      * 删除考勤总表
-     * 
+     *
      * @param baseCheckInId 考勤总表主键
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface AjBaseCheckInMapper
 
     /**
      * 批量删除考勤总表
-     * 
+     *
      * @param baseCheckInIds 需要删除的数据主键集合
      * @return 结果
      */

@@ -2,6 +2,7 @@ package com.hysro.ajkeeping.mapper;
 
 import java.util.List;
 import com.hysro.ajkeeping.domain.AjHomoInBaseCheckIn;
+import com.hysro.ajkeeping.domain.AjStudentCheckIn;
 
 /**
  * 在考勤中的老师与学生Mapper接口
@@ -26,6 +27,14 @@ public interface AjHomoInBaseCheckInMapper
      * @return 在考勤中的老师与学生集合
      */
     public List<AjHomoInBaseCheckIn> selectAjHomoInBaseCheckInList(AjHomoInBaseCheckIn ajHomoInBaseCheckIn);
+
+    /**
+     * 查询在考勤总表中的学生列表
+     *
+     * @param baseCheckInId 考勤总表id
+     * @return 在考勤中的学生集合
+     */
+    public List<AjStudentCheckIn> selectAjStudentCheckInListByBaseCheckInId(Long baseCheckInId);
 
     /**
      * 新增在考勤中的老师与学生

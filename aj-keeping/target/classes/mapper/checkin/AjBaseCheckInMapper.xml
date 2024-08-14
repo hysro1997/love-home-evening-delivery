@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="baseCheckInSumDays"    column="base_check_in_sum_days"    />
         <result property="baseCheckInWeeks"    column="base_check_in_weeks"    />
         <result property="baseCheckInStatus"    column="base_check_in_status"    />
+        <result property="baseCheckWeekenDayString"    column="base_check_weeken_day_string"    />
     </resultMap>
 
     <sql id="selectAjBaseCheckInVo">
-        select base_check_in_id, base_check_in_name, base_check_in_students, base_check_in_teachers, base_check_in_begin_date, base_check_in_end_date, base_check_in_days_one_week, base_check_in_sum_days, base_check_in_weeks, base_check_in_status from aj_base_check_in
+        select base_check_in_id, base_check_in_name, base_check_in_students, base_check_in_teachers, base_check_in_begin_date, base_check_in_end_date, base_check_in_days_one_week, base_check_in_sum_days, base_check_in_weeks, base_check_in_status, base_check_weeken_day_string from aj_base_check_in
     </sql>
 
     <select id="selectAjBaseCheckInList" parameterType="AjBaseCheckIn" resultMap="AjBaseCheckInResult">
@@ -33,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="baseCheckInSumDays != null "> and base_check_in_sum_days = #{baseCheckInSumDays}</if>
             <if test="baseCheckInWeeks != null "> and base_check_in_weeks = #{baseCheckInWeeks}</if>
             <if test="baseCheckInStatus != null "> and base_check_in_status = #{baseCheckInStatus}</if>
+            <if test="baseCheckWeekenDayString != null "> and base_check_weeken_day_string = #{baseCheckWeekenDayString}</if>
         </where>
         ORDER BY base_check_in_id DESC
     </select>
@@ -54,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="baseCheckInSumDays != null">base_check_in_sum_days,</if>
             <if test="baseCheckInWeeks != null">base_check_in_weeks,</if>
             <if test="baseCheckInStatus != null">base_check_in_status,</if>
+            <if test="baseCheckWeekenDayString != null">base_check_weeken_day_string,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="baseCheckInName != null">#{baseCheckInName},</if>
@@ -65,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="baseCheckInSumDays != null">#{baseCheckInSumDays},</if>
             <if test="baseCheckInWeeks != null">#{baseCheckInWeeks},</if>
             <if test="baseCheckInStatus != null">#{baseCheckInStatus},</if>
+            <if test="baseCheckWeekenDayString != null">#{baseCheckWeekenDayString},</if>
          </trim>
     </insert>
 
@@ -80,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="baseCheckInSumDays != null">base_check_in_sum_days = #{baseCheckInSumDays},</if>
             <if test="baseCheckInWeeks != null">base_check_in_weeks = #{baseCheckInWeeks},</if>
             <if test="baseCheckInStatus != null">base_check_in_status = #{baseCheckInStatus},</if>
+            <if test="baseCheckWeekenDayString != null">base_check_weeken_day_string = #{baseCheckWeekenDayString},</if>
         </trim>
         where base_check_in_id = #{baseCheckInId}
     </update>

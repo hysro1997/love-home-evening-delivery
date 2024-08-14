@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjStudentCheckInMapper">
-    
+
     <resultMap type="AjStudentCheckIn" id="AjStudentCheckInResult">
         <result property="studentCheckInId"    column="student_check_in_id"    />
         <result property="studentId"    column="student_id"    />
@@ -21,17 +21,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAjStudentCheckInList" parameterType="AjStudentCheckIn" resultMap="AjStudentCheckInResult">
         <include refid="selectAjStudentCheckInVo"/>
-        <where>  
+        <where>
             <if test="studentId != null "> and student_id = #{studentId}</if>
             <if test="baseCheckInId != null "> and base_check_in_id = #{baseCheckInId}</if>
             <if test="checkInStudentName != null  and checkInStudentName != ''"> and check_in_student_name like concat('%', #{checkInStudentName}, '%')</if>
             <if test="checkInStudentGrade != null  and checkInStudentGrade != ''"> and check_in_student_grade = #{checkInStudentGrade}</if>
-            <if test="checkInDate != null "> and check_in_date = #{checkInDate}</if>
+            <if test="checkInDate != null "> and DATE(check_in_date) = #{checkInDate}</if>
             <if test="checkInStatus != null "> and check_in_status = #{checkInStatus}</if>
             <if test="checkInDatetime != null "> and check_in_datetime = #{checkInDatetime}</if>
         </where>
     </select>
-    
+
     <select id="selectAjStudentCheckInByStudentCheckInId" parameterType="Long" resultMap="AjStudentCheckInResult">
         <include refid="selectAjStudentCheckInVo"/>
         where student_check_in_id = #{studentCheckInId}
@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjStudentCheckInByStudentCheckInIds" parameterType="String">
-        delete from aj_student_check_in where student_check_in_id in 
+        delete from aj_student_check_in where student_check_in_id in
         <foreach item="studentCheckInId" collection="array" open="(" separator="," close=")">
             #{studentCheckInId}
         </foreach>
