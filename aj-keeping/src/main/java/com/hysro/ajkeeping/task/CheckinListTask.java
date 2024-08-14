@@ -73,6 +73,14 @@ public class CheckinListTask {
         }
         AjTeacherInfo ajTeacherInfo = new AjTeacherInfo();
         ajTeacherInfo.setTeacherStatus(0);
+        AjTeacherCheckIn ajTeacherCheckIn = new AjTeacherCheckIn();
+        ajTeacherCheckIn.setCheckInDate(today);
+        List<AjTeacherCheckIn> teacherCheckInList = ajTeacherCheckInMapper.selectAjTeacherCheckInList(ajTeacherCheckIn);
+        if (teacherCheckInList.size() > 0){
+            for (AjTeacherCheckIn ajTeacherCheckIn1 : teacherCheckInList){
+                ajTeacherCheckInMapper.deleteAjTeacherCheckInByTeacherCheckInId(ajTeacherCheckIn1.getTeacherCheckInId());
+            }
+        }
         List<AjTeacherInfo> ajTeacherInfoList = ajTeacherInfoMapper.selectAjTeacherInfoList(ajTeacherInfo);
         for (AjTeacherInfo teacherInfo : ajTeacherInfoList){
             AjTeacherCheckIn teacherCheckIn = new AjTeacherCheckIn();
