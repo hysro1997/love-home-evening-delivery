@@ -2,6 +2,8 @@ package com.hysro.ajkeeping.task;
 
 import com.hysro.ajkeeping.domain.AjBaseCheckIn;
 import com.hysro.ajkeeping.domain.AjStudentCheckIn;
+import com.hysro.ajkeeping.domain.AjTeacherCheckIn;
+import com.hysro.ajkeeping.domain.AjTeacherInfo;
 import com.hysro.ajkeeping.mapper.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,10 @@ public class CheckinListTask {
     private AjHomoInBaseCheckInMapper ajHomoInBaseCheckInMapper;
     @Autowired
     private AjStudentCheckInMapper ajStudentCheckInMapper;
+    @Autowired
+    private AjTeacherInfoMapper ajTeacherInfoMapper;
+    @Autowired
+    private AjTeacherCheckInMapper ajTeacherCheckInMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public void selectTodayStudentsAndTeachersCheckin(){
@@ -65,6 +71,17 @@ public class CheckinListTask {
                 }
             }
         }
+        AjTeacherInfo ajTeacherInfo = new AjTeacherInfo();
+        ajTeacherInfo.setTeacherStatus(0);
+        List<AjTeacherInfo> ajTeacherInfoList = ajTeacherInfoMapper.selectAjTeacherInfoList(ajTeacherInfo);
+        for (AjTeacherInfo teacherInfo : ajTeacherInfoList){
+            AjTeacherCheckIn teacherCheckIn = new AjTeacherCheckIn();
+            teacherCheckIn.setCheckInDate(today);
+            teacherCheckIn.setTeacherId(teacherInfo.getTeacherId());
+            teacherCheckIn.setTeacherName(teacherInfo.getTeacherName());
+            ajTeacherCheckInMapper.insertAjTeacherCheckIn(teacherCheckIn);
+        }
+
     }
     private void setWeekendayStringToArray(@NotNull AjBaseCheckIn ajBaseCheckIn){
         if (null != ajBaseCheckIn.getBaseCheckWeekenDayString() && 0 < ajBaseCheckIn.getBaseCheckWeekenDayString().length()){

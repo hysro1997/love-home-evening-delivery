@@ -152,7 +152,6 @@
         <el-steps :active="active" finish-status="success">
           <el-step title="考勤时间"></el-step>
           <el-step title="学生考勤名单"></el-step>
-          <el-step title="教师考勤名单"></el-step>
           <el-step title="确认考勤"></el-step>
         </el-steps>
         <div v-show="0 === active">
@@ -233,7 +232,7 @@
             </el-transfer>
           </el-form-item>
         </div>
-        <div v-show="2 === active">
+        <!-- div v-show="2 === active">
           <el-form-item label="考勤教师" prop="baseCheckInTeachers">
             <el-transfer
               style="text-align: left; display: inline-block"
@@ -244,13 +243,14 @@
               :props="{key:'teacherId',label:'teacherName',disabled:false}">
             </el-transfer>
           </el-form-item>
-        </div>
-        <div v-show="3 === active">
+        </div -->
+        <div v-show="2 === active">
           <el-descriptions title="考勤信息确认列表" direction="vertical" :column="4" border>
-            <el-descriptions-item label="考勤名称" :span="4">{{form.baseCheckInName}}</el-descriptions-item>
+            <el-descriptions-item label="考勤名称" :span="2">{{form.baseCheckInName}}</el-descriptions-item>
+            <el-descriptions-item label="考勤总天数" :span="2">{{form.baseCheckInSumDays}}</el-descriptions-item>
             <el-descriptions-item label="开始日期" :span="1">{{confirmBeginDate}}</el-descriptions-item>
             <el-descriptions-item label="结束日期" :span="1">{{confirmEndDate}}</el-descriptions-item>
-            <el-descriptions-item label="每周考勤天数" :span="1">
+            <el-descriptions-item label="每周考勤天数" :span="2">
               <el-checkbox-group v-model="form.baseCheckWeekenDay" disabled>
                 <el-checkbox :label="1">星期一</el-checkbox>
                 <el-checkbox :label="2">星期二</el-checkbox>
@@ -261,13 +261,13 @@
                 <el-checkbox :label="0">星期日</el-checkbox>
               </el-checkbox-group>
             </el-descriptions-item>
-            <el-descriptions-item label="考勤总天数" :span="1">{{form.baseCheckInSumDays}}</el-descriptions-item>
             <el-descriptions-item label="考勤学生" :span="2">
               <el-tag effect="light" style="margin-right:5px" v-for="item in confirmStudentNames">{{item}}&nbsp;</el-tag>
             </el-descriptions-item>
-            <el-descriptions-item label="考勤老师" :span="2">
+
+            <!-- el-descriptions-item label="考勤老师" :span="2">
               <el-tag effect="plain" style="margin-right:5px" v-for="item in confirmTeacherNames">{{item}}&nbsp;</el-tag>
-            </el-descriptions-item>
+            </el-descriptions-item -->
           </el-descriptions>
         </div>
         <!-- el-form-item label="考勤周数" prop="baseCheckInWeeks">
@@ -275,9 +275,9 @@
         </el-form-item -->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button style="margin-top: 12px;" @click="previous" v-show="1 === active || 2 === active || 3 === active">上一步</el-button>
-        <el-button style="margin-top: 12px;" @click="next" v-show="0 === active || 1 === active || 2 === active">下一步</el-button>
-        <el-button type="primary" @click="submitForm" v-show="3 === active">确 定</el-button>
+        <el-button style="margin-top: 12px;" @click="previous" v-show="1 === active || 2 === active">上一步</el-button>
+        <el-button style="margin-top: 12px;" @click="next" v-show="0 === active || 1 === active">下一步</el-button>
+        <el-button type="primary" @click="submitForm" v-show="2 === active">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -423,11 +423,12 @@ export default {
             });
           });
           break;
-        case 2:
-          if(this.form.checkinTeachers <= 0){
+          /** case 2:
+           if(this.form.checkinTeachers <= 0){
             this.$modal.msgWarning("没有选择考勤的老师");
             break;
           }
+
           that.confirmTeacherNames = [];
           this.form.checkinTeachers.forEach(function(e) {
             that.teachersInSchool.forEach(function(a){
@@ -437,6 +438,7 @@ export default {
             });
           });
           break;
+           */
         default:
           break;
       }
@@ -640,7 +642,7 @@ export default {
     handleExport() {
       this.download('checkin/baseCheckin/export', {
         ...this.queryParams
-      }, `baseCheckin_${new Date().getTime()}.xlsx`)
+      }, `考勤总表_${new Date().getTime()}.xlsx`)
     }
   }
 };
