@@ -106,7 +106,7 @@
       <el-table-column label="考勤状态" align="center" prop="checkInStatus" />
       <el-table-column label="签到时间" align="center" prop="checkInDatetime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.checkInDatetime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.checkInDatetime, '{h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="当日值班次数" align="center" prop="checkInDayOnDutyTimes" />
@@ -129,7 +129,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

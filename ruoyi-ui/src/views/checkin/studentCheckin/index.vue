@@ -113,10 +113,14 @@
           <span>{{ parseTime(scope.row.checkInDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="签到状态" align="center" prop="checkInStatus" />
+      <el-table-column label="签到状态" align="center" prop="checkInStatus">
+        <template slot-scope="scope">
+          <span>{{ scope.row.checkInStatus === 0 ? "未到" : scope.row.checkInStatus === 1 ? "签到" : scope.row.checkInStatus === 2 ? "请假" : "" }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="签到时间" align="center" prop="checkInDatetime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.checkInDatetime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.checkInDatetime, '{h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -138,7 +142,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
