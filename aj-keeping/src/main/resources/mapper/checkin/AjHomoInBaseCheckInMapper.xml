@@ -28,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
             <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
         </where>
+        order by id desc
     </select>
 
     <select id="selectAjHomoInBaseCheckInById" parameterType="Long" resultMap="AjHomoInBaseCheckInResult">

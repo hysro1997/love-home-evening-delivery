@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjSalaryBillMapper">
-    
+
     <resultMap type="AjSalaryBill" id="AjSalaryBillResult">
         <result property="id"    column="id"    />
         <result property="teacherId"    column="teacher_id"    />
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAjSalaryBillList" parameterType="AjSalaryBill" resultMap="AjSalaryBillResult">
         <include refid="selectAjSalaryBillVo"/>
-        <where>  
+        <where>
             <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
             <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
             <if test="teacherCheckInStatistciId != null "> and teacher_check_in_statistci_id = #{teacherCheckInStatistciId}</if>
@@ -46,8 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deduckMoney != null "> and deduck_money = #{deduckMoney}</if>
             <if test="acutalSalary != null "> and acutal_salary = #{acutalSalary}</if>
         </where>
+        order by id desc
     </select>
-    
+
     <select id="selectAjSalaryBillById" parameterType="Long" resultMap="AjSalaryBillResult">
         <include refid="selectAjSalaryBillVo"/>
         where id = #{id}
@@ -118,7 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjSalaryBillByIds" parameterType="String">
-        delete from aj_salary_bill where id in 
+        delete from aj_salary_bill where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

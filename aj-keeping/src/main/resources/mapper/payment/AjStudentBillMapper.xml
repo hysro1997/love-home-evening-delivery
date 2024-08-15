@@ -62,6 +62,7 @@
             <if test="billMode != null "> and bill_mode = #{billMode}</if>
             <if test="billEvidence != null  and billEvidence != ''"> and bill_evidence = #{billEvidence}</if>
         </where>
+        order by id desc
     </select>
 
     <select id="selectAjStudentBillById" parameterType="Long" resultMap="AjStudentBillResult">

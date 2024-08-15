@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjAdvenceFeeMapper">
-    
+
     <resultMap type="AjAdvenceFee" id="AjAdvenceFeeResult">
         <result property="id"    column="id"    />
         <result property="studentId"    column="student_id"    />
@@ -19,15 +19,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAjAdvenceFeeList" parameterType="AjAdvenceFee" resultMap="AjAdvenceFeeResult">
         <include refid="selectAjAdvenceFeeVo"/>
-        <where>  
+        <where>
             <if test="studentId != null "> and student_id = #{studentId}</if>
             <if test="baseCheckInId != null "> and base_check_in_id = #{baseCheckInId}</if>
             <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
             <if test="advanceFee != null "> and advance_fee = #{advanceFee}</if>
             <if test="verifyAdvanceFee != null "> and verify_advance_fee = #{verifyAdvanceFee}</if>
         </where>
+        order by id desc
     </select>
-    
+
     <select id="selectAjAdvenceFeeById" parameterType="Long" resultMap="AjAdvenceFeeResult">
         <include refid="selectAjAdvenceFeeVo"/>
         where id = #{id}
@@ -68,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjAdvenceFeeByIds" parameterType="String">
-        delete from aj_advence_fee where id in 
+        delete from aj_advence_fee where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

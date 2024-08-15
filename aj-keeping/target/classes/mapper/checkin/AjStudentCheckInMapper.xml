@@ -30,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="checkInStatus != null "> and check_in_status = #{checkInStatus}</if>
             <if test="checkInDatetime != null "> and check_in_datetime = #{checkInDatetime}</if>
         </where>
+        order by student_check_in_id desc
     </select>
 
     <select id="selectAjStudentCheckInByStudentCheckInId" parameterType="Long" resultMap="AjStudentCheckInResult">

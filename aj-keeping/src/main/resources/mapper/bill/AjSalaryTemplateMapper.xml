@@ -36,6 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="salaryAllDuty != null "> and salary_all_duty = #{salaryAllDuty}</if>
             <if test="salaryEmployType != null "> and salary_employ_type = #{salaryEmployType}</if>
         </where>
+        order by salary_id DESC
     </select>
 
     <select id="selectAjSalaryTemplateBySalaryId" parameterType="Long" resultMap="AjSalaryTemplateResult">

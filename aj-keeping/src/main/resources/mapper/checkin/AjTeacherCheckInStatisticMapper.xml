@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hysro.ajkeeping.mapper.AjTeacherCheckInStatisticMapper">
-    
+
     <resultMap type="AjTeacherCheckInStatistic" id="AjTeacherCheckInStatisticResult">
         <result property="id"    column="id"    />
         <result property="baseCheckInId"    column="base_check_in_id"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAjTeacherCheckInStatisticList" parameterType="AjTeacherCheckInStatistic" resultMap="AjTeacherCheckInStatisticResult">
         <include refid="selectAjTeacherCheckInStatisticVo"/>
-        <where>  
+        <where>
             <if test="baseCheckInId != null "> and base_check_in_id = #{baseCheckInId}</if>
             <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
             <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
@@ -38,8 +38,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="billStatus != null "> and bill_status = #{billStatus}</if>
             <if test="paymentStatus != null "> and payment_status = #{paymentStatus}</if>
         </where>
+        order by id desc
     </select>
-    
+
     <select id="selectAjTeacherCheckInStatisticById" parameterType="Long" resultMap="AjTeacherCheckInStatisticResult">
         <include refid="selectAjTeacherCheckInStatisticVo"/>
         where id = #{id}
@@ -98,7 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAjTeacherCheckInStatisticByIds" parameterType="String">
-        delete from aj_teacher_check_in_statistic where id in 
+        delete from aj_teacher_check_in_statistic where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="costUseGrade != null  and costUseGrade != ''"> and cost_use_grade = #{costUseGrade}</if>
             <if test="costDefault != null "> and cost_default = #{costDefault}</if>
         </where>
+        order by cost_template_id DESC
     </select>
 
     <select id="selectAjCostTemplateByCostTemplateId" parameterType="Long" resultMap="AjCostTemplateResult">

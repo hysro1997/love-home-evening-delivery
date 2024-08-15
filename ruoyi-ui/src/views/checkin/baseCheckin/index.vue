@@ -147,7 +147,7 @@
     />
 
     <!-- 添加或修改考勤总表对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="1000px" :closeOnClickModal="false" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-steps :active="active" finish-status="success">
           <el-step title="考勤时间"></el-step>
@@ -275,8 +275,8 @@
         </el-form-item -->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button style="margin-top: 12px;" @click="previous" v-show="1 === active || 2 === active">上一步</el-button>
-        <el-button style="margin-top: 12px;" @click="next" v-show="0 === active || 1 === active">下一步</el-button>
+        <el-button style="margin-top: 12px;" icon="el-icon-arrow-left" @click="previous" v-show="1 === active || 2 === active">上一步</el-button>
+        <el-button style="margin-top: 12px;" @click="next" v-show="0 === active || 1 === active">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
         <el-button type="primary" @click="submitForm" v-show="2 === active">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
