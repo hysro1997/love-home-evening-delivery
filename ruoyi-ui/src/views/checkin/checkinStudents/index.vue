@@ -24,14 +24,12 @@
               :data="students"
               style="width: 100%">
               <el-table-column
-                prop="checkInStudentName"
-                label="姓名"
-                width="180">
+                prop="checkInStudentGrade"
+                label="年级">
               </el-table-column>
               <el-table-column
-                prop="checkInStudentGrade"
-                label="年级"
-                width="180">
+                prop="checkInStudentName"
+                label="姓名">
               </el-table-column>
               <el-table-column
                 prop="checkInStatus"
@@ -82,13 +80,13 @@
         updateCheckinStudentList(this.students).then(() => {
           switch (status) {
             case 0:
-              this.$modal.msgSuccess(this.checkinTitle + " 今日全部未到!");
+              this.$modal.msgSuccess(this.checkinTitle + " 全部未到!");
               break;
             case 1:
-              this.$modal.msgSuccess(this.checkinTitle + " 今日全部签到成功!");
+              this.$modal.msgSuccess(this.checkinTitle + " 全部签到成功!");
               break;
             case 2:
-              this.$modal.msgSuccess(this.checkinTitle + " 今日全部请假成功!");
+              this.$modal.msgSuccess(this.checkinTitle + " 全部请假成功!");
               break
             default:
               this.$modal.msgSuccess("意外!");
@@ -114,13 +112,14 @@
         });
       },
       getCheckinStudentsList(grade){
-        this.checkinTitle = (grade === null ? "全体" : grade) + "签到情况";
+        let today = new Date();
+        this.checkinTitle = (today.getMonth() + 1) + " 月 " + today.getDate() + " 日" + (grade === null ? "全体" : grade) + "签到";
         this.grade = grade;
-        let parms = {
+        let params = {
           checkInStudentGrade: grade,
           checkInDate: (new Date()).toLocaleDateString()
         };
-        listCheckinStudents(parms).then(response => {
+        listCheckinStudents(params).then(response => {
           this.students = response.rows;
         });
       },
