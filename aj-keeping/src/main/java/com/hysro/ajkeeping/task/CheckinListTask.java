@@ -35,6 +35,35 @@ public class CheckinListTask {
     @Autowired
     private AjTeacherCheckInMapper ajTeacherCheckInMapper;
 
+    public void setBaseCheckinStatus(){
+        AjBaseCheckIn ajBaseCheckIn  = new AjBaseCheckIn();
+        ajBaseCheckIn.setBaseCheckInStatus(0);
+        List<AjBaseCheckIn> baseCheckInListOne = ajBaseCheckInMapper.selectAjBaseCheckInList(ajBaseCheckIn);
+        this.calculateAndUpdateBaseCheckinStatus(baseCheckInListOne);
+        ajBaseCheckIn.setBaseCheckInStatus(1);
+        List<AjBaseCheckIn> baseCheckInListTwo = ajBaseCheckInMapper.selectAjBaseCheckInList(ajBaseCheckIn);
+        this.calculateAndUpdateBaseCheckinStatus(baseCheckInListTwo);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    void calculateAndUpdateBaseCheckinStatus(@NotNull List<AjBaseCheckIn> baseCheckInList){
+        if (baseCheckInList.size() != 0){
+            Date today = new Date();
+            LocalDate localDate = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            today = java.sql.Date.valueOf(localDate);
+            for (AjBaseCheckIn baseCheckIn: baseCheckInList){
+                if (baseCheckIn.getBaseCheckInEndDate().before(today)){
+                    baseCheckIn.setBaseCheckInStatus(2);
+                } else if (today.before(baseCheckIn.getBaseCheckInBeginDate())){
+                    baseCheckIn.setBaseCheckInStatus(0);
+                } else {
+                    baseCheckIn.setBaseCheckInStatus(1);
+                }
+                ajBaseCheckInMapper.updateAjBaseCheckIn(baseCheckIn);
+            }
+        }
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void selectTodayStudentsAndTeachersCheckin(){
         AjBaseCheckIn ajBaseCheckIn  = new AjBaseCheckIn();
