@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="studentName"    column="student_name"    />
         <result property="advanceFee"    column="advance_fee"    />
         <result property="verifyAdvanceFee"    column="verify_advance_fee"    />
+        <result property="memo"    column="memo"    />
     </resultMap>
 
     <sql id="selectAjAdvenceFeeVo">
@@ -25,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
             <if test="advanceFee != null "> and advance_fee = #{advanceFee}</if>
             <if test="verifyAdvanceFee != null "> and verify_advance_fee = #{verifyAdvanceFee}</if>
+            <if test="memo != null "> and memo = #{memo}</if>
         </where>
         order by id desc
     </select>
@@ -42,6 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentName != null">student_name,</if>
             <if test="advanceFee != null">advance_fee,</if>
             <if test="verifyAdvanceFee != null">verify_advance_fee,</if>
+            <if test="memo != null ">memo,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="studentId != null">#{studentId},</if>
@@ -49,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentName != null">#{studentName},</if>
             <if test="advanceFee != null">#{advanceFee},</if>
             <if test="verifyAdvanceFee != null">#{verifyAdvanceFee},</if>
+            <if test="memo != null ">#{memo}</if>
          </trim>
     </insert>
 
@@ -60,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentName != null">student_name = #{studentName},</if>
             <if test="advanceFee != null">advance_fee = #{advanceFee},</if>
             <if test="verifyAdvanceFee != null">verify_advance_fee = #{verifyAdvanceFee},</if>
+            <if test="memo != null "> memo = #{memo}</if>
         </trim>
         where id = #{id}
     </update>

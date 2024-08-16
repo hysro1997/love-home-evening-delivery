@@ -35,6 +35,9 @@ public class AjAdvenceFee extends BaseEntity
     @Excel(name = "预交费")
     private BigDecimal advanceFee;
 
+    @Excel(name = "备注")
+    private String memo;
+
     /** 核实状态(0预交费, 1已核销, 2已退款作废) */
     @Excel(name = "核实状态(0=预交费,1=已核销,2=已退款作废)")
     private Integer verifyAdvanceFee;
@@ -48,6 +51,15 @@ public class AjAdvenceFee extends BaseEntity
     {
         return id;
     }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     public void setStudentId(Long studentId)
     {
         this.studentId = studentId;

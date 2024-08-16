@@ -25,21 +25,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="预交费" prop="advanceFee">
-        <el-input
-          v-model="queryParams.advanceFee"
-          placeholder="请输入预交费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="核实状态(0预交费, 1已核销, 2已退款作废)" prop="verifyAdvanceFee">
-        <el-input
-          v-model="queryParams.verifyAdvanceFee"
-          placeholder="请输入核实状态(0预交费, 1已核销, 2已退款作废)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="核实状态" prop="verifyAdvanceFee">
+        <el-select v-model="queryParams.verifyAdvanceFee" placeholder="请选择核实状态" @change="handleQuery">
+          <el-option
+            v-for="item in options"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -48,7 +41,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -79,7 +72,7 @@
           @click="handleDelete"
           v-hasPermi="['payment:advanceFee:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -100,8 +93,13 @@
       <el-table-column label="考勤基表id" align="center" prop="baseCheckInId" />
       <el-table-column label="学生姓名" align="center" prop="studentName" />
       <el-table-column label="预交费" align="center" prop="advanceFee" />
-      <el-table-column label="核实状态(0预交费, 1已核销, 2已退款作废)" align="center" prop="verifyAdvanceFee" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="核实状态" align="center" prop="verifyAdvanceFee">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.verifyAdvanceFee === 0">预交费</el-tag><el-tag type="success" v-else-if="scope.row.verifyAdvanceFee === 2">已核销</el-tag><el-tag type="warning" v-else>已退款作废</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center" prop="memo" />
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -118,9 +116,9 @@
             v-hasPermi="['payment:advanceFee:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -144,8 +142,17 @@
         <el-form-item label="预交费" prop="advanceFee">
           <el-input v-model="form.advanceFee" placeholder="请输入预交费" />
         </el-form-item>
-        <el-form-item label="核实状态(0预交费, 1已核销, 2已退款作废)" prop="verifyAdvanceFee">
-          <el-input v-model="form.verifyAdvanceFee" placeholder="请输入核实状态(0预交费, 1已核销, 2已退款作废)" />
+        <el-form-item label="备注" prop="memo">
+          <el-input v-model="form.memo" placeholder="请输入备注" />
+        </el-form-item>
+        <el-form-item label="核实状态" prop="verifyAdvanceFee">
+          <el-select v-model="form.verifyAdvanceFee" placeholder="请选择核实状态">
+            <el-option
+              v-for="item in options"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -163,6 +170,7 @@ export default {
   name: "AdvanceFee",
   data() {
     return {
+      options :[{label:"预交费", value: 0},{label:"已核销", value: 1},{label:"已退款作废", value: 2}],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -189,7 +197,8 @@ export default {
         baseCheckInId: null,
         studentName: null,
         advanceFee: null,
-        verifyAdvanceFee: null
+        verifyAdvanceFee: null,
+        memo: null
       },
       // 表单参数
       form: {},
@@ -224,7 +233,8 @@ export default {
         baseCheckInId: null,
         studentName: null,
         advanceFee: null,
-        verifyAdvanceFee: null
+        verifyAdvanceFee: null,
+        memo: null
       };
       this.resetForm("form");
     },
@@ -294,7 +304,7 @@ export default {
     handleExport() {
       this.download('payment/advanceFee/export', {
         ...this.queryParams
-      }, `advanceFee_${new Date().getTime()}.xlsx`)
+      }, `预交费_${new Date().getTime()}.xlsx`)
     }
   }
 };

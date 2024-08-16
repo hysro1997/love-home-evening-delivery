@@ -101,14 +101,14 @@
         <el-button
           type="danger"
           plain
-          icon="el-icon-delete"
+          icon="el-icon-sort"
           size="mini"
           :disabled="multiple"
           @click="handleStudentStatusUpdate"
           v-hasPermi="['info:studentInfo:edit']"
         >退学/复学</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="danger"
           plain
@@ -118,7 +118,7 @@
           @click="handleDelete"
           v-hasPermi="['info:studentInfo:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -169,13 +169,13 @@
             @click="handleStudentStatusUpdate(scope.row)"
             v-hasPermi="['info:studentInfo:edit']"
           ><span v-if="scope.row.studentStatus===0">使退学</span><span v-if="scope.row.studentStatus===1">使复学</span></el-button>
-          <el-button
+          <!-- el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['info:studentInfo:remove']"
-          >删除</el-button>
+          >删除</el-button -->
         </template>
       </el-table-column>
     </el-table>

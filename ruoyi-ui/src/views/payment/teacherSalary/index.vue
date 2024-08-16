@@ -17,14 +17,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="员工考勤统计表id" prop="teacherCheckInStatistciId">
-        <el-input
-          v-model="queryParams.teacherCheckInStatistciId"
-          placeholder="请输入员工考勤统计表id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="考勤开始日期" prop="checkInBeginDate">
         <el-date-picker clearable
           v-model="queryParams.checkInBeginDate"
@@ -41,86 +33,6 @@
           placeholder="请选择考勤结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="考勤总天数" prop="checkInSumDays">
-        <el-input
-          v-model="queryParams.checkInSumDays"
-          placeholder="请输入考勤总天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤次数" prop="checkInTimes">
-        <el-input
-          v-model="queryParams.checkInTimes"
-          placeholder="请输入考勤次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="请假天数" prop="leaveDays">
-        <el-input
-          v-model="queryParams.leaveDays"
-          placeholder="请输入请假天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="值班次数" prop="onDutyTimes">
-        <el-input
-          v-model="queryParams.onDutyTimes"
-          placeholder="请输入值班次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="值班补助" prop="onDutyPension">
-        <el-input
-          v-model="queryParams.onDutyPension"
-          placeholder="请输入值班补助"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="全勤" prop="fullCheckIn">
-        <el-input
-          v-model="queryParams.fullCheckIn"
-          placeholder="请输入全勤"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="全勤奖" prop="fullCheckInPension">
-        <el-input
-          v-model="queryParams.fullCheckInPension"
-          placeholder="请输入全勤奖"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="其他补助" prop="otherPension">
-        <el-input
-          v-model="queryParams.otherPension"
-          placeholder="请输入其他补助"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="工资扣除" prop="deduckMoney">
-        <el-input
-          v-model="queryParams.deduckMoney"
-          placeholder="请输入工资扣除"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际工资" prop="acutalSalary">
-        <el-input
-          v-model="queryParams.acutalSalary"
-          placeholder="请输入实际工资"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -128,7 +40,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -159,7 +71,7 @@
           @click="handleDelete"
           v-hasPermi="['payment:teacherSalary:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -178,7 +90,6 @@
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="员工id" align="center" prop="teacherId" />
       <el-table-column label="员工姓名" align="center" prop="teacherName" />
-      <el-table-column label="员工考勤统计表id" align="center" prop="teacherCheckInStatistciId" />
       <el-table-column label="考勤开始日期" align="center" prop="checkInBeginDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.checkInBeginDate, '{y}-{m}-{d}') }}</span>
@@ -199,7 +110,7 @@
       <el-table-column label="其他补助" align="center" prop="otherPension" />
       <el-table-column label="工资扣除" align="center" prop="deduckMoney" />
       <el-table-column label="实际工资" align="center" prop="acutalSalary" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -216,7 +127,7 @@
             v-hasPermi="['payment:teacherSalary:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
 
     <pagination

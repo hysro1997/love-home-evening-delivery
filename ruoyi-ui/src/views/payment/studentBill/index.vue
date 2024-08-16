@@ -41,141 +41,14 @@
                         placeholder="请选择考勤结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="考勤次数" prop="checkInTimes">
-        <el-input
-          v-model="queryParams.checkInTimes"
-          placeholder="请输入考勤次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="请假次数" prop="leaveTimes">
-        <el-input
-          v-model="queryParams.leaveTimes"
-          placeholder="请输入请假次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="视同考勤次数" prop="countAsCheckInTimes">
-        <el-input
-          v-model="queryParams.countAsCheckInTimes"
-          placeholder="请输入视同考勤次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每月收费" prop="perMonthFee">
-        <el-input
-          v-model="queryParams.perMonthFee"
-          placeholder="请输入每月收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="每天收费" prop="perDayFee">
-        <el-input
-          v-model="queryParams.perDayFee"
-          placeholder="请输入每天收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="资料费" prop="textbookFee">
-        <el-input
-          v-model="queryParams.textbookFee"
-          placeholder="请输入资料费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="伙食费" prop="foodFee">
-        <el-input
-          v-model="queryParams.foodFee"
-          placeholder="请输入伙食费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="账单费用" prop="billFee">
-        <el-input
-          v-model="queryParams.billFee"
-          placeholder="请输入账单费用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="预收费" prop="advanceFee">
-        <el-input
-          v-model="queryParams.advanceFee"
-          placeholder="请输入预收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="优惠金额" prop="coupon">
-        <el-input
-          v-model="queryParams.coupon"
-          placeholder="请输入优惠金额"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际每月收费" prop="actualPerMonthFee">
-        <el-input
-          v-model="queryParams.actualPerMonthFee"
-          placeholder="请输入实际每月收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际每日收费" prop="actualPerDayFee">
-        <el-input
-          v-model="queryParams.actualPerDayFee"
-          placeholder="请输入实际每日收费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际资料费" prop="actualTextbookFee">
-        <el-input
-          v-model="queryParams.actualTextbookFee"
-          placeholder="请输入实际资料费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际伙食费" prop="actualFoodFee">
-        <el-input
-          v-model="queryParams.actualFoodFee"
-          placeholder="请输入实际伙食费"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="实际账单费用" prop="acutalBillFee">
-        <el-input
-          v-model="queryParams.acutalBillFee"
-          placeholder="请输入实际账单费用"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="缴费方式(0微信, 1支付宝, 2现金, 3其他)" prop="billMode">
-        <el-input
-          v-model="queryParams.billMode"
-          placeholder="请输入缴费方式(0微信, 1支付宝, 2现金, 3其他)"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="缴费证明" prop="billEvidence">
-        <el-input
-          v-model="queryParams.billEvidence"
-          placeholder="请输入缴费证明"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="缴费方式" prop="billMode">
+        <el-select v-model="queryParams.billMode" placeholder="请选择缴费方式" @change="handleQuery">
+          <el-option
+            v-for="item in options"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -184,7 +57,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -215,7 +88,7 @@
           @click="handleDelete"
           v-hasPermi="['payment:studentBill:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -261,9 +134,13 @@
       <el-table-column label="实际伙食费" align="center" prop="actualFoodFee" />
       <el-table-column label="实际账单费用" align="center" prop="acutalBillFee" />
       <el-table-column label="缴费状态" align="center" prop="billStatus" />
-      <el-table-column label="缴费方式(0微信, 1支付宝, 2现金, 3其他)" align="center" prop="billMode" />
+      <el-table-column label="缴费方式" align="center" prop="billMode">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.billMode === 0">微信</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 2">支付宝</el-tag><el-tag type="warning" v-else-if="scope.row.billStatus === 3">现金</el-tag><el-tag type="info" v-else>其他</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="缴费证明" align="center" prop="billEvidence" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -280,7 +157,7 @@
             v-hasPermi="['payment:studentBill:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
 
     <pagination
@@ -364,8 +241,14 @@
         <el-form-item label="实际账单费用" prop="acutalBillFee">
           <el-input v-model="form.acutalBillFee" placeholder="请输入实际账单费用" />
         </el-form-item>
-        <el-form-item label="缴费方式(0微信, 1支付宝, 2现金, 3其他)" prop="billMode">
-          <el-input v-model="form.billMode" placeholder="请输入缴费方式(0微信, 1支付宝, 2现金, 3其他)" />
+        <el-form-item label="缴费方式" prop="billMode">
+          <el-select v-model="form.billMode" placeholder="请选择缴费方式" @change="handleQuery">
+            <el-option
+              v-for="item in options"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="缴费证明" prop="billEvidence">
           <el-input v-model="form.billEvidence" placeholder="请输入缴费证明" />
@@ -386,6 +269,7 @@
     name: "StudentBill",
     data() {
       return {
+        options :[{label:"微信", value: 0},{label:"支付宝", value: 1},{label:"现金", value: 2},{label:"其他", value: 3}],
         // 遮罩层
         loading: true,
         // 选中数组
