@@ -83,11 +83,11 @@
           <!--span-- v-for="item in scope.row.students">{{item.studentName}}</span-->
         </tempalte>
       </el-table-column>
-      <el-table-column label="考勤教师" align="center" prop="teachers">
+      <el-table-column label="考勤员工" align="center" prop="teachers">
         <tempalte slot-scope="scope">
           <el-popover
             placement="right"
-            title="考勤教师"
+            title="考勤员工"
             width="200"
             trigger="click"
             v-if="null !== scope.row.teachers">
@@ -233,11 +233,11 @@
           </el-form-item>
         </div>
         <!-- div v-show="2 === active">
-          <el-form-item label="考勤教师" prop="baseCheckInTeachers">
+          <el-form-item label="考勤员工" prop="baseCheckInTeachers">
             <el-transfer
               style="text-align: left; display: inline-block"
               v-model="form.checkinTeachers"
-              :titles="['教师列表', '考勤']"
+              :titles="['员工列表', '考勤']"
               :button-texts="['取消考勤','进入考勤']"
               :data="teachersInSchool"
               :props="{key:'teacherId',label:'teacherName',disabled:false}">

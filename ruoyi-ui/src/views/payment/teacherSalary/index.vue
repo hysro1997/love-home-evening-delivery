@@ -1,26 +1,26 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="教师id" prop="teacherId">
+      <el-form-item label="员工id" prop="teacherId">
         <el-input
           v-model="queryParams.teacherId"
-          placeholder="请输入教师id"
+          placeholder="请输入员工id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师姓名" prop="teacherName">
+      <el-form-item label="员工姓名" prop="teacherName">
         <el-input
           v-model="queryParams.teacherName"
-          placeholder="请输入教师姓名"
+          placeholder="请输入员工姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师考勤统计表id" prop="teacherCheckInStatistciId">
+      <el-form-item label="员工考勤统计表id" prop="teacherCheckInStatistciId">
         <el-input
           v-model="queryParams.teacherCheckInStatistciId"
-          placeholder="请输入教师考勤统计表id"
+          placeholder="请输入员工考勤统计表id"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -176,9 +176,9 @@
     <el-table v-loading="loading" :data="teacherSalaryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="教师id" align="center" prop="teacherId" />
-      <el-table-column label="教师姓名" align="center" prop="teacherName" />
-      <el-table-column label="教师考勤统计表id" align="center" prop="teacherCheckInStatistciId" />
+      <el-table-column label="员工id" align="center" prop="teacherId" />
+      <el-table-column label="员工姓名" align="center" prop="teacherName" />
+      <el-table-column label="员工考勤统计表id" align="center" prop="teacherCheckInStatistciId" />
       <el-table-column label="考勤开始日期" align="center" prop="checkInBeginDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.checkInBeginDate, '{y}-{m}-{d}') }}</span>
@@ -218,7 +218,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -230,14 +230,14 @@
     <!-- 添加或修改工资明细对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="教师id" prop="teacherId">
-          <el-input v-model="form.teacherId" placeholder="请输入教师id" />
+        <el-form-item label="员工id" prop="teacherId">
+          <el-input v-model="form.teacherId" placeholder="请输入员工id" />
         </el-form-item>
-        <el-form-item label="教师姓名" prop="teacherName">
-          <el-input v-model="form.teacherName" placeholder="请输入教师姓名" />
+        <el-form-item label="员工姓名" prop="teacherName">
+          <el-input v-model="form.teacherName" placeholder="请输入员工姓名" />
         </el-form-item>
-        <el-form-item label="教师考勤统计表id" prop="teacherCheckInStatistciId">
-          <el-input v-model="form.teacherCheckInStatistciId" placeholder="请输入教师考勤统计表id" />
+        <el-form-item label="员工考勤统计表id" prop="teacherCheckInStatistciId">
+          <el-input v-model="form.teacherCheckInStatistciId" placeholder="请输入员工考勤统计表id" />
         </el-form-item>
         <el-form-item label="考勤开始日期" prop="checkInBeginDate">
           <el-date-picker clearable

@@ -19,8 +19,7 @@
                   <el-radio-group v-model="scope.row.checkInStatus" @input="alterCheckinTeacher(scope.row)">
                     <el-radio :label="0" border style="margin: 2px">未到</el-radio>
                     <el-radio :label="1" border style="margin: 2px">签到</el-radio>
-                    <el-radio :label="2" border style="margin: 2px">迟到</el-radio>
-                    <el-radio :label="3" border style="margin: 2px">请假</el-radio>
+                    <el-radio :label="2" border style="margin: 2px">请假</el-radio>
                     <el-radio :label="null" border style="margin: 2px" disabled>默认</el-radio>
                   </el-radio-group>
                 </template>
@@ -72,7 +71,7 @@
       },
       setTitle(){
         let today = new Date();
-        this.checkinTitle = (today.getMonth() + 1) + " 月 " + today.getDate() + " 日 教师考勤"
+        this.checkinTitle = (today.getMonth() + 1) + " 月 " + today.getDate() + " 日 员工考勤"
       },
       getCheckinTeachersList(){
         let params = {

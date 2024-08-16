@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="教师id" prop="teacherId">
+      <el-form-item label="员工id" prop="teacherId">
         <el-input
           v-model="queryParams.teacherId"
-          placeholder="请输入教师id"
+          placeholder="请输入员工id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师姓名" prop="teacherName">
+      <el-form-item label="员工姓名" prop="teacherName">
         <el-input
           v-model="queryParams.teacherName"
-          placeholder="请输入教师姓名"
+          placeholder="请输入员工姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -25,22 +25,6 @@
           placeholder="请选择签到日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="签到时间" prop="checkInDatetime">
-        <el-date-picker clearable
-          v-model="queryParams.checkInDatetime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择签到时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="当日值班次数" prop="checkInDayOnDutyTimes">
-        <el-input
-          v-model="queryParams.checkInDayOnDutyTimes"
-          placeholder="请输入当日值班次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -48,7 +32,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -79,7 +63,7 @@
           @click="handleDelete"
           v-hasPermi="['checkin:teacherCheckin:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -96,8 +80,8 @@
     <el-table v-loading="loading" :data="teacherCheckinList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="teacherCheckInId" />
-      <el-table-column label="教师id" align="center" prop="teacherId" />
-      <el-table-column label="教师姓名" align="center" prop="teacherName" />
+      <el-table-column label="员工id" align="center" prop="teacherId" />
+      <el-table-column label="员工姓名" align="center" prop="teacherName" />
       <el-table-column label="签到日期" align="center" prop="checkInDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.checkInDate, '{y}-{m}-{d}') }}</span>
@@ -110,7 +94,7 @@
         </template>
       </el-table-column>
       <el-table-column label="当日值班次数" align="center" prop="checkInDayOnDutyTimes" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -127,7 +111,7 @@
             v-hasPermi="['checkin:teacherCheckin:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
 
     <pagination
@@ -141,11 +125,11 @@
     <!-- 添加或修改员工考勤对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="教师id" prop="teacherId">
-          <el-input v-model="form.teacherId" placeholder="请输入教师id" />
+        <el-form-item label="员工id" prop="teacherId">
+          <el-input v-model="form.teacherId" placeholder="请输入员工id" />
         </el-form-item>
-        <el-form-item label="教师姓名" prop="teacherName">
-          <el-input v-model="form.teacherName" placeholder="请输入教师姓名" />
+        <el-form-item label="员工姓名" prop="teacherName">
+          <el-input v-model="form.teacherName" placeholder="请输入员工姓名" />
         </el-form-item>
         <el-form-item label="签到日期" prop="checkInDate">
           <el-date-picker clearable

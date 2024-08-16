@@ -9,34 +9,18 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师id" prop="teacherId">
+      <el-form-item label="员工id" prop="teacherId">
         <el-input
           v-model="queryParams.teacherId"
-          placeholder="请输入教师id"
+          placeholder="请输入员工id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师姓名" prop="teacherName">
+      <el-form-item label="员工姓名" prop="teacherName">
         <el-input
           v-model="queryParams.teacherName"
-          placeholder="请输入教师姓名"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤总天数" prop="checkInSumDays">
-        <el-input
-          v-model="queryParams.checkInSumDays"
-          placeholder="请输入考勤总天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤次数" prop="checkInTimes">
-        <el-input
-          v-model="queryParams.checkInTimes"
-          placeholder="请输入考勤次数"
+          placeholder="请输入员工姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -57,22 +41,6 @@
           placeholder="请选择考勤结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="请假天数" prop="leaveDays">
-        <el-input
-          v-model="queryParams.leaveDays"
-          placeholder="请输入请假天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="值班次数" prop="onDutyTimes">
-        <el-input
-          v-model="queryParams.onDutyTimes"
-          placeholder="请输入值班次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -80,7 +48,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -111,7 +79,7 @@
           @click="handleDelete"
           v-hasPermi="['checkin:teacherCheckinStatistic:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -129,8 +97,8 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="对应考勤总表id" align="center" prop="baseCheckInId" />
-      <el-table-column label="教师id" align="center" prop="teacherId" />
-      <el-table-column label="教师姓名" align="center" prop="teacherName" />
+      <el-table-column label="员工id" align="center" prop="teacherId" />
+      <el-table-column label="员工姓名" align="center" prop="teacherName" />
       <el-table-column label="考勤总天数" align="center" prop="checkInSumDays" />
       <el-table-column label="考勤次数" align="center" prop="checkInTimes" />
       <el-table-column label="考勤开始日期" align="center" prop="checkInBeginDate" width="180">
@@ -145,9 +113,17 @@
       </el-table-column>
       <el-table-column label="请假天数" align="center" prop="leaveDays" />
       <el-table-column label="值班次数" align="center" prop="onDutyTimes" />
-      <el-table-column label="账单状态" align="center" prop="billStatus" />
-      <el-table-column label="工资付款状态" align="center" prop="paymentStatus" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="账单状态" align="center" prop="billStatus">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.billStatus === 0">未生成</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">已生成</el-tag><el-tag type="warning" v-else>已作废</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="工资付款状态" align="center" prop="paymentStatus">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.paymentStatus === 0">未结清</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">已结清</el-tag><el-tag type="warning" v-else>默认</el-tag>
+        </template>
+      </el-table-column>
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -164,9 +140,9 @@
             v-hasPermi="['checkin:teacherCheckinStatistic:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -175,17 +151,17 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改教师考勤汇总对话框 -->
+    <!-- 添加或修改员工考勤汇总对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="对应考勤总表id" prop="baseCheckInId">
           <el-input v-model="form.baseCheckInId" placeholder="请输入对应考勤总表id" />
         </el-form-item>
-        <el-form-item label="教师id" prop="teacherId">
-          <el-input v-model="form.teacherId" placeholder="请输入教师id" />
+        <el-form-item label="员工id" prop="teacherId">
+          <el-input v-model="form.teacherId" placeholder="请输入员工id" />
         </el-form-item>
-        <el-form-item label="教师姓名" prop="teacherName">
-          <el-input v-model="form.teacherName" placeholder="请输入教师姓名" />
+        <el-form-item label="员工姓名" prop="teacherName">
+          <el-input v-model="form.teacherName" placeholder="请输入员工姓名" />
         </el-form-item>
         <el-form-item label="考勤总天数" prop="checkInSumDays">
           <el-input v-model="form.checkInSumDays" placeholder="请输入考勤总天数" />
@@ -243,7 +219,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 教师考勤汇总表格数据
+      // 员工考勤汇总表格数据
       teacherCheckinStatisticList: [],
       // 弹出层标题
       title: "",
@@ -276,7 +252,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询教师考勤汇总列表 */
+    /** 查询员工考勤汇总列表 */
     getList() {
       this.loading = true;
       listTeacherCheckinStatistic(this.queryParams).then(response => {
@@ -328,7 +304,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加教师考勤汇总";
+      this.title = "添加员工考勤汇总";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -337,7 +313,7 @@ export default {
       getTeacherCheckinStatistic(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改教师考勤汇总";
+        this.title = "修改员工考勤汇总";
       });
     },
     /** 提交按钮 */
@@ -363,7 +339,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除教师考勤汇总编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除员工考勤汇总编号为"' + ids + '"的数据项？').then(function() {
         return delTeacherCheckinStatistic(ids);
       }).then(() => {
         this.getList();

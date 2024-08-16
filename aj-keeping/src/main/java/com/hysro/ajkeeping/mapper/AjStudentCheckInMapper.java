@@ -2,6 +2,7 @@ package com.hysro.ajkeeping.mapper;
 
 import java.util.List;
 import com.hysro.ajkeeping.domain.AjStudentCheckIn;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 学生考勤Mapper接口
@@ -58,4 +59,22 @@ public interface AjStudentCheckInMapper
      * @return 结果
      */
     public int deleteAjStudentCheckInByStudentCheckInIds(Long[] studentCheckInIds);
+
+    /**
+     * 依据考勤总表id获取独一的学生列表
+     *
+     * @param baseCheckInId 考勤总表id
+     * @return 学生考勤集合
+     */
+    public List<AjStudentCheckIn> selectDistincAjStudentCheckInListByBaseCkeckinId(@Param("baseCheckInId")Long baseCheckInId);
+
+    /**
+     * 依据考勤总表id获取独一的学生列表
+     *
+     * @param baseCheckInId 考勤总表id
+     * @param studentId 学生id
+     * @param checkInStatus 考勤状态
+     * @return 学生考勤集合
+     */
+    public int countStudentCheckinOrLeaveTimes(@Param("baseCheckInId") Long baseCheckInId,@Param("studentId") Long studentId,@Param("checkInStatus") Integer checkInStatus);
 }

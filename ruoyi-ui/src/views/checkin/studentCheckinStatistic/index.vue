@@ -25,22 +25,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="考勤总天数" prop="checkInSumDays">
-        <el-input
-          v-model="queryParams.checkInSumDays"
-          placeholder="请输入考勤总天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="考勤次数" prop="checkInTimes">
-        <el-input
-          v-model="queryParams.checkInTimes"
-          placeholder="请输入考勤次数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="考勤开始日期" prop="checkInBeginDate">
         <el-date-picker clearable
           v-model="queryParams.checkInBeginDate"
@@ -57,14 +41,6 @@
           placeholder="请选择考勤结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="请假天数" prop="leaveDays">
-        <el-input
-          v-model="queryParams.leaveDays"
-          placeholder="请输入请假天数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -72,7 +48,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -103,7 +79,7 @@
           @click="handleDelete"
           v-hasPermi="['checkin:studentCheckinStatistic:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -136,9 +112,17 @@
         </template>
       </el-table-column>
       <el-table-column label="请假天数" align="center" prop="leaveDays" />
-      <el-table-column label="账单状态" align="center" prop="billStatus" />
-      <el-table-column label="缴费状态" align="center" prop="paymentStatus" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="账单状态" align="center" prop="billStatus">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.billStatus === 0">未生成</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">已生成</el-tag><el-tag type="warning" v-else>已作废</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="缴费状态" align="center" prop="paymentStatus" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.paymentStatus === 0">未缴费</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">已缴费</el-tag><el-tag type="warning" v-else>默认</el-tag>
+        </template>
+      </el-table-column>
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -155,9 +139,9 @@
             v-hasPermi="['checkin:studentCheckinStatistic:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

@@ -5,15 +5,15 @@ import com.hysro.ajkeeping.domain.AjStudentCheckInStatistic;
 
 /**
  * 考勤统计Service接口
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
-public interface IAjStudentCheckInStatisticService 
+public interface IAjStudentCheckInStatisticService
 {
     /**
      * 查询考勤统计
-     * 
+     *
      * @param id 考勤统计主键
      * @return 考勤统计
      */
@@ -21,7 +21,7 @@ public interface IAjStudentCheckInStatisticService
 
     /**
      * 查询考勤统计列表
-     * 
+     *
      * @param ajStudentCheckInStatistic 考勤统计
      * @return 考勤统计集合
      */
@@ -29,7 +29,7 @@ public interface IAjStudentCheckInStatisticService
 
     /**
      * 新增考勤统计
-     * 
+     *
      * @param ajStudentCheckInStatistic 考勤统计
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface IAjStudentCheckInStatisticService
 
     /**
      * 修改考勤统计
-     * 
+     *
      * @param ajStudentCheckInStatistic 考勤统计
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface IAjStudentCheckInStatisticService
 
     /**
      * 批量删除考勤统计
-     * 
+     *
      * @param ids 需要删除的考勤统计主键集合
      * @return 结果
      */
@@ -53,9 +53,24 @@ public interface IAjStudentCheckInStatisticService
 
     /**
      * 删除考勤统计信息
-     * 
+     *
      * @param id 考勤统计主键
      * @return 结果
      */
     public int deleteAjStudentCheckInStatisticById(Long id);
+
+    /**
+     * 统计考勤表学生考勤情况
+     *
+     * @param baseCheckInId 考勤总表id
+     */
+    public void calculateStudentCheckInStatistic(Long baseCheckInId);
+
+
+    /**
+     * 统计考勤表学生考勤情况
+     *
+     * @param baseCheckInId 考勤总表id
+     */
+    public void calculateStudentCheckInStatistic(Long baseCheckInId, Long studentId);
 }

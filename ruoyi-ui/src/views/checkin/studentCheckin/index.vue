@@ -41,14 +41,6 @@
           placeholder="请选择签到日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="签到时间" prop="checkInDatetime">
-        <el-date-picker clearable
-          v-model="queryParams.checkInDatetime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择签到时间">
-        </el-date-picker>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -56,7 +48,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -65,8 +57,8 @@
           @click="handleAdd"
           v-hasPermi="['checkin:studentCheckin:add']"
         >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
+      </el-col -->
+      <!-- el-col :span="1.5">
         <el-button
           type="success"
           plain
@@ -87,7 +79,7 @@
           @click="handleDelete"
           v-hasPermi="['checkin:studentCheckin:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col -->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -123,7 +115,7 @@
           <span>{{ parseTime(scope.row.checkInDatetime, '{h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -140,7 +132,7 @@
             v-hasPermi="['checkin:studentCheckin:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
 
     <pagination

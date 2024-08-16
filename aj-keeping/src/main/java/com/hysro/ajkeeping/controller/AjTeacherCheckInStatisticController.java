@@ -1,9 +1,13 @@
 package com.hysro.ajkeeping.controller;
 
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,7 +27,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 教师考勤汇总Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -78,6 +82,30 @@ public class AjTeacherCheckInStatisticController extends BaseController
     public AjaxResult add(@RequestBody AjTeacherCheckInStatistic ajTeacherCheckInStatistic)
     {
         return toAjax(ajTeacherCheckInStatisticService.insertAjTeacherCheckInStatistic(ajTeacherCheckInStatistic));
+    }
+
+    /**
+     * 计算考勤统计
+     */
+    @PreAuthorize("@ss.hasPermi('checkin:teacherCheckinStatistic:add')")
+    @Log(title = "计算学生考勤统计", businessType = BusinessType.INSERT)
+    @PostMapping("/calculateList")
+    public AjaxResult calculateStudentCheckinStatisticList(@RequestBody AjTeacherCheckInStatistic ajTeacherCheckInStatistic)
+    {
+        ajTeacherCheckInStatisticService.calculateTeacherCheckInStatistic(ajTeacherCheckInStatistic.getCheckInBeginDate(), ajTeacherCheckInStatistic.getCheckInEndDate());
+        return success();
+    }
+
+    /**
+     * 计算考勤统计
+     */
+    @PreAuthorize("@ss.hasPermi('checkin:teacherCheckinStatistic:add')")
+    @Log(title = "计算学生考勤统计", businessType = BusinessType.INSERT)
+    @PostMapping("/calculateSingle")
+    public AjaxResult calculateStudentCheckinStatisticSingle(@RequestBody AjTeacherCheckInStatistic ajTeacherCheckInStatistic)
+    {
+        ajTeacherCheckInStatisticService.calculateTeacherCheckInStatistic(ajTeacherCheckInStatistic.getCheckInBeginDate(), ajTeacherCheckInStatistic.getCheckInEndDate(),ajTeacherCheckInStatistic.getTeacherId());
+        return success();
     }
 
     /**

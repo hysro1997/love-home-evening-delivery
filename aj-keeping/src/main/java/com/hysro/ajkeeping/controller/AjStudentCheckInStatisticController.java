@@ -2,16 +2,12 @@ package com.hysro.ajkeeping.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -23,7 +19,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 考勤统计Controller
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
@@ -50,7 +46,7 @@ public class AjStudentCheckInStatisticController extends BaseController
      * 导出考勤统计列表
      */
     @PreAuthorize("@ss.hasPermi('checkin:studentCheckinStatistic:export')")
-    @Log(title = "考勤统计", businessType = BusinessType.EXPORT)
+    @Log(title = "学生考勤统计", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, AjStudentCheckInStatistic ajStudentCheckInStatistic)
     {
@@ -89,6 +85,30 @@ public class AjStudentCheckInStatisticController extends BaseController
     public AjaxResult edit(@RequestBody AjStudentCheckInStatistic ajStudentCheckInStatistic)
     {
         return toAjax(ajStudentCheckInStatisticService.updateAjStudentCheckInStatistic(ajStudentCheckInStatistic));
+    }
+
+    /**
+     * 计算考勤统计
+     */
+    @PreAuthorize("@ss.hasPermi('checkin:studentCheckinStatistic:add')")
+    @Log(title = "计算学生考勤统计", businessType = BusinessType.INSERT)
+    @PostMapping("/calculateList")
+    public AjaxResult calculateStudentCheckinStatisticList(@RequestBody AjStudentCheckInStatistic ajStudentCheckInStatistic)
+    {
+        ajStudentCheckInStatisticService.calculateStudentCheckInStatistic(ajStudentCheckInStatistic.getBaseCheckInId());
+        return success();
+    }
+
+    /**
+     * 计算考勤统计
+     */
+    @PreAuthorize("@ss.hasPermi('checkin:studentCheckinStatistic:add')")
+    @Log(title = "计算学生考勤统计", businessType = BusinessType.INSERT)
+    @PostMapping("/calculateSingle")
+    public AjaxResult calculateStudentCheckinStatisticSingle(@RequestBody AjStudentCheckInStatistic ajStudentCheckInStatistic)
+    {
+        ajStudentCheckInStatisticService.calculateStudentCheckInStatistic(ajStudentCheckInStatistic.getBaseCheckInId(),ajStudentCheckInStatistic.getStudentId());
+        return success();
     }
 
     /**

@@ -53,6 +53,7 @@ public class CheckinListTask {
             today = java.sql.Date.valueOf(localDate);
             for (AjBaseCheckIn baseCheckIn: baseCheckInList){
                 if (baseCheckIn.getBaseCheckInEndDate().before(today)){
+                    //TODO: 如果结束日期比今天早一天，延迟4小时统计全部考勤信息
                     baseCheckIn.setBaseCheckInStatus(2);
                 } else if (today.before(baseCheckIn.getBaseCheckInBeginDate())){
                     baseCheckIn.setBaseCheckInStatus(0);

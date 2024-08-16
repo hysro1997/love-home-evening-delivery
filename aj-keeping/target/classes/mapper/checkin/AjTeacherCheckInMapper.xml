@@ -36,6 +36,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where teacher_check_in_id = #{teacherCheckInId}
     </select>
 
+    <select id="countTeacherCheckinOrLeaveTimes" resultType="Integer">
+        SELECT COUNT(teacher_name)
+        FROM `aj_teacher_check_in`
+        WHERE check_in_date BETWEEN #{checkInBeginDate} AND #{checkInEndDate} AND teacher_id = #{teacherId} AND check_in_status = #{checkInStatus}
+    </select>
+
+    <select id="countTeacherOnDutyTimes" resultType="Integer">
+        SELECT SUM(check_in_day_on_duty_times)
+        FROM `aj_teacher_check_in`
+        WHERE check_in_date BETWEEN #{checkInBeginDate} AND #{checkInEndDate} AND teacher_id = #{teacherId}
+    </select>
+
     <insert id="insertAjTeacherCheckIn" parameterType="AjTeacherCheckIn" useGeneratedKeys="true" keyProperty="teacherCheckInId">
         insert into aj_teacher_check_in
         <trim prefix="(" suffix=")" suffixOverrides=",">

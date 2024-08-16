@@ -25,18 +25,18 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师id" prop="teacherId">
+      <el-form-item label="员工id" prop="teacherId">
         <el-input
           v-model="queryParams.teacherId"
-          placeholder="请输入教师id"
+          placeholder="请输入员工id"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师姓名" prop="teacherName">
+      <el-form-item label="员工姓名" prop="teacherName">
         <el-input
           v-model="queryParams.teacherName"
-          placeholder="请输入教师姓名"
+          placeholder="请输入员工姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -99,8 +99,8 @@
       <el-table-column label="考勤基表" align="center" prop="baseCheckInId" />
       <el-table-column label="学生id" align="center" prop="studentId" />
       <el-table-column label="学生姓名" align="center" prop="studentName" />
-      <el-table-column label="教师id" align="center" prop="teacherId" />
-      <el-table-column label="教师姓名" align="center" prop="teacherName" />
+      <el-table-column label="员工id" align="center" prop="teacherId" />
+      <el-table-column label="员工姓名" align="center" prop="teacherName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -120,7 +120,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -141,11 +141,11 @@
         <el-form-item label="学生姓名" prop="studentName">
           <el-input v-model="form.studentName" placeholder="请输入学生姓名" />
         </el-form-item>
-        <el-form-item label="教师id" prop="teacherId">
-          <el-input v-model="form.teacherId" placeholder="请输入教师id" />
+        <el-form-item label="员工id" prop="teacherId">
+          <el-input v-model="form.teacherId" placeholder="请输入员工id" />
         </el-form-item>
-        <el-form-item label="教师姓名" prop="teacherName">
-          <el-input v-model="form.teacherName" placeholder="请输入教师姓名" />
+        <el-form-item label="员工姓名" prop="teacherName">
+          <el-input v-model="form.teacherName" placeholder="请输入员工姓名" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

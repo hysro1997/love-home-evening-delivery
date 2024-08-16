@@ -44,6 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectAjStudentCheckInStatisticByBaseChekinIdAndStudentId" resultMap="AjStudentCheckInStatisticResult">
+        <include refid="selectAjStudentCheckInStatisticVo"/>
+        where base_check_in_id = #{baseCheckInId} AND student_id = #{studentId}
+    </select>
+
     <insert id="insertAjStudentCheckInStatistic" parameterType="AjStudentCheckInStatistic" useGeneratedKeys="true" keyProperty="id">
         insert into aj_student_check_in_statistic
         <trim prefix="(" suffix=")" suffixOverrides=",">

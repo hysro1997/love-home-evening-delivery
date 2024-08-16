@@ -23,6 +23,7 @@
             <el-table
               :data="students"
               style="width: 100%">
+              <el-table-column label="id" width="55" align="center" prop="baseCheckInId" />
               <el-table-column
                 prop="checkInStudentGrade"
                 label="年级">

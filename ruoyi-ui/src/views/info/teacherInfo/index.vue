@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="教师姓名" prop="teacherName">
+      <el-form-item label="员工姓名" prop="teacherName">
         <el-input
           v-model="queryParams.teacherName"
-          placeholder="请输入教师姓名"
+          placeholder="请输入员工姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="教师电话" prop="teacherPhone">
+      <el-form-item label="员工电话" prop="teacherPhone">
         <el-input
           v-model="queryParams.teacherPhone"
-          placeholder="请输入教师电话"
+          placeholder="请输入员工电话"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -73,13 +73,13 @@
               :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="teacherId" />
-      <el-table-column label="教师姓名" align="center" prop="teacherName" />
-      <el-table-column label="教师性别" align="center" prop="teacherGender">
+      <el-table-column label="员工姓名" align="center" prop="teacherName" />
+      <el-table-column label="员工性别" align="center" prop="teacherGender">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.teacherGender===1">男</el-tag><el-tag v-if="scope.row.teacherGender===2" type="danger">女</el-tag><el-tag v-if="scope.row.teacherGender===0" type="info">默认</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="教师电话" align="center" prop="teacherPhone" />
+      <el-table-column label="员工电话" align="center" prop="teacherPhone" />
       <el-table-column label="用工类别" align="center" prop="teacherEmployType">
         <template slot-scope="scope">
           {{scope.row.teacherEmployType === 0 ? "兼职" : scope.row.teacherEmployType === 1 ? "全职" : scope.row.teacherEmployType === 2 ? "实习生" : "暑假工"}}
@@ -123,20 +123,20 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改教师信息对话框 -->
+    <!-- 添加或修改员工信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="教师姓名" prop="teacherName">
-          <el-input v-model="form.teacherName" placeholder="请输入教师姓名" />
+        <el-form-item label="员工姓名" prop="teacherName">
+          <el-input v-model="form.teacherName" placeholder="请输入员工姓名" />
         </el-form-item>
-        <el-form-item label="教师性别" prop="teacherGender">
+        <el-form-item label="员工性别" prop="teacherGender">
           <template>
             <el-radio v-model="form.teacherGender" label="1">男</el-radio>
             <el-radio v-model="form.teacherGender" label="2">女</el-radio>
           </template>
         </el-form-item>
-        <el-form-item label="教师电话" prop="teacherPhone">
-          <el-input v-model="form.teacherPhone" placeholder="请输入教师电话" maxlength="11"/>
+        <el-form-item label="员工电话" prop="teacherPhone">
+          <el-input v-model="form.teacherPhone" placeholder="请输入员工电话" maxlength="11"/>
         </el-form-item>
         <el-form-item label="用工类别" prop="teacherEmployType">
           <template>
@@ -182,7 +182,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 教师信息表格数据
+      // 员工信息表格数据
       teacherInfoList: [],
       // 弹出层标题
       title: "",
@@ -204,10 +204,10 @@ export default {
       // 表单校验
       rules: {
         teacherName: [
-          { required: true, message: "教师姓名不能为空", trigger: "blur" }
+          { required: true, message: "员工姓名不能为空", trigger: "blur" }
         ],
         teacherPhone: [
-          { required: true, message: "教师电话不能为空", trigger: "blur" },
+          { required: true, message: "员工电话不能为空", trigger: "blur" },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: "请输入正确的手机号码",
@@ -229,7 +229,7 @@ export default {
       }
       return '';
     },
-    /** 查询教师信息列表 */
+    /** 查询员工信息列表 */
     getList() {
       this.loading = true;
       listTeacherInfo(this.queryParams).then(response => {
@@ -276,7 +276,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加教师信息";
+      this.title = "添加员工信息";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -285,7 +285,7 @@ export default {
       getTeacherInfo(teacherId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改教师信息";
+        this.title = "修改员工信息";
       });
     },
     handleTeacherUpdate(row){
@@ -321,7 +321,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const teacherIds = row.teacherId || this.ids;
-      this.$modal.confirm('是否确认删除教师信息编号为"' + teacherIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除员工信息编号为"' + teacherIds + '"的数据项？').then(function() {
         return delTeacherInfo(teacherIds);
       }).then(() => {
         this.getList();
@@ -332,7 +332,7 @@ export default {
     handleExport() {
       this.download('info/teacherInfo/export', {
         ...this.queryParams
-      }, `教师信息_${new Date().getTime()}.xlsx`)
+      }, `员工信息_${new Date().getTime()}.xlsx`)
     }
   }
 };

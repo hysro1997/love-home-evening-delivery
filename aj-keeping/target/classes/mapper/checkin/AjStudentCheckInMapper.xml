@@ -33,6 +33,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by student_check_in_id desc
     </select>
 
+    <select id="selectDistincAjStudentCheckInListByBaseCkeckinId" parameterType="Long" resultMap="AjStudentCheckInResult">
+        SELECT DISTINCT(student_id), check_in_student_name
+        FROM `aj_student_check_in`
+        WHERE base_check_in_id = #{baseCheckInId}
+    </select>
+
+    <select id="countStudentCheckinOrLeaveTimes" resultType="Integer">
+        SELECT COUNT(check_in_student_name)
+        FROM `aj_student_check_in`
+        WHERE base_check_in_id = #{baseCheckInId} AND student_id = #{studentId} AND check_in_status = #{checkInStatus}
+    </select>
+
     <select id="selectAjStudentCheckInByStudentCheckInId" parameterType="Long" resultMap="AjStudentCheckInResult">
         <include refid="selectAjStudentCheckInVo"/>
         where student_check_in_id = #{studentCheckInId}
