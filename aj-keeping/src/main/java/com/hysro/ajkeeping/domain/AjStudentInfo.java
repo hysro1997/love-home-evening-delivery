@@ -1,5 +1,7 @@
 package com.hysro.ajkeeping.domain;
 
+import com.ruoyi.common.annotation.Sensitive;
+import com.ruoyi.common.enums.DesensitizedType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -46,6 +48,7 @@ public class AjStudentInfo extends BaseEntity
     @Excel(name = "联系电话")
     @NotBlank
     @Pattern(regexp = "^1[3|4|5|6|7|8|9][0-9]\\d{8}$", message = "只能输入最多带两位小数的金额")
+    @Sensitive(desensitizedType = DesensitizedType.PHONE)
     private String studentPhone;
 
     /** 人脸识别base64 */
