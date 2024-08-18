@@ -22,7 +22,8 @@
           <el-form-item :label="checkinTitle">
             <el-table
               :data="students"
-              style="width: 100%">
+              style="width: 100%"
+              :row-class-name="tableRowClassName">
               <el-table-column label="id" width="55" align="center" prop="baseCheckInId" />
               <el-table-column
                 prop="checkInStudentGrade"
@@ -51,6 +52,15 @@
     </el-form>
   </div>
 </template>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
   import { listGrade, listCheckinStudents, updateCheckinStudent, updateCheckinStudentList } from "@/api/checkin/checkinStudents";
   export default {
@@ -74,6 +84,14 @@
     },
     mounted() {},
     methods: {
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex % 2 === 1) {
+          return 'warning-row';
+        } else if (rowIndex % 2 === 0) {
+          return 'success-row';
+        }
+        return '';
+      },
       alterAllCheckinStudent(status){
         this.students.forEach(function(e) {
           e.checkInStatus = status;

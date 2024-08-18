@@ -61,7 +61,8 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="baseCheckinList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="baseCheckinList" @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="baseCheckInId" />
       <el-table-column label="考勤名称" align="center" prop="baseCheckInName" />
@@ -284,6 +285,15 @@
   </div>
 </template>
 
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
 import { listBaseCheckin, getBaseCheckin, delBaseCheckin, addBaseCheckin, updateBaseCheckin, getInSchoolStudents, getInSchoolTeachers } from "@/api/checkin/baseCheckin";
 
@@ -359,6 +369,14 @@ export default {
     }
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row';
+      } else if (rowIndex % 2 === 0) {
+        return 'success-row';
+      }
+      return '';
+    },
     previous(){
       if (this.active > 0) {
         this.active -- ;

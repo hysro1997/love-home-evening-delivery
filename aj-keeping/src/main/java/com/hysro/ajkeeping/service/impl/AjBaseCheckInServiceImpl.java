@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.hysro.ajkeeping.domain.*;
 import com.hysro.ajkeeping.mapper.*;
+import com.ruoyi.common.core.redis.RedisCache;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     private AjTeacherInfoMapper ajTeacherInfoMapper;
     @Autowired
     private AjHomoInBaseCheckInMapper ajHomoInBaseCheckInMapper;
+    @Autowired
+    private AjBaseCheckInPaymentStatusMapper ajBaseCheckInPaymentStatusMapper;
 
     @Override
     public List<AjStudentInfo> selectSchoolStudents() {
@@ -103,6 +106,12 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
         ajBaseCheckIn.setBaseCheckWeekenDayString(Arrays.toString(ajBaseCheckIn.getBaseCheckWeekenDay()));
         ajBaseCheckInMapper.insertAjBaseCheckIn(ajBaseCheckIn);
         this.insertBaseHomoTeachersAndStudents(ajBaseCheckIn);
+        AjBaseCheckInPaymentStatus ajBaseCheckInPaymentStatus = new AjBaseCheckInPaymentStatus();
+        ajBaseCheckInPaymentStatus.setBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
+        ajBaseCheckInPaymentStatus.setBaseCheckInName(ajBaseCheckIn.getBaseCheckInName());
+        ajBaseCheckInPaymentStatus.setBillStatus(0);
+        ajBaseCheckInPaymentStatus.setPaymentStatus(0);
+        ajBaseCheckInPaymentStatusMapper.insertAjBaseCheckInPaymentStatus(ajBaseCheckInPaymentStatus);
         return 1;
     }
 
@@ -131,8 +140,10 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteAjBaseCheckInByBaseCheckInIds(Long[] baseCheckInIds)
     {
+        ajBaseCheckInPaymentStatusMapper.deleteAjBaseCheckInPaymentStatusByByBaseCheckInIds(baseCheckInIds);
         return ajBaseCheckInMapper.deleteAjBaseCheckInByBaseCheckInIds(baseCheckInIds);
     }
 
@@ -143,8 +154,10 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteAjBaseCheckInByBaseCheckInId(Long baseCheckInId)
     {
+        ajBaseCheckInPaymentStatusMapper.deleteAjBaseCheckInPaymentStatusByBaseCheckInId(baseCheckInId);
         return ajBaseCheckInMapper.deleteAjBaseCheckInByBaseCheckInId(baseCheckInId);
     }
 

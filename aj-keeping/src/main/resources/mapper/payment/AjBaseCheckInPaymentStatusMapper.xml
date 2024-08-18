@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hysro.ajkeeping.mapper.AjBaseCheckInPaymentStatusMapper">
+
+    <resultMap type="AjBaseCheckInPaymentStatus" id="AjBaseCheckInPaymentStatusResult">
+        <result property="id"    column="id"    />
+        <result property="baseCheckInId"    column="base_check_in_id"    />
+        <result property="baseCheckInName"    column="base_check_in_name"    />
+        <result property="billStatus"    column="bill_status"    />
+        <result property="paymentStatus"    column="payment_status"    />
+    </resultMap>
+
+    <sql id="selectAjBaseCheckInPaymentStatusVo">
+        select id, base_check_in_id, base_check_in_name, bill_status, payment_status from aj_base_check_in_payment_status
+    </sql>
+
+    <select id="selectAjBaseCheckInPaymentStatusList" parameterType="AjBaseCheckInPaymentStatus" resultMap="AjBaseCheckInPaymentStatusResult">
+        <include refid="selectAjBaseCheckInPaymentStatusVo"/>
+        <where>
+            <if test="baseCheckInId != null "> and base_check_in_id = #{baseCheckInId}</if>
+            <if test="baseCheckInName != null  and baseCheckInName != ''"> and base_check_in_name like concat('%', #{baseCheckInName}, '%')</if>
+            <if test="billStatus != null "> and bill_status = #{billStatus}</if>
+            <if test="paymentStatus != null "> and payment_status = #{paymentStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectAjBaseCheckInPaymentStatusListNoParam" resultMap="AjBaseCheckInPaymentStatusResult">
+        <include refid="selectAjBaseCheckInPaymentStatusVo"/>
+        order by id desc
+    </select>
+
+    <select id="selectStudentWithBillAndPayment" resultType="java.util.Map">
+        select h.student_id AS studentId, h.student_name AS studentName, s.payment_status AS paymentStatus, s.bill_status AS billStatus, h.base_check_in_id AS baseCheckInId, i.student_grade AS studentGrade, s.check_in_times AS checkInTimes, s.leave_days AS leaveDays
+        from aj_homo_in_base_check_in h
+        LEFT JOIN aj_student_check_in_statistic s
+        ON h.student_id = s.student_id
+        LEFT JOIN aj_student_info i
+        ON h.student_id = i.student_id
+        WHERE h.base_check_in_id = #{baseCheckInId} AND i.student_grade = #{studentGrade} AND h.student_id IS NOT NULL
+    </select>
+
+    <select id="selectAjBaseCheckInPaymentStatusById" parameterType="Long" resultMap="AjBaseCheckInPaymentStatusResult">
+        <include refid="selectAjBaseCheckInPaymentStatusVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAjBaseCheckInPaymentStatus" parameterType="AjBaseCheckInPaymentStatus" useGeneratedKeys="true" keyProperty="id">
+        insert into aj_base_check_in_payment_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baseCheckInId != null">base_check_in_id,</if>
+            <if test="baseCheckInName != null">base_check_in_name,</if>
+            <if test="billStatus != null">bill_status,</if>
+            <if test="paymentStatus != null">payment_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baseCheckInId != null">#{baseCheckInId},</if>
+            <if test="baseCheckInName != null">#{baseCheckInName},</if>
+            <if test="billStatus != null">#{billStatus},</if>
+            <if test="paymentStatus != null">#{paymentStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAjBaseCheckInPaymentStatus" parameterType="AjBaseCheckInPaymentStatus">
+        update aj_base_check_in_payment_status
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baseCheckInId != null">base_check_in_id = #{baseCheckInId},</if>
+            <if test="baseCheckInName != null">base_check_in_name = #{baseCheckInName},</if>
+            <if test="billStatus != null">bill_status = #{billStatus},</if>
+            <if test="paymentStatus != null">payment_status = #{paymentStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAjBaseCheckInPaymentStatusById" parameterType="Long">
+        delete from aj_base_check_in_payment_status where id = #{id}
+    </delete>
+
+    <delete id="deleteAjBaseCheckInPaymentStatusByIds" parameterType="String">
+        delete from aj_base_check_in_payment_status where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAjBaseCheckInPaymentStatusByBaseCheckInId" parameterType="Long">
+        delete from aj_base_check_in_payment_status where base_check_in_id = #{baseCheckInId}
+    </delete>
+
+    <delete id="deleteAjBaseCheckInPaymentStatusByByBaseCheckInIds" parameterType="String">
+        delete from aj_base_check_in_payment_status where base_check_in_id in
+        <foreach item="baseCheckInId" collection="array" open="(" separator="," close=")">
+            #{baseCheckInId}
+        </foreach>
+    </delete>
+</mapper>

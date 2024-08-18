@@ -93,7 +93,8 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="homoInBaseCheckinList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="homoInBaseCheckinList" @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="考勤基表" align="center" prop="baseCheckInId" />
@@ -156,6 +157,15 @@
   </div>
 </template>
 
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
 import { listHomoInBaseCheckin, getHomoInBaseCheckin, delHomoInBaseCheckin, addHomoInBaseCheckin, updateHomoInBaseCheckin } from "@/api/checkin/homoInBaseCheckin";
 
@@ -202,6 +212,14 @@ export default {
     this.getList();
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row';
+      } else if (rowIndex % 2 === 0) {
+        return 'success-row';
+      }
+      return '';
+    },
     /** 查询在考勤中的老师与学生列表 */
     getList() {
       this.loading = true;

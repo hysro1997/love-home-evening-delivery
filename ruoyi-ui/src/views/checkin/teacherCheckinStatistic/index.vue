@@ -93,7 +93,8 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="teacherCheckinStatisticList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="teacherCheckinStatisticList" @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="对应考勤总表id" align="center" prop="baseCheckInId" />
@@ -200,6 +201,15 @@
   </div>
 </template>
 
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
 import { listTeacherCheckinStatistic, getTeacherCheckinStatistic, delTeacherCheckinStatistic, addTeacherCheckinStatistic, updateTeacherCheckinStatistic } from "@/api/checkin/teacherCheckinStatistic";
 
@@ -252,6 +262,14 @@ export default {
     this.getList();
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row';
+      } else if (rowIndex % 2 === 0) {
+        return 'success-row';
+      }
+      return '';
+    },
     /** 查询员工考勤汇总列表 */
     getList() {
       this.loading = true;

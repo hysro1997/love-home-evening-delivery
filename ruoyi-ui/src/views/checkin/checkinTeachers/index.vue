@@ -7,7 +7,8 @@
           <el-form-item :label="checkinTitle">
             <el-table
               :data="teachers"
-              style="width: 100%">
+              style="width: 100%"
+              :row-class-name="tableRowClassName">
               <el-table-column
                 prop="teacherName"
                 label="姓名">
@@ -43,6 +44,15 @@
     </el-form>
   </div>
 </template>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
   import { listTeacherCheckin, updateTeacherCheckin } from "@/api/checkin/checkinTeachers";
   export default {
@@ -63,6 +73,14 @@
     },
     mounted() {},
     methods: {
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex % 2 === 1) {
+          return 'warning-row';
+        } else if (rowIndex % 2 === 0) {
+          return 'success-row';
+        }
+        return '';
+      },
       alterCheckinTeacher(row){
         updateTeacherCheckin(row).then(() => {
           this.$modal.msgSuccess("成功修改" + row.teacherName + "考勤状态！");
