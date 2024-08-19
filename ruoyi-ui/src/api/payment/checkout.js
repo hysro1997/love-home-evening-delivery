@@ -16,3 +16,12 @@ export function listStudents(query) {
     method: 'get'
   })
 }
+
+// 依据考勤总表id统计考勤数据
+export function statistic(data) {
+  return request({
+    url: '/payment/checkout/statistic',
+    method: 'post',
+    data: data
+  })
+}

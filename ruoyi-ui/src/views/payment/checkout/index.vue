@@ -1,26 +1,21 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-col :span="8" style="text-align: center">考勤总表<br/>
-        <div style="text-align: center">
-          <el-row :gutter="10">
-            <el-col :span="16">考勤表名称</el-col>
-            <el-col :span="4">账单</el-col>
-            <el-col :span="4">支付</el-col>
-          </el-row>
-        </div>
-        <div style="text-align: left">
-            <div v-for="i in baseCheckinList" :key="i.baseCheckInId">
-              <el-row :gutter="10" class="checkin-class" style="margin-top: 20px;margin-bottom: 20px;border-bottom:solid 1px;" @click.native="showDetail(i.baseCheckInId)">
-                <el-col :span="16" style="padding-left: 20px">{{ i.baseCheckInName }}</el-col>
-                <el-col :span="4">
-                  <el-tag v-show="i.billStatus === 0" type="info">未生成</el-tag><el-tag v-show="i.billStatus === 1" type="warning">部分账单</el-tag><el-tag v-show="i.billStatus === 2">已生成</el-tag>
-                </el-col>
-                <el-col :span="4">
-                  <el-tag v-show="i.paymentStatus === 0" type="info">未支付</el-tag><el-tag v-show="i.paymentStatus === 1" type="warning">部分支付</el-tag><el-tag v-show="i.paymentStatus === 2">已结清</el-tag>
-                </el-col>
-              </el-row>
+      <el-col :span="6" style="text-align: center"><h3>考勤总表</h3><br/>
+        <div style="text-align: left" v-for="i in baseCheckinList" :key="i.baseCheckInId">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>{{ i.baseCheckInName }}</span>
+              <el-button style="float: right; padding: 3px 0" type="text" @click.native="showDetail(i.baseCheckInId,i.baseCheckInName)">查看详情</el-button>
+              <el-button style="float: right; padding: 3px 0; margin-right: 10px" type="text" @click.native="calculateStatistic(i.baseCheckInId,i.baseCheckInName)">统计考勤数据</el-button>
             </div>
+            <div>
+              账单状态：<el-tag v-show="i.billStatus === 0" type="info">未生成</el-tag><el-tag v-show="i.billStatus === 1" type="warning">部分账单</el-tag><el-tag v-show="i.billStatus === 2">已生成</el-tag>
+            </div>
+            <div>
+              支付状态：<el-tag v-show="i.paymentStatus === 0" type="info">未支付</el-tag><el-tag v-show="i.paymentStatus === 1" type="warning">部分支付</el-tag><el-tag v-show="i.paymentStatus === 2">已结清</el-tag>
+            </div>
+          </el-card>
         </div>
         <div style="text-align: right">
           <el-pagination style="margin-bottom:20px"
@@ -36,16 +31,18 @@
           </el-pagination>
         </div>
       </el-col>
-      <el-col :span="14" style="margin-left: 15px;">选择年级
+      <el-col :span="14" style="margin-left: 15px;"><h3>选择年级</h3>
         <el-row>
-          <el-radio-group v-model="grade" v-for="i in grades" @input="showDetail()">
+          <el-radio-group v-model="grade" v-for="i in grades" @input="showDetailDetail()">
             <el-radio-button style="margin: 10px" :label="i.grade"></el-radio-button>
           </el-radio-group>
         </el-row>
-        查看明细
-        <el-row>
+        <h3>{{ baseCheckInName }} {{ grade }} 详情</h3>
+        <br/>
+        <div>如果没有数据，或数据与实际不符合，请单击左侧对应的 统计考勤数据 ，来获取真实统计结果</div>
+        <el-row :v-loading="studentsLoading">
           <el-col :span="8" v-for="item in students">
-            <el-card class="box-card" style="width: 250px;height: 150px">
+            <el-card class="box-card" shadow="hover" style="width: 250px;height: 150px">
               <div slot="header" class="clearfix">
                 <span>{{ item.studentName }}</span>
                 <el-button style="float: right; padding: 3px 0" type="text">结账</el-button>
@@ -72,15 +69,28 @@
   </div>
 </template>
 <style>
-  .checkin-class:hover {
-    background: #b6f9f4;
+  .text {
+    font-size: 14px;
   }
-  .checkin-class:active {
-    background: #2c94ff;
+
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+  .box-card {
+    margin: 5px;
   }
 </style>
 <script>
-  import { listBaseCheckin, listStudents } from "@/api/payment/checkout";
+  import { listBaseCheckin, listStudents, statistic } from "@/api/payment/checkout";
   import { getGrades } from "@/api/info/studentInfo";
 
   export default {
@@ -88,6 +98,7 @@
     props: [],
     data() {
       return {
+        studentsLoading: false,
         // 总条数
         total: 0,
         // 考勤总表表格数据
@@ -101,41 +112,60 @@
         },
         grades:[],
         grade: null,
+        baseCheckInName: null,
         baseCheckInId: null,
         students: [],
       }
     },
     computed: {},
-    watch: {},
+    watch: {
+      baseCheckInId : {
+        handler(){
+          this.showDetailDetail();
+        }
+      }
+    },
     created() {
-      this.getList();
       this.initGrades();
+      this.getList();
     },
     mounted() {},
     methods: {
+      calculateStatistic(baseCheckInId,baseCheckInName){
+        let param = {
+          baseCheckInId : baseCheckInId
+        }
+        statistic(param).then(response => {
+          this.$modal.msgSuccess(baseCheckInName + " 考勤数据统计成功");
+        });
+      },
       initGrades(){
         getGrades().then(response => {
           this.grades = response.data;
           this.grade = this.grades[0].grade;
         })
       },
-      initBaseCheckInId(baseCheckInId){
-        this.baseCheckInId = baseCheckInId;
-        this.showDetail();
-      },
-      showDetail(){
-        if (null === this.baseCheckInId){
+      showDetail(baseCheckInId,baseCheckInName){
+        if (null === baseCheckInId){
           return
         }
         if (null === this.grade){
           return
         }
+        if (baseCheckInName !== null){
+          this.baseCheckInId = baseCheckInId;
+          this.baseCheckInName = baseCheckInName;
+        }
+      },
+      showDetailDetail(){
+        this.studentsLoading = true;
         let param = {
           baseCheckInId : this.baseCheckInId,
           studentGrade : this.grade
         };
         listStudents(param).then(response => {
           this.students = response.data;
+          this.studentsLoading = false;
         });
       },
       /** 查询考勤总表列表 */
