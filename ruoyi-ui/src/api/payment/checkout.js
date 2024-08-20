@@ -9,6 +9,15 @@ export function listBaseCheckin(query) {
   })
 }
 
+// 查询学生考勤统计详情
+export function studentStatistic(query) {
+  return request({
+    url: '/payment/checkout/studentStatistic',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询考勤总表列表
 export function listStudents(query) {
   return request({

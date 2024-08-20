@@ -45,7 +45,7 @@
             <el-card class="box-card" shadow="hover" style="width: 250px;height: 150px">
               <div slot="header" class="clearfix">
                 <span>{{ item.studentName }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">结账</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="showStudentStatistic(item.studentId, item.studentName)">结账</el-button>
               </div>
               <div class="text item">
                 <div>出勤天数：{{ item.checkInTimes }}<span style="float: right; padding: 3px 0"><el-tag v-show="item.billStatus === 0 || !item.billStatus" type="info">未生成</el-tag><el-tag v-show="item.billStatus === 1">已生成</el-tag></span></div>
@@ -57,15 +57,33 @@
         </el-row>
       </el-col>
     </el-row>
+    <el-dialog
+      :title="studentDetailTitle" :visible.sync="studentDetailVisible" width="80%" :closeOnClickModal="false" append-to-body>
+      <div>
+        <el-descriptions class="margin-top" title="考勤数据" direction="vertical" :column="4" border>
+          <template slot="extra">
+            <el-button type="primary" size="small">操作</el-button>
+          </template>
+          <el-descriptions-item label="学生姓名">{{ studentCheckInDetail.studentName }}</el-descriptions-item>
+          <el-descriptions-item label="考勤开始日期">{{ studentCheckInDetail.checkInBeginDate  }}</el-descriptions-item>
+          <el-descriptions-item label="考勤结束日期">{{ studentCheckInDetail.checkInEndDate }}</el-descriptions-item>
+          <el-descriptions-item label="缺勤天数">{{ studentCheckInDetail.checkInSumDays - studentCheckInDetail.checkInTimes - studentCheckInDetail.leaveDays }}</el-descriptions-item>
+          <el-descriptions-item label="应考勤天数">{{ studentCheckInDetail.checkInSumDays }}</el-descriptions-item>
+          <el-descriptions-item label="实际出勤天数">{{ studentCheckInDetail.checkInTimes }}</el-descriptions-item>
+          <el-descriptions-item label="请假天数">{{ studentCheckInDetail.leaveDays }}</el-descriptions-item>
+        </el-descriptions>
+        <el-divider></el-divider>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-form ref="elForm" :model="formData" :rules="rules" size="medium" :disabled="true" label-width="100px">
+          <el-form-item size="large">
+            <el-button @click="resetForm">取 消 结账</el-button>
+            <el-button type="primary" @click="submitForm">提 交 结账</el-button>
+          </el-form-item>
+        </el-form>
+      </span>
+    </el-dialog>
 
-    <el-form ref="elForm" :model="formData" :rules="rules" size="medium" :disabled="true" label-width="100px">
-      <el-row :gutter="15">
-      </el-row>
-      <el-form-item size="large">
-        <el-button type="primary" @click="submitForm">提交</el-button>
-        <el-button @click="resetForm">重置</el-button>
-      </el-form-item>
-    </el-form>
   </div>
 </template>
 <style>
@@ -90,7 +108,7 @@
   }
 </style>
 <script>
-  import { listBaseCheckin, listStudents, statistic } from "@/api/payment/checkout";
+  import { listBaseCheckin, listStudents, statistic, studentStatistic } from "@/api/payment/checkout";
   import { getGrades } from "@/api/info/studentInfo";
 
   export default {
@@ -115,6 +133,9 @@
         baseCheckInName: null,
         baseCheckInId: null,
         students: [],
+        studentCheckInDetail: '',
+        studentDetailVisible: false,
+        studentDetailTitle: ''
       }
     },
     computed: {},
@@ -131,6 +152,17 @@
     },
     mounted() {},
     methods: {
+      showStudentStatistic(studentId, studentName){
+        let param = {
+          baseCheckInId : this.baseCheckInId,
+          studentId : studentId
+        };
+        studentStatistic(param).then(response => {
+          this.studentCheckInDetail = response.data[0];
+          this.studentDetailTitle = this.baseCheckInName + "  " + studentName + "  考勤详情";
+          this.studentDetailVisible = true;
+        });
+      },
       calculateStatistic(baseCheckInId,baseCheckInName){
         let param = {
           baseCheckInId : baseCheckInId
@@ -176,6 +208,7 @@
           that.baseCheckinList = response.rows;
           if (this.baseCheckinList.length > 0){
             this.baseCheckInId = this.baseCheckinList[0].baseCheckInId;
+            this.baseCheckInName = this.baseCheckinList[0].baseCheckInName;
           }
           that.total = response.total;
           that.loading = false;

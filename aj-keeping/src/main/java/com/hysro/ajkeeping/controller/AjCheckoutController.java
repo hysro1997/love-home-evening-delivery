@@ -2,7 +2,7 @@ package com.hysro.ajkeeping.controller;
 
 import com.hysro.ajkeeping.domain.AjBaseCheckIn;
 import com.hysro.ajkeeping.domain.AjBaseCheckInPaymentStatus;
-import com.hysro.ajkeeping.domain.AjHomoInBaseCheckIn;
+import com.hysro.ajkeeping.domain.AjStudentCheckInStatistic;
 import com.hysro.ajkeeping.service.IAjCheckoutService;
 import com.hysro.ajkeeping.service.IAjStudentCheckInStatisticService;
 import com.ruoyi.common.core.controller.BaseController;
@@ -32,6 +32,16 @@ public class AjCheckoutController extends BaseController {
     private IAjStudentCheckInStatisticService ajStudentCheckInStatisticService;
 
     /**
+     * 查询学生考勤统计详情
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @GetMapping("/studentStatistic")
+    public AjaxResult studentStatistic(AjStudentCheckInStatistic ajStudentCheckInStatistic)
+    {
+        return success(ajStudentCheckInStatisticService.selectAjStudentCheckInStatisticList(ajStudentCheckInStatistic));
+    }
+
+    /**
      * 查询考勤总表列表
      */
     @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
@@ -56,7 +66,7 @@ public class AjCheckoutController extends BaseController {
     /**
      * 依据考勤总表id统计考勤数据
      */
-    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @PreAuthorize("@ss.hasPermi('payment:checkout:edit')")
     @PostMapping("/statistic")
     public AjaxResult statistic(@NotNull @RequestBody AjBaseCheckIn baseCheckIn)
     {
