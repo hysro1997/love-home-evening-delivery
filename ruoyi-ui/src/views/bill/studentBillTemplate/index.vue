@@ -89,11 +89,11 @@
         </template>
       </el-table-column>
       <!--el-table-column label="使用每月收费" align="center" prop="costUseFeePerMonth" /-->
-      <el-table-column label="课时费" align="center" prop="costFeePerLesson">
+      <!-- el-table-column label="课时费" align="center" prop="costFeePerLesson">
         <template slot-scope="scope">
           <i v-if="1===scope.row.costUseFeePerLesson" class="el-icon-star-on"></i>{{scope.row.costFeePerLesson}}
         </template>
-      </el-table-column>
+      </el-table-column -->
       <!--el-table-column label="使用课时费" align="center" prop="costUseFeePerLesson" /-->
       <el-table-column label="伙食费" align="center" prop="costFoodFee" />
       <el-table-column label="材料费" align="center" prop="costTextbooksFee" />
@@ -171,7 +171,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
+        <!-- el-row :gutter="20">
           <el-col :span="10">
             <el-form-item label="课时费（元）：" prop="costFeePerLesson">
               <el-input v-model="form.costFeePerLesson" @input="form.costFeePerLesson = form.costFeePerLesson.replace(/[^\d.]/g,'')" placeholder="请输入课时费" @blur="verifyFeeUse(3)"><template slot="append">元</template></el-input>
@@ -187,7 +187,7 @@
               </template>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row -->
         <el-row :gutter="20">
           <el-col :span="10">
             <el-form-item label="伙食费（元）：" prop="costFoodFee">

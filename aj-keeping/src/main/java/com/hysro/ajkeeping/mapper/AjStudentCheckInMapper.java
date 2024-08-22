@@ -29,6 +29,14 @@ public interface AjStudentCheckInMapper
     public List<AjStudentCheckIn> selectAjStudentCheckInList(AjStudentCheckIn ajStudentCheckIn);
 
     /**
+     * 查询学生考勤列表
+     *
+     * @param ajStudentCheckIn 学生考勤
+     * @return 学生考勤集合
+     */
+    public List<AjStudentCheckIn> selectAjStudentCheckInList2(AjStudentCheckIn ajStudentCheckIn);
+
+    /**
      * 新增学生考勤
      *
      * @param ajStudentCheckIn 学生考勤

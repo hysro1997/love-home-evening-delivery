@@ -45,12 +45,12 @@
             <el-card class="box-card" shadow="hover" style="width: 250px;height: 150px">
               <div slot="header" class="clearfix">
                 <span>{{ item.studentName }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="showStudentStatistic(item.studentId, item.studentName)">结账</el-button>
+                <el-button v-show="!item.billStatus" style="float: right; padding: 3px 0" type="text" @click="showStudentStatistic(item.studentId, item.studentName)">结账</el-button>
               </div>
               <div class="text item">
-                <div>出勤天数：{{ item.checkInTimes }}<span style="float: right; padding: 3px 0"><el-tag v-show="item.billStatus === 0 || !item.billStatus" type="info">未生成</el-tag><el-tag v-show="item.billStatus === 1">已生成</el-tag></span></div>
+                <div>出勤天数：{{ item.checkInTimes }}<span style="float: right; padding: 3px 0"><el-tag v-show="!item.billStatus" type="info">未生成</el-tag><el-tag v-show="item.billStatus">已生成</el-tag></span></div>
                 <br/>
-                <div>请假天数：{{ item.leaveDays }}<span style="float: right; padding: 3px 0"><el-tag v-show="item.paymentStatus === 0 || !item.paymentStatus" type="info">未支付</el-tag><el-tag v-show="item.paymentStatus === 1">已结清</el-tag></span></div>
+                <div>请假天数：{{ item.leaveDays }}<span style="float: right; padding: 3px 0"><el-tag v-show="!item.paymentStatus" type="info">未支付</el-tag><el-tag type="success" v-show="item.paymentStatus">已结清</el-tag></span></div>
               </div>
             </el-card>
           </el-col>
@@ -58,27 +58,124 @@
       </el-col>
     </el-row>
     <el-dialog
-      :title="studentDetailTitle" :visible.sync="studentDetailVisible" width="80%" :closeOnClickModal="false" append-to-body>
+      :title="studentDetailTitle" :visible.sync="studentDetailVisible" width="80%" @close="resetForm" :closeOnClickModal="false" append-to-body>
       <div>
         <el-descriptions class="margin-top" title="考勤数据" direction="vertical" :column="4" border>
-          <template slot="extra">
-            <el-button type="primary" size="small">操作</el-button>
-          </template>
           <el-descriptions-item label="学生姓名">{{ studentCheckInDetail.studentName }}</el-descriptions-item>
           <el-descriptions-item label="考勤开始日期">{{ studentCheckInDetail.checkInBeginDate  }}</el-descriptions-item>
           <el-descriptions-item label="考勤结束日期">{{ studentCheckInDetail.checkInEndDate }}</el-descriptions-item>
           <el-descriptions-item label="缺勤天数">{{ studentCheckInDetail.checkInSumDays - studentCheckInDetail.checkInTimes - studentCheckInDetail.leaveDays }}</el-descriptions-item>
           <el-descriptions-item label="应考勤天数">{{ studentCheckInDetail.checkInSumDays }}</el-descriptions-item>
-          <el-descriptions-item label="实际出勤天数">{{ studentCheckInDetail.checkInTimes }}</el-descriptions-item>
+          <el-descriptions-item label="实际出勤天数">
+            {{ studentCheckInDetail.checkInTimes }}
+            <el-tag type="success" v-show="studentCheckInDetail.checkInSumDays === studentCheckInDetail.checkInTimes">全勤</el-tag>
+          </el-descriptions-item>
           <el-descriptions-item label="请假天数">{{ studentCheckInDetail.leaveDays }}</el-descriptions-item>
         </el-descriptions>
         <el-divider></el-divider>
+        <div>
+          <el-row>
+            <el-col :span="12">
+              出勤详情：
+              <el-row>
+                <el-col :span="4" v-for="i in studentCheckInDaysDetail" style="margin-top:2px">
+                  <el-tag>{{ i.checkInDate }}</el-tag>
+                </el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="12">
+              账 单 选 择：
+              <el-select v-model="costTemplateId" placeholder="请选择" @change="showCostTemplateDetail">
+                <el-option
+                  v-for="item in costTemplateList"
+                  :label="item.costTemplateName"
+                  :value="item.costTemplateId">
+                </el-option>
+              </el-select>
+              <div v-if="costTemplate">
+                  <el-row style="margin-top: 5px">
+                    <el-col :span="14">
+                      周 期 收 费：<el-input style="width: 60%" :disabled="!costTemplate.costUseFeePerMonth" v-model="costTemplate.costFeePerMonth" @input="costTemplate.costFeePerMonth = costTemplate.costFeePerMonth.replace(/[^\d.]/g,'')" @blur="verifyFeeUse(0)"><template slot="append">元</template></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-radio-group v-model="costTemplate.costUseFeePerMonth" size="small" @change="verifyFeeUse(0)">
+                        <el-radio :label="1">使用</el-radio>
+                      </el-radio-group>
+                    </el-col>
+                  </el-row>
+                  <el-row style="margin-top: 5px">
+                    <el-col :span="14">
+                      每 日 收 费：<el-input style="width: 60%" :disabled="!costTemplate.costUseFeePerDay" v-model="costTemplate.costFeePerDay" @input="costTemplate.costFeePerDay = costTemplate.costFeePerDay.replace(/[^\d.]/g,'')" @blur="verifyFeeUse(1)"><template slot="append">元</template></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-radio-group v-model="costTemplate.costUseFeePerDay" size="small" @change="verifyFeeUse(1)">
+                        <el-radio :label="1">使用</el-radio>
+                      </el-radio-group>
+                    </el-col>
+                  </el-row>
+                  <!-- el-row style="margin-top: 5px">
+                    <el-col :span="14">
+                      课 时 收 费：<el-input style="width: 60%" :disabled="!costTemplate.costFeePerLesson" v-model="costTemplate.costFeePerLesson" @input="costTemplate.costFeePerLesson = costTemplate.costFeePerLesson.replace(/[^\d.]/g,'')"><template slot="append">元</template></el-input>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-radio-group v-model="costTemplate.costUseFeePerLesson" size="small">
+                        <el-radio :label="1">使用</el-radio>
+                        <el-radio :label="0">不使用</el-radio>
+                      </el-radio-group>
+                    </el-col>
+                  </el-row -->
+                <el-row style="margin-top: 5px">
+                  <el-col :span="14">
+                    伙 食 收 费：
+                    <el-input style="width: 60%" v-model="costTemplate.costFoodFee" @input="costTemplate.costFoodFee = costTemplate.costFoodFee.replace(/[^\d.]/g,'')" placeholder="请输入伙食费"><template slot="append">元</template></el-input>
+                  </el-col>
+                </el-row>
+                <el-row style="margin-top: 5px">
+                  <el-col :span="14">
+                    资 料 收 费：
+                    <el-input style="width: 60%" v-model="costTemplate.costTextbooksFee" @input="costTemplate.costTextbooksFee = costTemplate.costTextbooksFee.replace(/[^\d.]/g,'')" placeholder="请输入材料费"><template slot="append">元</template></el-input>
+                  </el-col>
+                </el-row><el-row style="margin-top: 5px">
+                <el-col :span="14">
+                  优 惠 费 用：
+                  <el-input style="width: 60%" v-model="coupon" @input="coupon = coupon.replace(/[^\d.]/g,'')" placeholder="请输入优惠费用"><template slot="append">元</template></el-input>
+                </el-col>
+              </el-row>
+                <el-row style="margin-top: 15px">
+                  <el-col :span="4">
+                    总费用：<br/><br/><br/><br/>合计：
+                  </el-col>
+                  <el-col :span="14">
+                    <span>
+                      <span v-if="costTemplate.costUseFeePerDay">
+                        {{ studentCheckInDetail.checkInTimes }} × {{ costTemplate.costFeePerDay }} = {{ studentCheckInDetail.checkInTimes * costTemplate.costFeePerDay }}
+                      </span>
+                      <span v-else>
+                        {{ costTemplate.costFeePerMonth }}
+                      </span>
+                      <br/>
+                      + {{ costTemplate.costFoodFee }} 伙食费
+                      <br/>
+                      + {{ costTemplate.costTextbooksFee }} 资料费
+                      <br/>
+                      - {{ coupon }} 优惠费用
+                      <br/>
+                      --------------------------------------------
+                      <br/>
+                      {{ sumCost }}元
+                    </span>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-form ref="elForm" :model="formData" :rules="rules" size="medium" :disabled="true" label-width="100px">
+        <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
           <el-form-item size="large">
             <el-button @click="resetForm">取 消 结账</el-button>
-            <el-button type="primary" @click="submitForm">提 交 结账</el-button>
+            <el-button :disabled="costTemplate === null" type="primary" @click="submitForm">结账 {{ sumCost }} 元</el-button>
           </el-form-item>
         </el-form>
       </span>
@@ -108,7 +205,7 @@
   }
 </style>
 <script>
-  import { listBaseCheckin, listStudents, statistic, studentStatistic } from "@/api/payment/checkout";
+  import { listBaseCheckin, listStudents, statistic, studentStatistic, studentCheckInDays, getCostTemplate, getCostTemplateDetail, addStudentBill } from "@/api/payment/checkout";
   import { getGrades } from "@/api/info/studentInfo";
 
   export default {
@@ -135,7 +232,13 @@
         students: [],
         studentCheckInDetail: '',
         studentDetailVisible: false,
-        studentDetailTitle: ''
+        studentDetailTitle: '',
+        studentCheckInDaysDetail: [],
+        costTemplateList: [],
+        costTemplateId: null,
+        costTemplate: null,
+        coupon: 0,
+        sumCost: 0
       }
     },
     computed: {},
@@ -149,9 +252,53 @@
     created() {
       this.initGrades();
       this.getList();
+      this.showCostTemplateList();
     },
     mounted() {},
     methods: {
+      calculateSumBill(){
+        if(null !== this.costTemplate){
+          let otherCost = this.costTemplate.costFoodFee + this.costTemplate.costTextbooksFee - this.coupon;
+          if(1===this.costTemplate.costUseFeePerDay){
+            this.sumCost = this.studentCheckInDetail.checkInTimes * this.costTemplate.costFeePerDay + otherCost;
+          } else {
+            this.sumCost = this.costTemplate.costFeePerMonth + otherCost;
+          }
+        }
+      },
+      verifyFeeUse(index){
+        if (1 === index){
+          null !== this.costTemplate.costFeePerDay && '' !== this.costTemplate.costFeePerDay ? this.changeUseAble(1,0) : this.changeUseAble(0,0);
+        } else{
+          null !== this.costTemplate.costFeePerMonth && '' !== this.costTemplate.costFeePerMonth ? this.changeUseAble(0,1) : this.changeUseAble(0,0);
+        }
+      },
+      changeUseAble(useDay,useMonth){
+        this.costTemplate.costUseFeePerDay = useDay;
+        this.costTemplate.costUseFeePerMonth = useMonth;
+        this.calculateSumBill();
+      },
+      showCostTemplateDetail(){
+        getCostTemplateDetail(this.costTemplateId).then(response =>{
+          this.costTemplate = response.data;
+          this.calculateSumBill();
+        });
+      },
+      showCostTemplateList(){
+        getCostTemplate().then(response => {
+          this.costTemplateList = response.data;
+        });
+      },
+      showStudentCheckInDays(studentId){
+        let param = {
+          baseCheckInId : this.baseCheckInId,
+          studentId : studentId,
+          checkInStatus : 1
+        };
+        studentCheckInDays(param).then(response => {
+          this.studentCheckInDaysDetail = response.data;
+        });
+      },
       showStudentStatistic(studentId, studentName){
         let param = {
           baseCheckInId : this.baseCheckInId,
@@ -162,6 +309,7 @@
           this.studentDetailTitle = this.baseCheckInName + "  " + studentName + "  考勤详情";
           this.studentDetailVisible = true;
         });
+        this.showStudentCheckInDays(studentId);
       },
       calculateStatistic(baseCheckInId,baseCheckInName){
         let param = {
@@ -215,13 +363,36 @@
         });
       },
       submitForm() {
-        this.$refs['elForm'].validate(valid => {
-          if (!valid) return
-          // TODO 提交表单
-        })
+        let param = {
+          costTemplateId: this.costTemplateId,
+          studentId: this.studentCheckInDetail.studentId,
+          studentName: this.studentCheckInDetail.studentName,
+          checkInStatisticId: this.studentCheckInDetail.id,
+          coupon: this.coupon,
+          actualPerMonthFee: this.costTemplate.costFeePerMonth,
+          actualPerDayFee: this.costTemplate.costFeePerDay,
+          actualTextbookFee: this.costTemplate.costTextbooksFee,
+          actualFoodFee: this.costTemplate.costFoodFee,
+          acutalBillFee: this.sumCost,
+          billStatus: 0
+        }
+        if(this.costTemplate.costUseFeePerDay === 1){
+          param.actualPerMonthFee = null;
+        } else {
+          param.actualPerDayFee = null;
+        }
+        addStudentBill(param).then(response => {
+          this.$message.success("成功")
+          this.showDetailDetail();
+          this.resetForm();
+        });
       },
       resetForm() {
-        this.$refs['elForm'].resetFields()
+        this.studentDetailVisible = false;
+        this.costTemplate = null;
+        this.studentCheckInDetail = '';
+        this.costTemplateId = null;
+        this.sumCost = 0;
       },
     }
   }

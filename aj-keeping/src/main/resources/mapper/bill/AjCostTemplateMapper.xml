@@ -41,6 +41,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by cost_template_id DESC
     </select>
 
+    <select id="selectSimpleAjCostTemplateList" resultMap="AjCostTemplateResult">
+        select cost_template_id, cost_template_name, cost_use_grade from aj_cost_template
+    </select>
+
     <select id="selectAjCostTemplateByCostTemplateId" parameterType="Long" resultMap="AjCostTemplateResult">
         <include refid="selectAjCostTemplateVo"/>
         where cost_template_id = #{costTemplateId}

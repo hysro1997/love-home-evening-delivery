@@ -34,3 +34,37 @@ export function statistic(data) {
     data: data
   })
 }
+
+// 查询学生考勤日期详情
+export function studentCheckInDays(query) {
+  return request({
+    url: '/payment/checkout/studentCheckInDays',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询收费模板列表
+export function getCostTemplate() {
+  return request({
+    url: '/payment/checkout/getCostTemplate',
+    method: 'get'
+  })
+}
+
+// 查询收费模板详情
+export function getCostTemplateDetail(costTemplateId) {
+  return request({
+    url: '/payment/checkout/getCostTemplate/' + costTemplateId,
+    method: 'get'
+  })
+}
+
+// 新增学生账单明细
+export function addStudentBill(data) {
+  return request({
+    url: '/payment/checkout/studentBill',
+    method: 'post',
+    data: data
+  })
+}

@@ -9,19 +9,19 @@ import com.hysro.ajkeeping.service.IAjStudentCheckInService;
 
 /**
  * 学生考勤Service业务层处理
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
 @Service
-public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService 
+public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService
 {
     @Autowired
     private AjStudentCheckInMapper ajStudentCheckInMapper;
 
     /**
      * 查询学生考勤
-     * 
+     *
      * @param studentCheckInId 学生考勤主键
      * @return 学生考勤
      */
@@ -33,7 +33,7 @@ public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService
 
     /**
      * 查询学生考勤列表
-     * 
+     *
      * @param ajStudentCheckIn 学生考勤
      * @return 学生考勤
      */
@@ -44,8 +44,20 @@ public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService
     }
 
     /**
+     * 查询学生考勤列表
+     *
+     * @param ajStudentCheckIn 学生考勤
+     * @return 学生考勤
+     */
+    @Override
+    public List<AjStudentCheckIn> selectAjStudentCheckInListNoOrder(AjStudentCheckIn ajStudentCheckIn)
+    {
+        return ajStudentCheckInMapper.selectAjStudentCheckInList2(ajStudentCheckIn);
+    }
+
+    /**
      * 新增学生考勤
-     * 
+     *
      * @param ajStudentCheckIn 学生考勤
      * @return 结果
      */
@@ -57,7 +69,7 @@ public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService
 
     /**
      * 修改学生考勤
-     * 
+     *
      * @param ajStudentCheckIn 学生考勤
      * @return 结果
      */
@@ -69,7 +81,7 @@ public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService
 
     /**
      * 批量删除学生考勤
-     * 
+     *
      * @param studentCheckInIds 需要删除的学生考勤主键
      * @return 结果
      */
@@ -81,7 +93,7 @@ public class AjStudentCheckInServiceImpl implements IAjStudentCheckInService
 
     /**
      * 删除学生考勤信息
-     * 
+     *
      * @param studentCheckInId 学生考勤主键
      * @return 结果
      */

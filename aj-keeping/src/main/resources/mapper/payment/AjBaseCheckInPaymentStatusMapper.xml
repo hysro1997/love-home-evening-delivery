@@ -35,7 +35,7 @@
         select h.student_id AS studentId, h.student_name AS studentName, s.payment_status AS paymentStatus, s.bill_status AS billStatus, h.base_check_in_id AS baseCheckInId, i.student_grade AS studentGrade, s.check_in_times AS checkInTimes, s.leave_days AS leaveDays
         from aj_homo_in_base_check_in h
         LEFT JOIN aj_student_check_in_statistic s
-        ON h.student_id = s.student_id
+        ON h.student_id = s.student_id AND h.base_check_in_id = s.base_check_in_id
         LEFT JOIN aj_student_info i
         ON h.student_id = i.student_id
         WHERE h.base_check_in_id = #{baseCheckInId} AND i.student_grade = #{studentGrade} AND h.student_id IS NOT NULL

@@ -9,19 +9,19 @@ import com.hysro.ajkeeping.service.IAjCostTemplateService;
 
 /**
  * 学生费用模板Service业务层处理
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
 @Service
-public class AjCostTemplateServiceImpl implements IAjCostTemplateService 
+public class AjCostTemplateServiceImpl implements IAjCostTemplateService
 {
     @Autowired
     private AjCostTemplateMapper ajCostTemplateMapper;
 
     /**
      * 查询学生费用模板
-     * 
+     *
      * @param costTemplateId 学生费用模板主键
      * @return 学生费用模板
      */
@@ -33,7 +33,7 @@ public class AjCostTemplateServiceImpl implements IAjCostTemplateService
 
     /**
      * 查询学生费用模板列表
-     * 
+     *
      * @param ajCostTemplate 学生费用模板
      * @return 学生费用模板
      */
@@ -43,9 +43,14 @@ public class AjCostTemplateServiceImpl implements IAjCostTemplateService
         return ajCostTemplateMapper.selectAjCostTemplateList(ajCostTemplate);
     }
 
+    @Override
+    public List<AjCostTemplate> selectSimpleAjCostTemplateList() {
+        return ajCostTemplateMapper.selectSimpleAjCostTemplateList();
+    }
+
     /**
      * 新增学生费用模板
-     * 
+     *
      * @param ajCostTemplate 学生费用模板
      * @return 结果
      */
@@ -57,7 +62,7 @@ public class AjCostTemplateServiceImpl implements IAjCostTemplateService
 
     /**
      * 修改学生费用模板
-     * 
+     *
      * @param ajCostTemplate 学生费用模板
      * @return 结果
      */
@@ -69,7 +74,7 @@ public class AjCostTemplateServiceImpl implements IAjCostTemplateService
 
     /**
      * 批量删除学生费用模板
-     * 
+     *
      * @param costTemplateIds 需要删除的学生费用模板主键
      * @return 结果
      */
@@ -81,7 +86,7 @@ public class AjCostTemplateServiceImpl implements IAjCostTemplateService
 
     /**
      * 删除学生费用模板信息
-     * 
+     *
      * @param costTemplateId 学生费用模板主键
      * @return 结果
      */

@@ -71,6 +71,7 @@ public interface IAjStudentCheckInStatisticService
      * 统计考勤表学生考勤情况
      *
      * @param baseCheckInId 考勤总表id
+     * @param studentId 学生id
      */
     public void calculateStudentCheckInStatistic(Long baseCheckInId, Long studentId);
 }

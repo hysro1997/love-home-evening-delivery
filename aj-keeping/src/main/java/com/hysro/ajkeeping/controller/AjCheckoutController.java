@@ -1,14 +1,13 @@
 package com.hysro.ajkeeping.controller;
 
-import com.hysro.ajkeeping.domain.AjBaseCheckIn;
-import com.hysro.ajkeeping.domain.AjBaseCheckInPaymentStatus;
-import com.hysro.ajkeeping.domain.AjStudentCheckInStatistic;
-import com.hysro.ajkeeping.service.IAjCheckoutService;
-import com.hysro.ajkeeping.service.IAjStudentCheckInStatisticService;
+import com.hysro.ajkeeping.domain.*;
+import com.hysro.ajkeeping.service.*;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +29,10 @@ public class AjCheckoutController extends BaseController {
     private IAjCheckoutService ajCheckoutService;
     @Autowired
     private IAjStudentCheckInStatisticService ajStudentCheckInStatisticService;
+    @Autowired
+    private IAjStudentCheckInService ajStudentCheckInService;
+    @Autowired
+    private IAjCostTemplateService ajCostTemplateService;
 
     /**
      * 查询学生考勤统计详情
@@ -39,6 +42,36 @@ public class AjCheckoutController extends BaseController {
     public AjaxResult studentStatistic(AjStudentCheckInStatistic ajStudentCheckInStatistic)
     {
         return success(ajStudentCheckInStatisticService.selectAjStudentCheckInStatisticList(ajStudentCheckInStatistic));
+    }
+
+    /**
+     * 查询学生出勤日期详情
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @GetMapping("/studentCheckInDays")
+    public AjaxResult studentCheckInDays(AjStudentCheckIn ajStudentCheckIn)
+    {
+        return success(ajStudentCheckInService.selectAjStudentCheckInListNoOrder(ajStudentCheckIn));
+    }
+
+    /**
+     * 查询收费模板列表
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @GetMapping("/getCostTemplate")
+    public AjaxResult getCostTemplate()
+    {
+        return success(ajCostTemplateService.selectSimpleAjCostTemplateList());
+    }
+
+    /**
+     * 获取学生费用模板详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @GetMapping(value = "/getCostTemplate/{costTemplateId}")
+    public AjaxResult getCostTemplateInfo(@PathVariable("costTemplateId") Long costTemplateId)
+    {
+        return success(ajCostTemplateService.selectAjCostTemplateByCostTemplateId(costTemplateId));
     }
 
     /**
@@ -54,7 +87,7 @@ public class AjCheckoutController extends BaseController {
     }
 
     /**
-     * 查询考勤总表列表
+     * 查询考勤学生列表
      */
     @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
     @GetMapping("/listStudents/{baseCheckInId}/{studentGrade}")
@@ -72,5 +105,16 @@ public class AjCheckoutController extends BaseController {
     {
         ajStudentCheckInStatisticService.calculateStudentCheckInStatistic(baseCheckIn.getBaseCheckInId());
         return success();
+    }
+
+    /**
+     * 新增学生账单明细
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:add')")
+    @Log(title = "学生账单明细", businessType = BusinessType.INSERT)
+    @PostMapping("/studentBill")
+    public AjaxResult add(@RequestBody AjStudentBill ajStudentBill,@RequestBody AjCostTemplate ajCostTemplate)
+    {
+        return toAjax(ajCheckoutService.checkOut(ajStudentBill, ajCostTemplate));
     }
 }

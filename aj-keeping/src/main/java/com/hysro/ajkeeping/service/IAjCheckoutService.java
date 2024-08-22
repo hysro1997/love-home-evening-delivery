@@ -1,7 +1,6 @@
 package com.hysro.ajkeeping.service;
 
-import com.hysro.ajkeeping.domain.AjBaseCheckInPaymentStatus;
-import com.hysro.ajkeeping.domain.AjHomoInBaseCheckIn;
+import com.hysro.ajkeeping.domain.*;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 import java.util.List;
@@ -29,4 +28,6 @@ public interface IAjCheckoutService {
      * @return 学生结账情况
      */
     public List<Map<String,Object>> listStudents(Long baseCheckInId, String studentGrade);
+
+    public int checkOut(AjStudentBill ajStudentBill, AjCostTemplate ajCostTemplate);
 }
