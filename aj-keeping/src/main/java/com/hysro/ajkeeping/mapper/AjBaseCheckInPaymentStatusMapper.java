@@ -24,6 +24,14 @@ public interface AjBaseCheckInPaymentStatusMapper
     public AjBaseCheckInPaymentStatus selectAjBaseCheckInPaymentStatusById(Long id);
 
     /**
+     * 查询结账情况概述
+     *
+     * @param baseCheckInId 结账情况概述主键
+     * @return 结账情况概述
+     */
+    public AjBaseCheckInPaymentStatus selectAjBaseCheckInPaymentStatusByBaseCheckInId(Long baseCheckInId);
+
+    /**
      * 查询结账情况概述列表
      *
      * @param ajBaseCheckInPaymentStatus 结账情况概述

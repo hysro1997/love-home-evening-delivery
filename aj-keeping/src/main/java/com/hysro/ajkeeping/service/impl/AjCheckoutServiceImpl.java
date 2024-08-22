@@ -68,9 +68,43 @@ public class AjCheckoutServiceImpl implements IAjCheckoutService {
         ajStudentBill.setCheckInEndDate(statistic.getCheckInEndDate());
         ajStudentBill.setCheckInTimes(statistic.getCheckInTimes());
         ajStudentBill.setLeaveTimes(statistic.getLeaveDays());
+        ajStudentBill.setCheckInBaseId(statistic.getBaseCheckInId());
         billMapper.insertAjStudentBill(ajStudentBill);
         statistic.setBillStatus(1);
+
+        int statisticNums = statisticMapper.countAjStudentCheckInStatistic(statistic.getBaseCheckInId());
+        int billNums = billMapper.countAjStudentBill(statistic.getBaseCheckInId());
         statisticMapper.updateAjStudentCheckInStatistic(statistic);
+        AjBaseCheckInPaymentStatus paymentStatus = paymentStatusMapper.selectAjBaseCheckInPaymentStatusByBaseCheckInId(statistic.getBaseCheckInId());
+        if (billNums == statisticNums){
+            paymentStatus.setBillStatus(2);
+        } else {
+            paymentStatus.setBillStatus(1);
+        }
+        paymentStatusMapper.updateAjBaseCheckInPaymentStatus(paymentStatus);
+        return ajStudentBill.getId().intValue();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int pay(AjStudentBill ajStudentBill) {
+        billMapper.updateAjStudentBill(ajStudentBill);
+        ajStudentBill = billMapper.selectAjStudentBillById(ajStudentBill.getId());
+        AjStudentCheckInStatistic statistic  = new AjStudentCheckInStatistic();
+        statistic.setBaseCheckInId(ajStudentBill.getCheckInBaseId());
+        statistic.setStudentId(ajStudentBill.getStudentId());
+        statistic = statisticMapper.selectAjStudentCheckInStatisticList(statistic).get(0);
+        statistic.setPaymentStatus(1);
+        statisticMapper.updateAjStudentCheckInStatistic(statistic);
+        int statisticNums = statisticMapper.countAjStudentCheckInStatistic(ajStudentBill.getCheckInBaseId());
+        int billNums = billMapper.countAjStudentBillWithConditionPay(ajStudentBill.getCheckInBaseId());
+        AjBaseCheckInPaymentStatus paymentStatus = paymentStatusMapper.selectAjBaseCheckInPaymentStatusByBaseCheckInId(ajStudentBill.getCheckInBaseId());
+        if (billNums == statisticNums){
+            paymentStatus.setPaymentStatus(2);
+        } else {
+            paymentStatus.setPaymentStatus(1);
+        }
+        paymentStatusMapper.updateAjBaseCheckInPaymentStatus(paymentStatus);
         return 1;
     }
 }

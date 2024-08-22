@@ -68,3 +68,21 @@ export function addStudentBill(data) {
     data: data
   })
 }
+
+// 修改学生账单明细
+export function updateStudentBill(data) {
+  return request({
+    url: '/payment/checkout/pay',
+    method: 'put',
+    data: data
+  })
+}
+
+// 查询学生账单明细列表
+export function listStudentBill(query) {
+  return request({
+    url: '/payment/checkout/studentPayDetail',
+    method: 'get',
+    params: query
+  })
+}

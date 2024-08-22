@@ -36,6 +36,22 @@ public interface AjStudentBillMapper
     public int insertAjStudentBill(AjStudentBill ajStudentBill);
 
     /**
+     * 数学生账单明细
+     *
+     * @param checkInBaseId 学生账单考勤表id
+     * @return 结果
+     */
+    public int countAjStudentBill(Long checkInBaseId);
+
+    /**
+     * 数学生账单明细
+     *
+     * @param checkInBaseId 学生账单考勤表id
+     * @return 结果
+     */
+    public int countAjStudentBillWithConditionPay(Long checkInBaseId);
+
+    /**
      * 修改学生账单明细
      *
      * @param ajStudentBill 学生账单明细

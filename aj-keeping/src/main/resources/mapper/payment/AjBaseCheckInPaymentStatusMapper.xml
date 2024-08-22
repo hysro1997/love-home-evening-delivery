@@ -46,6 +46,11 @@
         where id = #{id}
     </select>
 
+    <select id="selectAjBaseCheckInPaymentStatusByBaseCheckInId" parameterType="Long" resultMap="AjBaseCheckInPaymentStatusResult">
+        <include refid="selectAjBaseCheckInPaymentStatusVo"/>
+        where base_check_in_id = #{baseCheckInId}
+    </select>
+
     <insert id="insertAjBaseCheckInPaymentStatus" parameterType="AjBaseCheckInPaymentStatus" useGeneratedKeys="true" keyProperty="id">
         insert into aj_base_check_in_payment_status
         <trim prefix="(" suffix=")" suffixOverrides=",">

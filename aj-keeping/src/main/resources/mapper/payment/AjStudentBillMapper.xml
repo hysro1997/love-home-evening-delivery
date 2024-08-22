@@ -29,10 +29,11 @@
         <result property="billStatus"    column="bill_status"    />
         <result property="billMode"    column="bill_mode"    />
         <result property="billEvidence"    column="bill_evidence"    />
+        <result property="checkInBaseId"    column="check_in_base_id"    />
     </resultMap>
 
     <sql id="selectAjStudentBillVo">
-        select id, student_id, student_name, check_in_statistic_id, check_in_begin_date, check_in_end_date, check_in_times, leave_times, count_as_check_in_times, per_month_fee, per_day_fee, textbook_fee, food_fee, bill_fee, advance_fee, coupon, actual_per_month_fee, actual_per_day_fee, actual_textbook_fee, actual_food_fee, acutal_bill_fee, bill_status, bill_mode, bill_evidence from aj_student_bill
+        select id, student_id, student_name, check_in_statistic_id, check_in_begin_date, check_in_end_date, check_in_times, leave_times, count_as_check_in_times, per_month_fee, per_day_fee, textbook_fee, food_fee, bill_fee, advance_fee, coupon, actual_per_month_fee, actual_per_day_fee, actual_textbook_fee, actual_food_fee, acutal_bill_fee, bill_status, bill_mode, bill_evidence, check_in_base_id from aj_student_bill
     </sql>
 
     <select id="selectAjStudentBillList" parameterType="AjStudentBill" resultMap="AjStudentBillResult">
@@ -61,6 +62,7 @@
             <if test="billStatus != null "> and bill_status = #{billStatus}</if>
             <if test="billMode != null "> and bill_mode = #{billMode}</if>
             <if test="billEvidence != null  and billEvidence != ''"> and bill_evidence = #{billEvidence}</if>
+            <if test="checkInBaseId != null "> and check_in_base_id = #{checkInBaseId}</if>
         </where>
         order by id desc
     </select>
@@ -68,6 +70,16 @@
     <select id="selectAjStudentBillById" parameterType="Long" resultMap="AjStudentBillResult">
         <include refid="selectAjStudentBillVo"/>
         where id = #{id}
+    </select>
+
+    <select id="countAjStudentBill" parameterType="Long">
+        SELECT COUNT(id) FROM aj_student_bill
+        where check_in_base_id = #{checkInBaseId}
+    </select>
+
+    <select id="countAjStudentBillWithConditionPay" parameterType="Long">
+        SELECT COUNT(id) FROM aj_student_bill
+        where check_in_base_id = #{checkInBaseId} AND bill_status = 1
     </select>
 
     <insert id="insertAjStudentBill" parameterType="AjStudentBill" useGeneratedKeys="true" keyProperty="id">
@@ -97,6 +109,7 @@
             <if test="billStatus != null">bill_status,</if>
             <if test="billMode != null">bill_mode,</if>
             <if test="billEvidence != null">bill_evidence,</if>
+            <if test="checkInBaseId != null">check_in_base_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -123,6 +136,7 @@
             <if test="billStatus != null">#{billStatus},</if>
             <if test="billMode != null">#{billMode},</if>
             <if test="billEvidence != null">#{billEvidence},</if>
+            <if test="checkInBaseId != null">#{checkInBaseId},</if>
         </trim>
     </insert>
 
@@ -152,6 +166,7 @@
             <if test="billStatus != null">bill_status = #{billStatus},</if>
             <if test="billMode != null">bill_mode = #{billMode},</if>
             <if test="billEvidence != null">bill_evidence = #{billEvidence},</if>
+            <if test="checkInBaseId != null ">check_in_base_id = #{checkInBaseId}</if>
         </trim>
         where id = #{id}
     </update>

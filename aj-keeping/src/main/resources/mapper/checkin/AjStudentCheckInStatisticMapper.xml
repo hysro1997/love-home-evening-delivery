@@ -39,6 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by id desc
     </select>
 
+    <select id="countAjStudentCheckInStatistic" parameterType="Long">
+        SELECT COUNT(id) FROM aj_student_check_in_statistic
+        where base_check_in_id = #{baseCheckInId}
+    </select>
+
     <select id="selectAjStudentCheckInStatisticById" parameterType="Long" resultMap="AjStudentCheckInStatisticResult">
         <include refid="selectAjStudentCheckInStatisticVo"/>
         where id = #{id}

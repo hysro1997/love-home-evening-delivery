@@ -115,6 +115,16 @@ public class AjStudentBill extends BaseEntity
     @Excel(name = "缴费证明")
     private String billEvidence;
 
+    private Long checkInBaseId;
+
+    public Long getCheckInBaseId() {
+        return checkInBaseId;
+    }
+
+    public void setCheckInBaseId(Long checkInBaseId) {
+        this.checkInBaseId = checkInBaseId;
+    }
+
     public void setId(Long id)
     {
         this.id = id;

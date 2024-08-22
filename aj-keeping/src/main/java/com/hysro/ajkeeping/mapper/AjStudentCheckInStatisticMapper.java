@@ -38,6 +38,14 @@ public interface AjStudentCheckInStatisticMapper
     public List<AjStudentCheckInStatistic> selectAjStudentCheckInStatisticList(AjStudentCheckInStatistic ajStudentCheckInStatistic);
 
     /**
+     * 数出考勤统计
+     *
+     * @param baseCheckInId 考勤总表id
+     * @return 结果
+     */
+    public int countAjStudentCheckInStatistic(Long baseCheckInId);
+
+    /**
      * 新增考勤统计
      *
      * @param ajStudentCheckInStatistic 考勤统计

@@ -33,6 +33,8 @@ public class AjCheckoutController extends BaseController {
     private IAjStudentCheckInService ajStudentCheckInService;
     @Autowired
     private IAjCostTemplateService ajCostTemplateService;
+    @Autowired
+    private IAjStudentBillService ajStudentBillService;
 
     /**
      * 查询学生考勤统计详情
@@ -115,6 +117,27 @@ public class AjCheckoutController extends BaseController {
     @PostMapping("/studentBill")
     public AjaxResult add(@RequestBody AjStudentBill ajStudentBill,@RequestBody AjCostTemplate ajCostTemplate)
     {
-        return toAjax(ajCheckoutService.checkOut(ajStudentBill, ajCostTemplate));
+        return success(ajCheckoutService.checkOut(ajStudentBill, ajCostTemplate));
+    }
+
+    /**
+     * 修改学生账单明细
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:edit')")
+    @Log(title = "学生账单明细", businessType = BusinessType.UPDATE)
+    @PutMapping("/pay")
+    public AjaxResult edit(@RequestBody AjStudentBill ajStudentBill)
+    {
+        return success(ajCheckoutService.pay(ajStudentBill));
+    }
+
+    /**
+     * 查询学生账单明细列表
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @GetMapping("/studentPayDetail")
+    public AjaxResult list(AjStudentBill ajStudentBill)
+    {
+        return success(ajStudentBillService.selectAjStudentBillList(ajStudentBill));
     }
 }

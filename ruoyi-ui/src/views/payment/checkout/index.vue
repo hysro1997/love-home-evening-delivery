@@ -10,10 +10,10 @@
               <el-button style="float: right; padding: 3px 0; margin-right: 10px" type="text" @click.native="calculateStatistic(i.baseCheckInId,i.baseCheckInName)">统计考勤数据</el-button>
             </div>
             <div>
-              账单状态：<el-tag v-show="i.billStatus === 0" type="info">未生成</el-tag><el-tag v-show="i.billStatus === 1" type="warning">部分账单</el-tag><el-tag v-show="i.billStatus === 2">已生成</el-tag>
+              账单状态：<el-tag v-show="i.billStatus === 0" type="info">未生成</el-tag><el-tag v-show="i.billStatus === 1" type="warning">部分账单</el-tag><el-tag v-show="i.billStatus === 2">全部账单</el-tag>
             </div>
             <div>
-              支付状态：<el-tag v-show="i.paymentStatus === 0" type="info">未支付</el-tag><el-tag v-show="i.paymentStatus === 1" type="warning">部分支付</el-tag><el-tag v-show="i.paymentStatus === 2">已结清</el-tag>
+              支付状态：<el-tag v-show="i.paymentStatus === 0" type="info">未支付</el-tag><el-tag v-show="i.paymentStatus === 1" type="warning">部分支付</el-tag><el-tag v-show="i.paymentStatus === 2">全部结清</el-tag>
             </div>
           </el-card>
         </div>
@@ -45,12 +45,13 @@
             <el-card class="box-card" shadow="hover" style="width: 250px;height: 150px">
               <div slot="header" class="clearfix">
                 <span>{{ item.studentName }}</span>
+                <el-button v-show="item.billStatus && !item.paymentStatus" style="float: right; padding: 3px 0" type="text" @click="goPay(item.studentId, item.baseCheckInId)">付款</el-button>
                 <el-button v-show="!item.billStatus" style="float: right; padding: 3px 0" type="text" @click="showStudentStatistic(item.studentId, item.studentName)">结账</el-button>
               </div>
               <div class="text item">
-                <div>出勤天数：{{ item.checkInTimes }}<span style="float: right; padding: 3px 0"><el-tag v-show="!item.billStatus" type="info">未生成</el-tag><el-tag v-show="item.billStatus">已生成</el-tag></span></div>
+                <div>出勤天数：{{ item.checkInTimes }}<span style="float: right; padding: 3px 0">账单：<el-tag v-show="!item.billStatus" type="info">未生成</el-tag><el-tag v-show="item.billStatus">已生成</el-tag></span></div>
                 <br/>
-                <div>请假天数：{{ item.leaveDays }}<span style="float: right; padding: 3px 0"><el-tag v-show="!item.paymentStatus" type="info">未支付</el-tag><el-tag type="success" v-show="item.paymentStatus">已结清</el-tag></span></div>
+                <div>请假天数：{{ item.leaveDays }}<span style="float: right; padding: 3px 0">费用：<el-tag v-show="!item.paymentStatus" type="info">未支付</el-tag><el-tag type="success" v-show="item.paymentStatus">已结清</el-tag></span></div>
               </div>
             </el-card>
           </el-col>
@@ -180,7 +181,21 @@
         </el-form>
       </span>
     </el-dialog>
-
+    <el-dialog
+      title="支付" :visible.sync="payVisible" width="40%" :closeOnClickModal="false" append-to-body>
+      <div>
+        <h1>付款金额：{{ sumCost }}</h1>
+        <h2>付款方式</h2>
+        <el-radio-group v-model="billMode">
+          <el-radio :label="0">微信</el-radio>
+          <el-radio :label="1">支付宝</el-radio>
+          <el-radio :label="2">现金</el-radio>
+          <el-radio :label="3">其他</el-radio>
+        </el-radio-group>
+        <br/><br/>
+        <el-button type="primary" @click="payMoney">付款</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style>
@@ -205,7 +220,7 @@
   }
 </style>
 <script>
-  import { listBaseCheckin, listStudents, statistic, studentStatistic, studentCheckInDays, getCostTemplate, getCostTemplateDetail, addStudentBill } from "@/api/payment/checkout";
+  import { listBaseCheckin, listStudents, statistic, studentStatistic, studentCheckInDays, getCostTemplate, getCostTemplateDetail, addStudentBill, updateStudentBill, listStudentBill } from "@/api/payment/checkout";
   import { getGrades } from "@/api/info/studentInfo";
 
   export default {
@@ -213,6 +228,8 @@
     props: [],
     data() {
       return {
+        billMode: null,
+        payVisible: false,
         studentsLoading: false,
         // 总条数
         total: 0,
@@ -238,7 +255,8 @@
         costTemplateId: null,
         costTemplate: null,
         coupon: 0,
-        sumCost: 0
+        sumCost: 0,
+        billId: null
       }
     },
     computed: {},
@@ -374,7 +392,8 @@
           actualTextbookFee: this.costTemplate.costTextbooksFee,
           actualFoodFee: this.costTemplate.costFoodFee,
           acutalBillFee: this.sumCost,
-          billStatus: 0
+          billStatus: 0,
+
         }
         if(this.costTemplate.costUseFeePerDay === 1){
           param.actualPerMonthFee = null;
@@ -382,8 +401,32 @@
           param.actualPerDayFee = null;
         }
         addStudentBill(param).then(response => {
-          this.$message.success("成功")
+          this.payVisible = true;
+          this.billId = response.data;
+        });
+      },
+      goPay(studentId,baseCheckInId){
+        let param = {
+          studentId: studentId,
+          checkInBaseId: baseCheckInId
+        }
+        listStudentBill(param).then(response => {
+          this.sumCost = response.data[0].acutalBillFee;
+          this.billId = response.data[0].id;
+          this.payVisible = true;
+        });
+      },
+      payMoney(){
+        let param = {
+          billMode: this.billMode,
+          id: this.billId,
+          billStatus: 1,
+        }
+        updateStudentBill(param).then(() => {
+          this.$message.success("缴费成功");
+          this.payVisible = false;
           this.showDetailDetail();
+          this.getList();
           this.resetForm();
         });
       },
@@ -393,6 +436,7 @@
         this.studentCheckInDetail = '';
         this.costTemplateId = null;
         this.sumCost = 0;
+        this.billId = null;
       },
     }
   }

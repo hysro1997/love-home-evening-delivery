@@ -30,4 +30,6 @@ public interface IAjCheckoutService {
     public List<Map<String,Object>> listStudents(Long baseCheckInId, String studentGrade);
 
     public int checkOut(AjStudentBill ajStudentBill, AjCostTemplate ajCostTemplate);
+
+    public int pay(AjStudentBill ajStudentBill);
 }
