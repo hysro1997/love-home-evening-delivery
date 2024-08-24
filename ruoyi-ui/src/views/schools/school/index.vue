@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="schoolQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="学校" prop="schoolName">
         <el-input
           v-model="queryParams.schoolName"
@@ -95,7 +95,7 @@
 
     <!-- 添加或修改学校对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="schoolForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="学校" prop="schoolName">
           <el-input v-model="form.schoolName" placeholder="请输入学校" />
         </el-form-item>
@@ -170,7 +170,7 @@ export default {
         id: null,
         schoolName: null
       };
-      this.resetForm("form");
+      this.resetForm("schoolForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -179,7 +179,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("schoolQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -206,7 +206,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["schoolForm"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
             updateSchool(this.form).then(response => {
@@ -238,7 +238,7 @@ export default {
     handleExport() {
       this.download('schools/school/export', {
         ...this.queryParams
-      }, `school_${new Date().getTime()}.xlsx`)
+      }, `学校_${new Date().getTime()}.xlsx`)
     }
   }
 };

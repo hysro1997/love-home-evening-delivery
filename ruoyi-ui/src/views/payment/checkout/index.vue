@@ -45,8 +45,8 @@
             <el-card class="box-card" shadow="hover" style="width: 250px;height: 150px">
               <div slot="header" class="clearfix">
                 <span>{{ item.studentName }}</span>
-                <el-button v-show="item.billStatus && !item.paymentStatus" style="float: right; padding: 3px 0" type="text" @click="goPay(item.studentId, item.baseCheckInId)">付款</el-button>
-                <el-button v-show="!item.billStatus" style="float: right; padding: 3px 0" type="text" @click="showStudentStatistic(item.studentId, item.studentName)">结账</el-button>
+                <el-button v-show="item.billStatus && !item.paymentStatus" style="float: right; padding: 3px 0" type="text" @click="goPay(item.studentId, item.baseCheckInId)"> 付款 </el-button>
+                <el-button v-show="!item.billStatus" style="float: right; padding: 3px 0" type="text" @click="showStudentStatistic(item.studentId, item.studentName)"> 结账 </el-button>
               </div>
               <div class="text item">
                 <div>出勤天数：{{ item.checkInTimes }}<span style="float: right; padding: 3px 0">账单：<el-tag v-show="!item.billStatus" type="info">未生成</el-tag><el-tag v-show="item.billStatus">已生成</el-tag></span></div>
@@ -173,7 +173,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
+        <el-form :model="formData" :rules="rules" size="medium" label-width="100px">
           <el-form-item size="large">
             <el-button @click="resetForm">取 消 结账</el-button>
             <el-button :disabled="costTemplate === null" type="primary" @click="submitForm">结账 {{ sumCost }} 元</el-button>

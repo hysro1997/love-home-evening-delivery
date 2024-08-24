@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="studentBillTemplateQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="模板名称" prop="costTemplateName">
         <el-input
           v-model="queryParams.costTemplateName"
@@ -129,7 +129,7 @@
 
     <!-- 添加或修改学生费用模板对话框 -->
     <el-dialog :title="title" :visible.sync="open" center width="1000px" :closeOnClickModal="false" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="170px">
+      <el-form ref="studentBillTemplateForm" :model="form" :rules="rules" label-width="170px">
         <el-row :gutter="20">
           <el-col :span="18">
             <el-form-item label="模板名称：" prop="costTemplateName">
@@ -352,7 +352,7 @@ export default {
         costUseGrade: null,
         costDefault: null
       };
-      this.resetForm("form");
+      this.resetForm("studentBillTemplateForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -361,7 +361,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("studentBillTemplateQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -388,7 +388,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["studentBillTemplateForm"].validate(valid => {
         if (valid) {
           if (this.form.costTemplateId != null) {
             updateStudentBillTemplate(this.form).then(response => {
@@ -420,7 +420,7 @@ export default {
     handleExport() {
       this.download('bill/studentBillTemplate/export', {
         ...this.queryParams
-      }, `studentBillTemplate_${new Date().getTime()}.xlsx`)
+      }, `学生费用模板_${new Date().getTime()}.xlsx`)
     }
   }
 };

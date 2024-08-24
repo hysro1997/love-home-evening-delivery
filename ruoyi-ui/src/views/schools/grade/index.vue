@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="gradeQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="年级" prop="grade">
         <el-input
           v-model="queryParams.grade"
@@ -16,7 +16,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      <!-- el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -57,7 +57,7 @@
           @click="handleExport"
           v-hasPermi="['schools:grade:export']"
         >导出</el-button>
-      </el-col>
+      </el-col -->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -65,7 +65,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="年级" align="center" prop="grade" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -82,7 +82,7 @@
             v-hasPermi="['schools:grade:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column -->
     </el-table>
 
     <pagination
@@ -94,8 +94,8 @@
     />
 
     <!-- 添加或修改年级对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <!-- el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="gradeForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="年级" prop="grade">
           <el-input v-model="form.grade" placeholder="请输入年级" />
         </el-form-item>
@@ -104,7 +104,7 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-    </el-dialog>
+    </el-dialog -->
   </div>
 </template>
 
@@ -170,7 +170,7 @@ export default {
         id: null,
         grade: null
       };
-      this.resetForm("form");
+      this.resetForm("gradeForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -179,7 +179,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("gradeQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -206,7 +206,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["gradeForm"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
             updateGrade(this.form).then(response => {

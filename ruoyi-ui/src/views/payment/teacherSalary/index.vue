@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="teacherSalaryQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="员工id" prop="teacherId">
         <el-input
           v-model="queryParams.teacherId"
@@ -140,7 +140,7 @@
 
     <!-- 添加或修改工资明细对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="teacherSalaryForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="员工id" prop="teacherId">
           <el-input v-model="form.teacherId" placeholder="请输入员工id" />
         </el-form-item>
@@ -295,7 +295,7 @@ export default {
         deduckMoney: null,
         acutalSalary: null
       };
-      this.resetForm("form");
+      this.resetForm("teacherSalaryForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -304,7 +304,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("teacherSalaryQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -331,7 +331,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["teacherSalaryForm"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
             updateTeacherSalary(this.form).then(response => {

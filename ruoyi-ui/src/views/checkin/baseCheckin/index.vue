@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="baseCheckinQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="考勤名称" prop="baseCheckInName">
         <el-input
           v-model="queryParams.baseCheckInName"
@@ -84,7 +84,7 @@
           <!--span-- v-for="item in scope.row.students">{{item.studentName}}</span-->
         </tempalte>
       </el-table-column>
-      <el-table-column label="考勤员工" align="center" prop="teachers">
+      <!-- el-table-column label="考勤员工" align="center" prop="teachers">
         <tempalte slot-scope="scope">
           <el-popover
             placement="right"
@@ -100,7 +100,7 @@
             </el-button>
           </el-popover>
         </tempalte>
-      </el-table-column>
+      </el-table-column -->
       <el-table-column label="考勤开始日期" align="center" prop="baseCheckInBeginDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.baseCheckInBeginDate, '{y}-{m}-{d}') }}</span>
@@ -149,7 +149,7 @@
 
     <!-- 添加或修改考勤总表对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1000px" :closeOnClickModal="false" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="baseCheckinForm" :model="form" :rules="rules" label-width="120px">
         <el-steps :active="active" finish-status="success">
           <el-step title="考勤时间"></el-step>
           <el-step title="学生考勤名单"></el-step>
@@ -564,7 +564,7 @@ export default {
       this.confirmTeacherNames = [];
       this.active = 0;
       this.baseCheckWeekenDay = [];
-      this.resetForm("form");
+      this.resetForm("baseCheckinForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -573,7 +573,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("baseCheckinQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -626,7 +626,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["baseCheckinForm"].validate(valid => {
         if (valid) {
           this.form.baseCheckInBeginDate = this.form.baseCheckInBeginDate.setDate(this.form.baseCheckInBeginDate.getDate());
           this.form.baseCheckInEndDate = this.form.baseCheckInEndDate.setDate(this.form.baseCheckInEndDate.getDate());

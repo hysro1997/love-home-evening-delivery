@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="elForm" size="medium" label-width="100px"
+    <el-form size="medium" label-width="100px"
              label-position="top">
       <el-row :gutter="10">
         <el-col>

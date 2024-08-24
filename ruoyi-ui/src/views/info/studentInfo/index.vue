@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="studentQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="学生姓名" prop="studentName">
         <el-input
           v-model="queryParams.studentName"
@@ -190,7 +190,7 @@
 
     <!-- 添加或修改学生信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1000px" :closeOnClickModal="false" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="studentForm2" :model="form" :rules="rules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="10"><el-form-item label="学生姓名" prop="studentName">
             <el-input v-model="form.studentName" placeholder="请输入学生姓名（如果重复，请添加后缀）" />
@@ -199,8 +199,10 @@
           <el-col :span="10">
             <el-form-item label="学生性别" prop="studentGender">
               <template>
-                <el-radio v-model="form.studentGender" label="1">男</el-radio>
-                <el-radio v-model="form.studentGender" label="2">女</el-radio>
+                <el-radio-group v-model="form.studentGender">
+                  <el-radio :label="1">男</el-radio>
+                  <el-radio :label="2">女</el-radio>
+                </el-radio-group>
               </template>
             </el-form-item>
           </el-col>
@@ -398,7 +400,7 @@ export default {
         studentRemark: null,
         studentStatus: null
       };
-      this.resetForm("form");
+      this.resetForm("studentForm2");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -407,7 +409,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("studentQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -445,7 +447,7 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.form.studentName = this.form.studentName.trim();
-      this.$refs["form"].validate(valid => {
+      this.$refs["studentForm2"].validate(valid => {
         if (valid) {
           if (this.form.studentId != null) {
             updateStudentInfo(this.form).then(response => {
@@ -459,7 +461,7 @@ export default {
             });
           } else {
             addStudentInfo(this.form).then(response => {
-              if (response.data !== 2){
+              if (response.data !== 0){
                 this.$modal.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();

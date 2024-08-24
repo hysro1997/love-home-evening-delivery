@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="teacherCheckinQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="员工id" prop="teacherId">
         <el-input
           v-model="queryParams.teacherId"
@@ -125,7 +125,7 @@
 
     <!-- 添加或修改员工考勤对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="teacherCheckinForm" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="员工id" prop="teacherId">
           <el-input v-model="form.teacherId" placeholder="请输入员工id" />
         </el-form-item>
@@ -249,7 +249,7 @@ export default {
         checkInDatetime: null,
         checkInDayOnDutyTimes: null
       };
-      this.resetForm("form");
+      this.resetForm("teacherCheckinForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -258,7 +258,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
+      this.resetForm("teacherCheckinQueryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -285,7 +285,7 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["teacherCheckinForm"].validate(valid => {
         if (valid) {
           if (this.form.teacherCheckInId != null) {
             updateTeacherCheckin(this.form).then(response => {

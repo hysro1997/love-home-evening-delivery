@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="studentBillQueryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="学生id" prop="studentId">
         <el-input
           v-model="queryParams.studentId"
@@ -103,8 +103,25 @@
     </el-row>
 
     <el-table v-loading="loading" :data="studentBillList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="id" align="center" prop="id" />
+      <el-table-column type="selection" width="55" align="center" /><el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          type="text"
+          icon="el-icon-edit"
+          @click="handleUpdate(scope.row)"
+          v-hasPermi="['payment:studentBill:edit']"
+        >修改</el-button>
+        <!-- el-button
+          size="mini"
+          type="text"
+          icon="el-icon-delete"
+          @click="handleDelete(scope.row)"
+          v-hasPermi="['payment:studentBill:remove']"
+        >删除</el-button -->
+      </template>
+    </el-table-column>
+      <!-- el-table-column label="id" align="center" prop="id" / -->
       <el-table-column label="学生id" align="center" prop="studentId" />
       <el-table-column label="学生姓名" align="center" prop="studentName" />
       <el-table-column label="考勤统计表id" align="center" prop="checkInStatisticId" />
@@ -136,28 +153,10 @@
       <el-table-column label="缴费状态" align="center" prop="billStatus" />
       <el-table-column label="缴费方式" align="center" prop="billMode">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.billMode === 0">微信</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 2">支付宝</el-tag><el-tag type="warning" v-else-if="scope.row.billStatus === 3">现金</el-tag><el-tag type="info" v-else>其他</el-tag>
+          <el-tag v-if="scope.row.billMode === 0">微信</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">支付宝</el-tag><el-tag type="warning" v-else-if="scope.row.billStatus === 2">现金</el-tag><el-tag type="info" v-else>其他</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="缴费证明" align="center" prop="billEvidence" />
-      <!-- el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['payment:studentBill:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['payment:studentBill:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column -->
     </el-table>
 
     <pagination
@@ -170,14 +169,14 @@
 
     <!-- 添加或修改学生账单明细对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="学生id" prop="studentId">
+      <el-form ref="studentBillForm" :model="form" :rules="rules" label-width="80px">
+        <!-- el-form-item label="学生id" prop="studentId">
           <el-input v-model="form.studentId" placeholder="请输入学生id" />
-        </el-form-item>
+        </el-form-item -->
         <el-form-item label="学生姓名" prop="studentName">
-          <el-input v-model="form.studentName" placeholder="请输入学生姓名" />
+          <el-input disabled v-model="form.studentName" placeholder="请输入学生姓名" />
         </el-form-item>
-        <el-form-item label="考勤统计表id" prop="checkInStatisticId">
+        <!-- el-form-item label="考勤统计表id" prop="checkInStatisticId">
           <el-input v-model="form.checkInStatisticId" placeholder="请输入考勤统计表id" />
         </el-form-item>
         <el-form-item label="考勤开始日期" prop="checkInBeginDate">
@@ -195,14 +194,14 @@
                           value-format="yyyy-MM-dd"
                           placeholder="请选择考勤结束日期">
           </el-date-picker>
-        </el-form-item>
+        </el-form-item -->
         <el-form-item label="考勤次数" prop="checkInTimes">
-          <el-input v-model="form.checkInTimes" placeholder="请输入考勤次数" />
+          <el-input disabled v-model="form.checkInTimes" placeholder="请输入考勤次数" />
         </el-form-item>
         <el-form-item label="请假次数" prop="leaveTimes">
-          <el-input v-model="form.leaveTimes" placeholder="请输入请假次数" />
+          <el-input disabled v-model="form.leaveTimes" placeholder="请输入请假次数" />
         </el-form-item>
-        <el-form-item label="视同考勤次数" prop="countAsCheckInTimes">
+        <!-- el-form-item label="视同考勤次数" prop="countAsCheckInTimes">
           <el-input v-model="form.countAsCheckInTimes" placeholder="请输入视同考勤次数" />
         </el-form-item>
         <el-form-item label="每月收费" prop="perMonthFee">
@@ -222,11 +221,11 @@
         </el-form-item>
         <el-form-item label="预收费" prop="advanceFee">
           <el-input v-model="form.advanceFee" placeholder="请输入预收费" />
-        </el-form-item>
+        </el-form-item -->
         <el-form-item label="优惠金额" prop="coupon">
           <el-input v-model="form.coupon" placeholder="请输入优惠金额" />
         </el-form-item>
-        <el-form-item label="实际每月收费" prop="actualPerMonthFee">
+        <!-- el-form-item label="实际每月收费" prop="actualPerMonthFee">
           <el-input v-model="form.actualPerMonthFee" placeholder="请输入实际每月收费" />
         </el-form-item>
         <el-form-item label="实际每日收费" prop="actualPerDayFee">
@@ -237,7 +236,7 @@
         </el-form-item>
         <el-form-item label="实际伙食费" prop="actualFoodFee">
           <el-input v-model="form.actualFoodFee" placeholder="请输入实际伙食费" />
-        </el-form-item>
+        </el-form-item -->
         <el-form-item label="实际账单费用" prop="acutalBillFee">
           <el-input v-model="form.acutalBillFee" placeholder="请输入实际账单费用" />
         </el-form-item>
@@ -250,9 +249,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="缴费证明" prop="billEvidence">
+        <!-- el-form-item label="缴费证明" prop="billEvidence">
           <el-input v-model="form.billEvidence" placeholder="请输入缴费证明" />
-        </el-form-item>
+        </el-form-item -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -369,7 +368,7 @@
           billMode: null,
           billEvidence: null
         };
-        this.resetForm("form");
+        this.resetForm("studentBillForm");
       },
       /** 搜索按钮操作 */
       handleQuery() {
@@ -378,7 +377,7 @@
       },
       /** 重置按钮操作 */
       resetQuery() {
-        this.resetForm("queryForm");
+        this.resetForm("studentBillQueryForm");
         this.handleQuery();
       },
       // 多选框选中数据
@@ -405,7 +404,7 @@
       },
       /** 提交按钮 */
       submitForm() {
-        this.$refs["form"].validate(valid => {
+        this.$refs["studentBillForm"].validate(valid => {
           if (valid) {
             if (this.form.id != null) {
               updateStudentBill(this.form).then(response => {

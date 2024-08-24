@@ -87,7 +87,7 @@ public class AjStudentInfoServiceImpl implements IAjStudentInfoService
             ajStudentInfo.setStudentName(ajStudentInfo.getStudentName().trim());
             return ajStudentInfoMapper.insertAjStudentInfo(ajStudentInfo);
         }
-        return 2;
+        return 0;
     }
 
     /**
