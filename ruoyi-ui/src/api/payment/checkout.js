@@ -86,3 +86,12 @@ export function listStudentBill(query) {
     params: query
   })
 }
+
+// 查询预收费列表
+export function listAdvanceFee(query) {
+  return request({
+    url: '/payment/checkout/advanceFee',
+    method: 'get',
+    params: query
+  })
+}

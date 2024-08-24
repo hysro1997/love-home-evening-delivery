@@ -35,6 +35,20 @@ public class AjCheckoutController extends BaseController {
     private IAjCostTemplateService ajCostTemplateService;
     @Autowired
     private IAjStudentBillService ajStudentBillService;
+    @Autowired
+    private IAjAdvenceFeeService ajAdvenceFeeService;
+
+    /**
+     * 查询预收费列表
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkout:list')")
+    @GetMapping("/advanceFee")
+    public TableDataInfo list(AjAdvenceFee ajAdvenceFee)
+    {
+        startPage();
+        List<AjAdvenceFee> list = ajAdvenceFeeService.selectAjAdvenceFeeList(ajAdvenceFee);
+        return getDataTable(list);
+    }
 
     /**
      * 查询学生考勤统计详情
@@ -115,7 +129,7 @@ public class AjCheckoutController extends BaseController {
     @PreAuthorize("@ss.hasPermi('payment:checkout:add')")
     @Log(title = "学生账单明细", businessType = BusinessType.INSERT)
     @PostMapping("/studentBill")
-    public AjaxResult add(@RequestBody AjStudentBill ajStudentBill,@RequestBody AjCostTemplate ajCostTemplate)
+    public AjaxResult add(@RequestBody AjStudentBill ajStudentBill,@RequestBody AjCostTemplate ajCostTemplate) throws Exception
     {
         return success(ajCheckoutService.checkOut(ajStudentBill, ajCostTemplate));
     }

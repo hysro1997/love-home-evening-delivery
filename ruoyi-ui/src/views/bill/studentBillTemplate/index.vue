@@ -283,9 +283,9 @@ export default {
         costUseGrade: [
           { required: true, message: "适用年级不能为空", trigger: "blur" }
         ],
-        costFeePerDay: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)/, message: "只能输入最多带两位小数的金额"}],
-        costFeePerMonth: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)/, message: "只能输入最多带两位小数的金额"}],
-        costFeePerLesson: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerDay: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)|0/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerMonth: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)|0/, message: "只能输入最多带两位小数的金额"}],
+        costFeePerLesson: [{pattern: /^([1-9][0-9]*)+(\.[0-9]{1,2})?$|(^0\.[0-9]{1,2}?$)|0/, message: "只能输入最多带两位小数的金额"}],
       },
       grades:[],
     };

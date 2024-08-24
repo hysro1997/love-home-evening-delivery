@@ -96,7 +96,8 @@
               <div v-if="costTemplate">
                   <el-row style="margin-top: 5px">
                     <el-col :span="14">
-                      周 期 收 费：<el-input style="width: 60%" :disabled="!costTemplate.costUseFeePerMonth" v-model="costTemplate.costFeePerMonth" @input="costTemplate.costFeePerMonth = costTemplate.costFeePerMonth.replace(/[^\d.]/g,'')" @blur="verifyFeeUse(0)"><template slot="append">元</template></el-input>
+                      周 期 收 费：<el-input style="width: 60%" disabled v-model="costTemplate.costFeePerMonth" @input="costTemplate.costFeePerMonth = costTemplate.costFeePerMonth.replace(/[^\d.]/g,'')" @blur="verifyFeeUse(0)"><template slot="append">元</template></el-input>
+                      <i class="el-icon-circle-check" v-show="costTemplate.costUseFeePerMonth"></i>
                     </el-col>
                     <el-col :span="6">
                       <el-radio-group v-model="costTemplate.costUseFeePerMonth" size="small" @change="verifyFeeUse(0)">
@@ -106,7 +107,8 @@
                   </el-row>
                   <el-row style="margin-top: 5px">
                     <el-col :span="14">
-                      每 日 收 费：<el-input style="width: 60%" :disabled="!costTemplate.costUseFeePerDay" v-model="costTemplate.costFeePerDay" @input="costTemplate.costFeePerDay = costTemplate.costFeePerDay.replace(/[^\d.]/g,'')" @blur="verifyFeeUse(1)"><template slot="append">元</template></el-input>
+                      每 日 收 费：<el-input style="width: 60%" disabled v-model="costTemplate.costFeePerDay" @input="costTemplate.costFeePerDay = costTemplate.costFeePerDay.replace(/[^\d.]/g,'')" @blur="verifyFeeUse(1)"><template slot="append">元</template></el-input>
+                      <i class="el-icon-circle-check" v-show="costTemplate.costUseFeePerDay"></i>
                     </el-col>
                     <el-col :span="6">
                       <el-radio-group v-model="costTemplate.costUseFeePerDay" size="small" @change="verifyFeeUse(1)">
@@ -128,20 +130,27 @@
                 <el-row style="margin-top: 5px">
                   <el-col :span="14">
                     伙 食 收 费：
-                    <el-input style="width: 60%" v-model="costTemplate.costFoodFee" @input="costTemplate.costFoodFee = costTemplate.costFoodFee.replace(/[^\d.]/g,'')" placeholder="请输入伙食费"><template slot="append">元</template></el-input>
+                    <el-input style="width: 60%" disabled v-model="costTemplate.costFoodFee" @input="costTemplate.costFoodFee = costTemplate.costFoodFee.replace(/[^\d.]/g,'')" placeholder="0"><template slot="append">元</template></el-input>
                   </el-col>
                 </el-row>
                 <el-row style="margin-top: 5px">
                   <el-col :span="14">
                     资 料 收 费：
-                    <el-input style="width: 60%" v-model="costTemplate.costTextbooksFee" @input="costTemplate.costTextbooksFee = costTemplate.costTextbooksFee.replace(/[^\d.]/g,'')" placeholder="请输入材料费"><template slot="append">元</template></el-input>
+                    <el-input style="width: 60%" disabled v-model="costTemplate.costTextbooksFee" @input="costTemplate.costTextbooksFee = costTemplate.costTextbooksFee.replace(/[^\d.]/g,'')" placeholder="0"><template slot="append">元</template></el-input>
                   </el-col>
-                </el-row><el-row style="margin-top: 5px">
-                <el-col :span="14">
-                  优 惠 费 用：
-                  <el-input style="width: 60%" v-model="coupon" @input="coupon = coupon.replace(/[^\d.]/g,'')" placeholder="请输入优惠费用"><template slot="append">元</template></el-input>
-                </el-col>
-              </el-row>
+                </el-row>
+                <el-row style="margin-top: 5px">
+                  <el-col :span="14">
+                    预 收 费：
+                    <el-input style="width: 60%" disabled v-model="advanceFee" @input="advanceFee = advanceFee.replace(/[^\d.]/g,'')" placeholder="0"><template slot="append">元</template></el-input>
+                  </el-col>
+                </el-row>
+                <el-row style="margin-top: 5px">
+                  <el-col :span="14">
+                    优 惠 费 用：
+                    <el-input style="width: 60%" v-model="coupon" @input="coupon = coupon.replace(/[^\d.]/g,'')" placeholder="请输入优惠费用" @blur="calculateSumBill"><template slot="append">元</template></el-input>
+                  </el-col>
+                </el-row>
                 <el-row style="margin-top: 15px">
                   <el-col :span="4">
                     总费用：<br/><br/><br/><br/>合计：
@@ -158,6 +167,8 @@
                       + {{ costTemplate.costFoodFee }} 伙食费
                       <br/>
                       + {{ costTemplate.costTextbooksFee }} 资料费
+                      <br/>
+                      - {{ advanceFee === null ? 0:advanceFee }} 预收费
                       <br/>
                       - {{ coupon }} 优惠费用
                       <br/>
@@ -184,6 +195,7 @@
     <el-dialog
       title="支付" :visible.sync="payVisible" width="40%" :closeOnClickModal="false" append-to-body>
       <div>
+        <h1>已生成账单，请选择付款方式</h1>
         <h1>付款金额：{{ sumCost }}</h1>
         <h2>付款方式</h2>
         <el-radio-group v-model="billMode">
@@ -193,6 +205,7 @@
           <el-radio :label="3">其他</el-radio>
         </el-radio-group>
         <br/><br/>
+        <el-button type="primary" @click="resetForm2">暂不付款</el-button>
         <el-button type="primary" @click="payMoney">付款</el-button>
       </div>
     </el-dialog>
@@ -220,7 +233,7 @@
   }
 </style>
 <script>
-  import { listBaseCheckin, listStudents, statistic, studentStatistic, studentCheckInDays, getCostTemplate, getCostTemplateDetail, addStudentBill, updateStudentBill, listStudentBill } from "@/api/payment/checkout";
+  import { listBaseCheckin, listStudents, statistic, studentStatistic, studentCheckInDays, getCostTemplate, getCostTemplateDetail, addStudentBill, updateStudentBill, listStudentBill, listAdvanceFee } from "@/api/payment/checkout";
   import { getGrades } from "@/api/info/studentInfo";
 
   export default {
@@ -256,7 +269,8 @@
         costTemplate: null,
         coupon: 0,
         sumCost: 0,
-        billId: null
+        billId: null,
+        advanceFee: null,
       }
     },
     computed: {},
@@ -281,6 +295,12 @@
             this.sumCost = this.studentCheckInDetail.checkInTimes * this.costTemplate.costFeePerDay + otherCost;
           } else {
             this.sumCost = this.costTemplate.costFeePerMonth + otherCost;
+          }
+          if (this.advanceFee){
+            this.sumCost = this.sumCost - this.advanceFee;
+            if (this.sumCost < 0){
+              this.sumCost = 0;
+            }
           }
         }
       },
@@ -322,10 +342,21 @@
           baseCheckInId : this.baseCheckInId,
           studentId : studentId
         };
+        this.costTemplateList.forEach(item => {
+          if (item.costUseGrade === this.grade){
+            this.costTemplateId = item.costTemplateId;
+            this.showCostTemplateDetail();
+          }
+        });
         studentStatistic(param).then(response => {
           this.studentCheckInDetail = response.data[0];
           this.studentDetailTitle = this.baseCheckInName + "  " + studentName + "  考勤详情";
           this.studentDetailVisible = true;
+        });
+        listAdvanceFee(param).then(response => {
+          if (response.total > 0){
+            this.advanceFee = response.rows[0].advanceFee;
+          }
         });
         this.showStudentCheckInDays(studentId);
       },
@@ -390,13 +421,14 @@
           studentName: this.studentCheckInDetail.studentName,
           checkInStatisticId: this.studentCheckInDetail.id,
           coupon: this.coupon,
+          advanceFee: this.advanceFee,
+          costUseFeePerMonth: this.costTemplate.costUseFeePerMonth,
           actualPerMonthFee: this.costTemplate.costFeePerMonth,
           actualPerDayFee: this.costTemplate.costFeePerDay,
           actualTextbookFee: this.costTemplate.costTextbooksFee,
           actualFoodFee: this.costTemplate.costFoodFee,
           acutalBillFee: this.sumCost,
           billStatus: 0,
-
         }
         if(this.costTemplate.costUseFeePerDay === 1){
           param.actualPerMonthFee = null;
@@ -433,6 +465,12 @@
           this.resetForm();
         });
       },
+      resetForm2() {
+        this.payVisible = false;
+        this.showDetailDetail();
+        this.getList();
+        this.resetForm();
+      },
       resetForm() {
         this.studentDetailVisible = false;
         this.costTemplate = null;
@@ -440,6 +478,8 @@
         this.costTemplateId = null;
         this.sumCost = 0;
         this.billId = null;
+        this.advanceFee = null;
+        this.payVisible = false;
       },
     }
   }
