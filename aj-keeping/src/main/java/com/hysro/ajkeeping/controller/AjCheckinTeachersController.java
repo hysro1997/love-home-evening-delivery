@@ -5,14 +5,12 @@ import com.hysro.ajkeeping.service.IAjTeacherCheckInService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 签到学生Controller
@@ -31,11 +29,9 @@ public class AjCheckinTeachersController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('checkin:checkinTeachers:list')")
     @GetMapping("/list")
-    public TableDataInfo list(AjTeacherCheckIn ajTeacherCheckIn)
+    public AjaxResult list(AjTeacherCheckIn ajTeacherCheckIn)
     {
-        startPage();
-        List<AjTeacherCheckIn> list = ajTeacherCheckInService.selectAjTeacherCheckInList(ajTeacherCheckIn);
-        return getDataTable(list);
+        return success(ajTeacherCheckInService.selectAjTeacherCheckInList(ajTeacherCheckIn));
     }
 
     /**

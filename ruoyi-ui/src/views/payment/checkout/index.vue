@@ -333,8 +333,11 @@
         let param = {
           baseCheckInId : baseCheckInId
         }
+        this.baseCheckInId = baseCheckInId;
+        this.baseCheckInName = baseCheckInName;
         statistic(param).then(response => {
           this.$modal.msgSuccess(baseCheckInName + " 考勤数据统计成功");
+          this.showDetailDetail();
         });
       },
       initGrades(){

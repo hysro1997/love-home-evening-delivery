@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT h.student_id,base_check_in_id, h.student_name AS check_in_student_name, s.student_grade AS check_in_student_grade FROM aj_homo_in_base_check_in h
         LEFT JOIN aj_student_info s
         ON h.student_id = s.student_id
-        WHERE base_check_in_id = #{baseCheckInId} AND h.student_id IS NOT NULL;
+        WHERE base_check_in_id = #{baseCheckInId} AND s.student_status = 0 AND h.student_id IS NOT NULL;
     </select>
 
     <insert id="insertAjHomoInBaseCheckIn" parameterType="AjHomoInBaseCheckIn" useGeneratedKeys="true" keyProperty="id">

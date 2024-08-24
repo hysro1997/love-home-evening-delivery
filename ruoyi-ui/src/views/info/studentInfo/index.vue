@@ -467,6 +467,7 @@ export default {
                 this.getList();
               } else {
                 this.$modal.msgWarning("学生姓名重复");
+                this.form.studentName = this.form.studentName + this.form.studentPhone.slice(7,11);
               }
             });
           }

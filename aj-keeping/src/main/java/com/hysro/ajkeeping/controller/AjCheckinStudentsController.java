@@ -7,7 +7,6 @@ import com.hysro.ajkeeping.service.IAjStudentCheckInService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,11 +35,9 @@ public class AjCheckinStudentsController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('checkin:checkinStudents:list')")
     @GetMapping("/list")
-    public TableDataInfo list(AjGrade ajGrade)
+    public AjaxResult list(AjGrade ajGrade)
     {
-        startPage();
-        List<AjGrade> list = ajGradeService.selectAjGradeList(ajGrade);
-        return getDataTable(list);
+        return success(ajGradeService.selectAjGradeList(ajGrade));
     }
 
     /**
@@ -48,11 +45,9 @@ public class AjCheckinStudentsController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('checkin:checkinStudents:list')")
     @PostMapping("/listStudents")
-    public TableDataInfo listStudents(AjStudentCheckIn ajStudentCheckIn)
+    public AjaxResult listStudents(AjStudentCheckIn ajStudentCheckIn)
     {
-        startPage();
-        List<AjStudentCheckIn> list = ajStudentCheckInService.selectAjStudentCheckInList(ajStudentCheckIn);
-        return getDataTable(list);
+        return success(ajStudentCheckInService.selectAjStudentCheckInList(ajStudentCheckIn));
     }
 
     /**

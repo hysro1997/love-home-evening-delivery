@@ -46,7 +46,7 @@ public class CheckinListTask {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    void calculateAndUpdateBaseCheckinStatus(@NotNull List<AjBaseCheckIn> baseCheckInList){
+    public synchronized void calculateAndUpdateBaseCheckinStatus(@NotNull List<AjBaseCheckIn> baseCheckInList){
         if (baseCheckInList.size() != 0){
             Date today = new Date();
             LocalDate localDate = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -66,7 +66,7 @@ public class CheckinListTask {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void selectTodayStudentsAndTeachersCheckin(){
+    public synchronized void selectTodayStudentsAndTeachersCheckin(){
         AjBaseCheckIn ajBaseCheckIn  = new AjBaseCheckIn();
         AjStudentCheckIn ajStudentCheckIn = new AjStudentCheckIn();
         ajBaseCheckIn.setBaseCheckInStatus(1);
@@ -85,10 +85,11 @@ public class CheckinListTask {
                     List<AjStudentCheckIn> originStudentCheckInList = ajStudentCheckInMapper.selectAjStudentCheckInList(ajStudentCheckIn);
                     if (originStudentCheckInList != null && !originStudentCheckInList.isEmpty()){
                         originStudentCheckInList.forEach((studentCheckIn -> {
-                            for (int i = 0; i < studentCheckInList.size(); i ++){
+                            for (int i = 0; i < studentCheckInList.size(); ){
                                 if (studentCheckInList.get(i).getStudentId().equals(studentCheckIn.getStudentId())){
                                     studentCheckInList.remove(i);
-                                    break;
+                                } else {
+                                    i ++;
                                 }
                             }
                         }));

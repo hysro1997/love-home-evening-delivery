@@ -96,7 +96,7 @@
           checkInDate: (new Date()).toLocaleDateString()
         };
         listTeacherCheckin(params).then(response =>{
-          this.teachers = response.rows;
+          this.teachers = response.data;
         });
       }
     }

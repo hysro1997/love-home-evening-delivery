@@ -85,7 +85,8 @@ public class AjStudentInfoServiceImpl implements IAjStudentInfoService
     {
         if(null == ajStudentInfoMapper.selectAjStudentInfoByStudentName(ajStudentInfo.getStudentName().trim())){
             ajStudentInfo.setStudentName(ajStudentInfo.getStudentName().trim());
-            return ajStudentInfoMapper.insertAjStudentInfo(ajStudentInfo);
+            ajStudentInfoMapper.insertAjStudentInfo(ajStudentInfo);
+            return ajStudentInfo.getStudentId().intValue();
         }
         return 0;
     }
@@ -99,11 +100,14 @@ public class AjStudentInfoServiceImpl implements IAjStudentInfoService
     @Override
     public int updateAjStudentInfo(AjStudentInfo ajStudentInfo)
     {
-        if(null == ajStudentInfoMapper.selectAjStudentInfoByStudentName(ajStudentInfo.getStudentName().trim())){
+        AjStudentInfo temp = new AjStudentInfo();
+        temp.setStudentName(ajStudentInfo.getStudentName().trim());
+        List<AjStudentInfo> list = ajStudentInfoMapper.selectAjStudentInfoList(temp);
+        if(1 >= list.size()){
             ajStudentInfo.setStudentName(ajStudentInfo.getStudentName().trim());
             return ajStudentInfoMapper.updateAjStudentInfo(ajStudentInfo);
         }
-        return 2;
+        return 0;
     }
 
     /**

@@ -139,12 +139,12 @@
           checkInDate: (new Date()).toLocaleDateString()
         };
         listCheckinStudents(params).then(response => {
-          this.students = response.rows;
+          this.students = response.data;
         });
       },
       getGradeList() {
         listGrade().then(response => {
-          this.gradeList = response.rows;
+          this.gradeList = response.data;
         });
       }
     }

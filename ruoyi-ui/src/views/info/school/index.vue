@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-col :span="12">
-        <el-row>
+      <el-col :span="14" style="border-right: solid">
+        <el-row style="margin-right: 15px">
           <el-form ref="studentFormIndex" :model="form.studentInfo" :rules="rules" label-width="80px">
             <el-row :gutter="5">
               <el-col :span="14">
@@ -103,23 +103,195 @@
             <el-button @click="cancel">取 消</el-button>
           </div>
         </el-row>
+        <el-row style="border-top: solid;margin-top: 10px">
+          <div style="margin-top: 10px">
+            <el-col :span="8" v-for="i in studentInfoList" :key="i.studentId">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>{{i.studentName}}</span>
+                  <el-button style="float: right; padding: 3px 0" type="text" @click="showStudentInfo(i.studentId)">编辑</el-button>
+                </div>
+                <div  class="text item">
+                  {{i.studentGrade}}
+                </div>
+                <div  class="text item">
+                  {{i.studentPhone}}
+                </div>
+              </el-card>
+            </el-col>
+          </div>
+        </el-row>
+        <el-row>
+          <pagination
+            v-show="studentTotal>0"
+            :total="studentTotal"
+            :page.sync="queryParams3.pageNum"
+            :limit.sync="queryParams3.pageSize"
+            @pagination="listStudentList"
+          />
+        </el-row>
       </el-col>
-      <el-col :span="12"></el-col>
+      <el-col :span="10">
+        <div style="margin-left:10px;text-align:center;">
+          查看考勤表下的学生：<el-select v-model="queryParams2.baseCheckInId" placeholder="请选择考勤"
+                     filterable :remote-method="remoteQueryBaseCheckInList2"
+                     remote>
+            <el-option
+              v-for="item in baseCheckinList2"
+              :key="item.baseCheckInId"
+              :label="item.baseCheckInName"
+              :value="item.baseCheckInId">
+            </el-option>
+          </el-select>
+        </div>
+        <ul style="margin-left:10px;">
+          <li class="info-block" v-for="i in homoInBaseCheckIn">{{i.studentName}}
+            <div class="blank-block"></div>
+            <el-button round @click="handleAdvanceFee(i.studentId, i.studentName)">预付金</el-button>
+            <el-button round @click="cancelCheckIn(i.id)">取消考勤</el-button>
+          </li>
+        </ul>
+        <div>
+          <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="queryParams2.pageNum"
+            :limit.sync="queryParams2.pageSize"
+            @pagination="showStudentsInBaseCheckInHomo"
+          />
+        </div>
+      </el-col>
     </el-row>
-
+    <!-- 添加或修改预收费对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" :closeOnClickModal="false" append-to-body>
+      <el-form ref="advanceFeeForm2" :model="feeForm" :rules="rules" label-width="80px">
+        <el-form-item label="预交费" prop="advanceFee">
+          <el-input v-model="feeForm.advanceFee" placeholder="请输入预交费" />
+        </el-form-item>
+        <el-form-item label="备注" prop="memo">
+          <el-input v-model="feeForm.memo" placeholder="请输入备注" />
+        </el-form-item>
+        <el-form-item label="核实状态" prop="verifyAdvanceFee">
+          <el-select v-model="feeForm.verifyAdvanceFee" placeholder="请选择核实状态">
+            <el-option
+              v-for="item in feeStatusOptions"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm2">确 定</el-button>
+        <el-button @click="cancel2">取 消</el-button>
+      </div>
+    </el-dialog>
+    <!-- 添加或修改学生信息对话框 -->
+    <el-dialog title="修改学生信息" :visible.sync="studentOpen" width="1000px" :closeOnClickModal="false" append-to-body>
+      <el-form ref="studentForm3" :model="studentForm" :rules="rules" label-width="120px">
+        <el-row :gutter="20">
+          <el-col :span="10"><el-form-item label="学生姓名" prop="studentName">
+            <el-input v-model="studentForm.studentName" placeholder="请输入学生姓名（如果重复，请添加后缀）" />
+          </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="学生性别" prop="studentGender">
+              <template>
+                <el-radio-group v-model="studentForm.studentGender">
+                  <el-radio :label="1">男</el-radio>
+                  <el-radio :label="2">女</el-radio>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="学生学校" prop="studentSchool">
+              <el-select v-model="studentForm.studentSchool" placeholder="请选择学校">
+                <el-option
+                  v-for="item in schools"
+                  :key="item.id"
+                  :label="item.schoolName"
+                  :value="item.schoolName">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="学生年级" prop="studentGrade">
+              <el-select v-model="studentForm.studentGrade" placeholder="请选择年级">
+                <el-option
+                  v-for="item in grades"
+                  :key="item.id"
+                  :label="item.grade"
+                  :value="item.grade">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="学生班级" prop="studentClass">
+              <el-select v-model="studentForm.studentClass" placeholder="请选择班级">
+                <el-option
+                  v-for="item in studentClasses"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="联系电话" prop="studentPhone">
+              <el-input v-model="studentForm.studentPhone" placeholder="请输入联系电话" maxlength="11"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="学生来源" prop="studentSource">
+              <el-select v-model="studentForm.studentSource" placeholder="请选择学生来源">
+                <el-option
+                  v-for="item in studentSource"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="备注信息" prop="studentRemark">
+          <el-input v-model="studentForm.studentRemark" type="textarea" :rows="2" placeholder="请输入备注信息" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitStudentForm">确 定</el-button>
+        <el-button @click="cancel3">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
-
 <script>
-  import { listStudentInfo, getStudentInfo, delStudentInfo, addStudentInfo, updateStudentInfo, updateStudentStatus, getGrades, getSchools } from "@/api/info/studentInfo";
-  import { listBaseCheckin } from "@/api/checkin/baseCheckin";
-  import { addHomoInBaseCheckin } from "@/api/checkin/homoInBaseCheckin";
-
+  import { listStudentInfo, addStudentInfo, updateStudentInfo, getStudentInfo, getGrades, getSchools,listBaseCheckin, addHomoInBaseCheckin, listHomoInBaseCheckin, delHomoInBaseCheckin, listAdvanceFee, addAdvanceFee, updateAdvanceFee } from "@/api/info/schoolManage";
 
   export default {
     name: 'index',
     data(){
       return {
+        studentOpen: false,
+        studentForm: {},
+        title: '预收费',
+        feeStatusOptions :[{label:"预交费", value: 0},{label:"已核销", value: 1},{label:"已退款作废", value: 2}],
+        open: false,
+        total: 0,
+        queryParams2: {
+          pageNum: 1,
+          pageSize: 20,
+          baseCheckInId: null,
+        },
+        feeForm: {
+          verifyAdvanceFee: 0
+        },
         // 表单参数
         form: {
           studentInfo: {},
@@ -152,15 +324,85 @@
           pageSize: 20,
           baseCheckInName: null,
         },
-        baseCheckinList: []
+        baseCheckinList: [],
+        baseCheckinList2: [],
+        homoInBaseCheckIn: [],
+        studentInfoList: [],
+        studentTotal:0,
+        queryParams3: {
+          pageNum: 1,
+          pageSize: 10,
+          studentStatus: 0
+        },
       }
     },
     created() {
       this.initGrades();
       this.initSchools();
       this.getBaseCheckinList();
+      this.listStudentList();
+    },
+    watch: {
+      'queryParams2.baseCheckInId' : {
+        handler(){
+          this.showStudentsInBaseCheckInHomo();
+        }
+      }
     },
     methods: {
+      listStudentList(){
+        listStudentInfo(this.queryParams3).then(response => {
+          this.studentInfoList = response.rows;
+          this.studentTotal = response.total;
+        });
+      },
+      submitForm2(){
+        if (this.feeForm.id){
+          updateAdvanceFee(this.feeForm).then(() => {
+            this.$modal.msgSuccess("修改预付费成功");
+            this.cancel2();
+          })
+        } else {
+          addAdvanceFee(this.feeForm).then(() => {
+            this.$modal.msgSuccess("添加预付费成功");
+            this.cancel2();
+          })
+        }
+      },
+      handleAdvanceFee(studentId,studentName){
+        this.reset2();
+        let params = {
+          studentId: studentId,
+          studentName: studentName,
+          baseCheckInId: this.queryParams2.baseCheckInId
+        }
+        listAdvanceFee(params).then(response => {
+          if (response.rows.length > 0){
+            this.feeForm = response.rows[0];
+          } else {
+            this.feeForm.studentId = studentId;
+            this.feeForm.studentName = studentName;
+            this.feeForm.baseCheckInId = this.queryParams2.baseCheckInId;
+          }
+        });
+        this.title = studentName + ' 预付费';
+        this.open = true;
+      },
+      cancelCheckIn(id){
+        delHomoInBaseCheckin(id).then(() => {
+          this.$modal.msgSuccess("取消考勤成功");
+          this.showStudentsInBaseCheckInHomo();
+        });
+      },
+      showStudentsInBaseCheckInHomo(){
+        let param = {
+          baseCheckInId: this.queryParams2.baseCheckInId
+        };
+        listHomoInBaseCheckin(param).then(response => {
+          this.homoInBaseCheckIn = response.rows;
+          this.total = response.total;
+        });
+      },
       initGrades(){
         getGrades().then(response => {
           this.grades = response.data;
@@ -174,6 +416,24 @@
       // 取消按钮
       cancel() {
         this.reset();
+      },
+      // 取消按钮
+      cancel2() {
+        this.open = false;
+        this.reset2();
+      },
+      // 表单重置
+      reset2() {
+        this.feeForm = {
+          id: null,
+          studentId: null,
+          studentName: null,
+          baseCheckInId: null,
+          advanceFee: null,
+          memo: null,
+          verifyAdvanceFee: 0
+        };
+        this.resetForm("advanceFeeForm2");
       },
       // 表单重置
       reset() {
@@ -206,11 +466,14 @@
                 }
                 addHomoInBaseCheckin(param).then(response => {
                   this.$modal.msgSuccess("新增成功");
+                  this.showStudentsInBaseCheckInHomo();
+                  this.listStudentList();
                 });
                 this.reset();
               } else {
                 this.$refs['studentNameRef'].focus();
                 this.$modal.msgWarning("学生姓名重复");
+                this.form.studentInfo.studentName = this.form.studentInfo.studentName + this.form.studentInfo.studentPhone.slice(7,11);
               }
             });
           }
@@ -221,8 +484,10 @@
         let that = this;
         listBaseCheckin(this.queryParams).then(response => {
           that.baseCheckinList = response.rows;
+          that.baseCheckinList2 = response.rows;
           if (that.baseCheckinList.length > 0){
             that.form.baseCheckIn.baseCheckInId = that.baseCheckinList[0].baseCheckInId;
+            that.queryParams2.baseCheckInId = that.baseCheckinList[0].baseCheckInId;
           }
         });
       },
@@ -235,10 +500,91 @@
           that.baseCheckinList = response.rows;
         });
       },
+      remoteQueryBaseCheckInList2(query){
+        let param = {
+          baseCheckInName: query
+        };
+        let that = this;
+        listBaseCheckin(param).then(response => {
+          that.baseCheckinList2 = response.rows;
+        });
+      },
+      /** 提交按钮 */
+      submitStudentForm() {
+        this.studentForm.studentName = this.studentForm.studentName.trim();
+        this.$refs["studentForm3"].validate(valid => {
+          if (valid) {
+              updateStudentInfo(this.studentForm).then(response => {
+                if (response.data !== 0){
+                  this.$modal.msgSuccess("修改成功");
+                  this.studentOpen = false;
+                } else {
+                  this.$modal.msgWarning("学生姓名重复");
+                }
+              });
+          }
+        });
+      },// 取消按钮
+      cancel3() {
+        this.studentOpen = false;
+        this.reset3();
+      },
+      // 表单重置
+      reset3() {
+        this.studentForm = {
+          studentId: null,
+          studentName: null,
+          studentGender: null,
+          studentSchool: null,
+          studentGrade: null,
+          studentClass: null,
+          studentPhone: null,
+          studentFace: null,
+          studentSource: null,
+          studentRemark: null,
+          studentStatus: null
+        };
+        this.resetForm("studentForm3");
+      },
+      showStudentInfo(studentId){
+        this.reset3();
+        getStudentInfo(studentId).then(response => {
+          this.studentForm = response.data;
+          this.studentOpen = true;
+        });
+      }
     }
   }
 </script>
 
 <style scoped>
-
+ .info-block {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height: 50px;
+   background: #e8f3fe;
+   margin: 10px;
+   color: #174cfc
+ }
+  .blank-block {
+    width: 10%;
+  }
+ .text {
+   font-size: 14px;
+ }
+ .item {
+   margin-bottom: 4px;
+ }
+ .clearfix:before,
+ .clearfix:after {
+   display: table;
+   content: "";
+ }
+ .clearfix:after {
+   clear: both
+ }
+ .box-card {
+   margin: 2px;
+ }
 </style>
