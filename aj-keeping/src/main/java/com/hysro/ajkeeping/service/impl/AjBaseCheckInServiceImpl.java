@@ -133,6 +133,13 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
         return 1;
     }
 
+    @Override
+    public int updateAjBaseCheckInOnlyHomo(AjBaseCheckIn ajBaseCheckIn) {
+        ajHomoInBaseCheckInMapper.deleteAjHomoInBaseCheckInByBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
+        this.insertBaseHomoTeachersAndStudents(ajBaseCheckIn);
+        return 1;
+    }
+
     /**
      * 批量删除考勤总表
      *
@@ -185,13 +192,13 @@ public class AjBaseCheckInServiceImpl implements IAjBaseCheckInService
     private void insertBaseHomoTeachersAndStudents(AjBaseCheckIn ajBaseCheckIn){
         AjHomoInBaseCheckIn ajHomoInBaseCheckIn = new AjHomoInBaseCheckIn();
         ajHomoInBaseCheckIn.setBaseCheckInId(ajBaseCheckIn.getBaseCheckInId());
-        if (0 < ajBaseCheckIn.getCheckinStudents().length){
+        if (null != ajBaseCheckIn.getCheckinStudents() && 0 < ajBaseCheckIn.getCheckinStudents().length){
             for(Long id : ajBaseCheckIn.getCheckinStudents()){
                 ajHomoInBaseCheckIn.setStudentId(id);
                 ajHomoInBaseCheckInMapper.insertAjHomoInBaseCheckInStudents(ajHomoInBaseCheckIn);
             }
         }
-        if (0 < ajBaseCheckIn.getCheckinTeachers().length){
+        if (null != ajBaseCheckIn.getCheckinTeachers() && 0 < ajBaseCheckIn.getCheckinTeachers().length){
             for(Long id : ajBaseCheckIn.getCheckinTeachers()){
                 ajHomoInBaseCheckIn.setTeacherId(id);
                 ajHomoInBaseCheckInMapper.insertAjHomoInBaseCheckInTeachers(ajHomoInBaseCheckIn);

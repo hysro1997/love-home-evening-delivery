@@ -181,4 +181,33 @@ public class AjManageStudentController extends BaseController {
         return toAjax(ajAdvenceFeeService.updateAjAdvenceFee(ajAdvenceFee));
     }
 
+    /**
+     * 获取在学的学生
+     */
+    @PreAuthorize("@ss.hasPermi('info:manageStudent:list')")
+    @GetMapping("/schoolStudents")
+    public AjaxResult getInSchoolStudents(){
+        return success(ajBaseCheckInService.selectSchoolStudents());
+    }
+
+    /**
+     * 获取考勤总表详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('info:manageStudent:query')")
+    @GetMapping(value = "/baseCheckIn/{baseCheckInId}")
+    public AjaxResult getBaseCheckInInfo(@PathVariable("baseCheckInId") Long baseCheckInId)
+    {
+        return success(ajBaseCheckInService.selectAjBaseCheckInByBaseCheckInId(baseCheckInId));
+    }
+
+    /**
+     * 修改考勤总表
+     */
+    @PreAuthorize("@ss.hasPermi('info:manageStudent:edit')")
+    @Log(title = "考勤总表", businessType = BusinessType.UPDATE)
+    @PutMapping("/alterBaseCheckIn")
+    public AjaxResult editHomoCheckIn(@RequestBody AjBaseCheckIn ajBaseCheckIn)
+    {
+        return toAjax(ajBaseCheckInService.updateAjBaseCheckInOnlyHomo(ajBaseCheckIn));
+    }
 }

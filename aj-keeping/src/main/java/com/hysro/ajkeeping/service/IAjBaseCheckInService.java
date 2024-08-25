@@ -61,6 +61,14 @@ public interface IAjBaseCheckInService
     public int updateAjBaseCheckIn(AjBaseCheckIn ajBaseCheckIn);
 
     /**
+     * 修改考勤总表
+     *
+     * @param ajBaseCheckIn 考勤总表
+     * @return 结果
+     */
+    public int updateAjBaseCheckInOnlyHomo(AjBaseCheckIn ajBaseCheckIn);
+
+    /**
      * 批量删除考勤总表
      *
      * @param baseCheckInIds 需要删除的考勤总表主键集合

@@ -112,3 +112,28 @@ export function updateAdvanceFee(data) {
     data: data
   })
 }
+
+// 查询在考勤中的老师与学生详细
+export function getInSchoolStudents() {
+  return request({
+    url: '/info/manageStudent/schoolStudents',
+    method: 'get'
+  })
+}
+
+// 查询考勤总表详细
+export function getBaseCheckin(baseCheckInId) {
+  return request({
+    url: '/info/manageStudent/baseCheckIn/' + baseCheckInId,
+    method: 'get'
+  })
+}
+
+// 修改考勤总表
+export function updateHomoInCheckin(data) {
+  return request({
+    url: '/info/manageStudent/alterBaseCheckIn',
+    method: 'put',
+    data: data
+  })
+}

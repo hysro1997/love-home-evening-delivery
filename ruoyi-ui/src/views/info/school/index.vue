@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" v-loading="loadingStatus">
     <el-row>
       <el-col :span="14" style="border-right: solid">
         <el-row style="margin-right: 15px">
@@ -80,7 +80,7 @@
               <el-col :span="10">
                 <el-form-item label="考勤表" prop="baseCheckInId">
                   <el-select v-model="form.baseCheckIn.baseCheckInId" placeholder="请选择考勤"
-                             filterable :remote-method="remoteQueryBaseCheckInList"
+                             filterable :remote-method="remoteQueryBaseCheckInList" @change="$forceUpdate()"
                              remote>
                     <el-option
                       v-for="item in baseCheckinList"
@@ -130,11 +130,38 @@
             @pagination="listStudentList"
           />
         </el-row>
+        <el-row style="margin-top: 20px;">
+          <div style="margin-left:10px;text-align:center;">
+            查看考勤表下的学生：<el-select v-model="queryParams4.baseCheckInId" placeholder="请选择考勤"
+                                 filterable :remote-method="remoteQueryBaseCheckInList4" @change="$forceUpdate()"
+                                 remote>
+            <el-option
+              v-for="item in baseCheckinList4"
+              :key="item.baseCheckInId"
+              :label="item.baseCheckInName"
+              :value="item.baseCheckInId">
+            </el-option>
+          </el-select>
+          </div>
+          <div style="margin-top: 10px;margin-bottom: 10px">
+              <el-transfer
+                style="text-align: left; display: inline-block;"
+                @change="changeStudentsInCheckIn"
+                filterable
+                v-model="checkinStudentsList"
+                :titles="['学生列表', '考勤']"
+                :button-texts="['取消考勤','进入考勤']"
+                :data="studentsInSchool"
+                :props="{key:'studentId',label:'studentName',disabled:false}">
+                <span slot-scope="{ option }">{{ option.studentGrade }} - {{ option.studentName }}</span>
+              </el-transfer>
+          </div>
+        </el-row>
       </el-col>
       <el-col :span="10">
         <div style="margin-left:10px;text-align:center;">
           查看考勤表下的学生：<el-select v-model="queryParams2.baseCheckInId" placeholder="请选择考勤"
-                     filterable :remote-method="remoteQueryBaseCheckInList2"
+                     filterable :remote-method="remoteQueryBaseCheckInList2" @change="$forceUpdate()"
                      remote>
             <el-option
               v-for="item in baseCheckinList2"
@@ -272,12 +299,15 @@
   </div>
 </template>
 <script>
-  import { listStudentInfo, addStudentInfo, updateStudentInfo, getStudentInfo, getGrades, getSchools,listBaseCheckin, addHomoInBaseCheckin, listHomoInBaseCheckin, delHomoInBaseCheckin, listAdvanceFee, addAdvanceFee, updateAdvanceFee } from "@/api/info/schoolManage";
+  import { listStudentInfo, addStudentInfo, updateStudentInfo, getStudentInfo, getGrades, getSchools,listBaseCheckin, addHomoInBaseCheckin, listHomoInBaseCheckin, delHomoInBaseCheckin, listAdvanceFee, addAdvanceFee, updateAdvanceFee, getInSchoolStudents, getBaseCheckin, updateHomoInCheckin } from "@/api/info/schoolManage";
 
   export default {
     name: 'index',
     data(){
       return {
+        loadingStatus: false,
+        checkinStudentsList: [],
+        studentsInSchool: [],
         studentOpen: false,
         studentForm: {},
         title: '预收费',
@@ -285,6 +315,11 @@
         open: false,
         total: 0,
         queryParams2: {
+          pageNum: 1,
+          pageSize: 20,
+          baseCheckInId: null,
+        },
+        queryParams4: {
           pageNum: 1,
           pageSize: 20,
           baseCheckInId: null,
@@ -326,6 +361,7 @@
         },
         baseCheckinList: [],
         baseCheckinList2: [],
+        baseCheckinList4: [],
         homoInBaseCheckIn: [],
         studentInfoList: [],
         studentTotal:0,
@@ -341,15 +377,53 @@
       this.initSchools();
       this.getBaseCheckinList();
       this.listStudentList();
+      this.getStudentsAndTeachers();
     },
     watch: {
       'queryParams2.baseCheckInId' : {
         handler(){
           this.showStudentsInBaseCheckInHomo();
         }
+      },
+      'queryParams4.baseCheckInId' : {
+        handler(){
+          this.showBaseCheckInDetail();
+        }
       }
     },
     methods: {
+      changeStudentsInCheckIn(){
+        this.loadingStatus = true;
+        let param = {
+          baseCheckInId: this.queryParams4.baseCheckInId,
+          checkinStudents: this.checkinStudentsList
+        }
+        updateHomoInCheckin(param).then(response => {
+          this.$modal.msgSuccess("修改考勤人员成功");
+          this.showStudentsInBaseCheckInHomo();
+          this.loadingStatus = false;
+        });
+      },
+      showBaseCheckInDetail(){
+        let that = this;
+        getBaseCheckin(that.queryParams4.baseCheckInId).then(response => {
+          let temp = response.data;
+          temp.students = [];
+          temp.checkinStudents = [];
+          temp.ajHomoInBaseCheckIns.forEach(function(element) {
+            if (null !== element.studentId){
+              temp.students.push(element);
+              temp.checkinStudents.push(element.studentId);
+            }
+          });
+          that.checkinStudentsList = temp.checkinStudents;
+        });
+      },
+      getStudentsAndTeachers(){
+        getInSchoolStudents().then(response => {
+          this.studentsInSchool = response.data;
+        });
+      },
       listStudentList(){
         listStudentInfo(this.queryParams3).then(response => {
           this.studentInfoList = response.rows;
@@ -357,15 +431,18 @@
         });
       },
       submitForm2(){
+        this.loadingStatus = true;
         if (this.feeForm.id){
           updateAdvanceFee(this.feeForm).then(() => {
             this.$modal.msgSuccess("修改预付费成功");
             this.cancel2();
+            this.loadingStatus = false;
           })
         } else {
           addAdvanceFee(this.feeForm).then(() => {
             this.$modal.msgSuccess("添加预付费成功");
             this.cancel2();
+            this.loadingStatus = false;
           })
         }
       },
@@ -389,9 +466,12 @@
         this.open = true;
       },
       cancelCheckIn(id){
+        this.loadingStatus = true;
         delHomoInBaseCheckin(id).then(() => {
           this.$modal.msgSuccess("取消考勤成功");
           this.showStudentsInBaseCheckInHomo();
+          this.showBaseCheckInDetail();
+          this.loadingStatus = false;
         });
       },
       showStudentsInBaseCheckInHomo(){
@@ -401,6 +481,7 @@
         listHomoInBaseCheckin(param).then(response => {
           this.homoInBaseCheckIn = response.rows;
           this.total = response.total;
+          this.showBaseCheckInDetail();
         });
       },
       initGrades(){
@@ -456,6 +537,7 @@
       submitForm() {
         this.$refs["studentFormIndex"].validate(valid => {
           if (valid) {
+            this.loadingStatus = true;
             this.form.studentInfo.studentName = this.form.studentInfo.studentName.trim();
             addStudentInfo(this.form.studentInfo).then(response => {
               if (response.data !== 0){
@@ -466,11 +548,14 @@
                 }
                 addHomoInBaseCheckin(param).then(response => {
                   this.$modal.msgSuccess("新增成功");
+                  this.loadingStatus = false;
                   this.showStudentsInBaseCheckInHomo();
                   this.listStudentList();
+                  this.showBaseCheckInDetail();
                 });
                 this.reset();
               } else {
+                this.loadingStatus = false;
                 this.$refs['studentNameRef'].focus();
                 this.$modal.msgWarning("学生姓名重复");
                 this.form.studentInfo.studentName = this.form.studentInfo.studentName + this.form.studentInfo.studentPhone.slice(7,11);
@@ -485,9 +570,11 @@
         listBaseCheckin(this.queryParams).then(response => {
           that.baseCheckinList = response.rows;
           that.baseCheckinList2 = response.rows;
+          that.baseCheckinList4 = response.rows;
           if (that.baseCheckinList.length > 0){
             that.form.baseCheckIn.baseCheckInId = that.baseCheckinList[0].baseCheckInId;
             that.queryParams2.baseCheckInId = that.baseCheckinList[0].baseCheckInId;
+            that.queryParams4.baseCheckInId = that.baseCheckinList[0].baseCheckInId;
           }
         });
       },
@@ -509,18 +596,29 @@
           that.baseCheckinList2 = response.rows;
         });
       },
+      remoteQueryBaseCheckInList4(query){
+        let param = {
+          baseCheckInName: query
+        };
+        let that = this;
+        listBaseCheckin(param).then(response => {
+          that.baseCheckinList4 = response.rows;
+        });
+      },
       /** 提交按钮 */
       submitStudentForm() {
         this.studentForm.studentName = this.studentForm.studentName.trim();
         this.$refs["studentForm3"].validate(valid => {
           if (valid) {
+            this.loadingStatus = true;
               updateStudentInfo(this.studentForm).then(response => {
                 if (response.data !== 0){
                   this.$modal.msgSuccess("修改成功");
-                  this.studentOpen = false;
                 } else {
                   this.$modal.msgWarning("学生姓名重复");
                 }
+                this.studentOpen = false;
+                this.loadingStatus = false;
               });
           }
         });
@@ -558,6 +656,12 @@
 </script>
 
 <style scoped>
+  /deep/ .el-transfer-panel{
+    height: 500px;
+  }
+  /deep/ .el-transfer-panel__list{
+    height: 500px;
+  }
  .info-block {
    display: flex;
    align-items: center;
