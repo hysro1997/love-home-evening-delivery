@@ -170,6 +170,8 @@
               :value="item.baseCheckInId">
             </el-option>
           </el-select>
+          <el-button @click="resetSelect">重置</el-button>
+          <el-input v-model="selectStudentName" placeholder="请输入查找的学生姓名" @blur="showStudentsInBaseCheckInHomo" @keyup.native.enter="showStudentsInBaseCheckInHomo" />
         </div>
         <ul style="margin-left:10px;">
           <li class="info-block" v-for="i in homoInBaseCheckIn">{{i.studentName}}
@@ -305,6 +307,7 @@
     name: 'index',
     data(){
       return {
+        selectStudentName: null,
         loadingStatus: false,
         checkinStudentsList: [],
         studentsInSchool: [],
@@ -382,16 +385,26 @@
     watch: {
       'queryParams2.baseCheckInId' : {
         handler(){
-          this.showStudentsInBaseCheckInHomo();
+          if (this.queryParams2.baseCheckInId !== null){
+            this.showStudentsInBaseCheckInHomo();
+          }
         }
       },
       'queryParams4.baseCheckInId' : {
         handler(){
-          this.showBaseCheckInDetail();
+          if (this.queryParams4.baseCheckInId !== null){
+            this.showBaseCheckInDetail();
+          }
         }
       }
     },
     methods: {
+      resetSelect(){
+        this.form.baseCheckIn.baseCheckInId = null;
+        this.queryParams2.baseCheckInId = null;
+        this.queryParams4.baseCheckInId = null;
+        this.selectStudentName = null;
+      },
       changeStudentsInCheckIn(){
         this.loadingStatus = true;
         let param = {
@@ -476,7 +489,8 @@
       },
       showStudentsInBaseCheckInHomo(){
         let param = {
-          baseCheckInId: this.queryParams2.baseCheckInId
+          baseCheckInId: this.queryParams2.baseCheckInId,
+          studentName: this.selectStudentName
         };
         listHomoInBaseCheckin(param).then(response => {
           this.homoInBaseCheckIn = response.rows;
