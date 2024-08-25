@@ -125,6 +125,17 @@
       <el-table-column label="学生id" align="center" prop="studentId" />
       <el-table-column label="学生姓名" align="center" prop="studentName" />
       <el-table-column label="考勤统计表id" align="center" prop="checkInStatisticId" />
+      <el-table-column label="实际账单费用" align="center" prop="acutalBillFee" />
+      <el-table-column label="缴费状态" align="center" prop="billStatus">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.billStatus === 0">未支付</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">已支付</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="缴费方式" align="center" prop="billMode">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.billMode === 0">微信</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">支付宝</el-tag><el-tag type="warning" v-else-if="scope.row.billStatus === 2">现金</el-tag><el-tag type="info" v-else>其他</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="考勤开始日期" align="center" prop="checkInBeginDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.checkInBeginDate, '{y}-{m}-{d}') }}</span>
@@ -149,13 +160,6 @@
       <el-table-column label="实际每日收费" align="center" prop="actualPerDayFee" />
       <el-table-column label="实际资料费" align="center" prop="actualTextbookFee" />
       <el-table-column label="实际伙食费" align="center" prop="actualFoodFee" />
-      <el-table-column label="实际账单费用" align="center" prop="acutalBillFee" />
-      <el-table-column label="缴费状态" align="center" prop="billStatus" />
-      <el-table-column label="缴费方式" align="center" prop="billMode">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.billMode === 0">微信</el-tag><el-tag type="success" v-else-if="scope.row.billStatus === 1">支付宝</el-tag><el-tag type="warning" v-else-if="scope.row.billStatus === 2">现金</el-tag><el-tag type="info" v-else>其他</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column label="缴费证明" align="center" prop="billEvidence" />
     </el-table>
 

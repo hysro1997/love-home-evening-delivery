@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="baseCheckInId != null "> and base_check_in_id = #{baseCheckInId}</if>
             <if test="checkInStudentName != null  and checkInStudentName != ''"> and check_in_student_name like concat('%', #{checkInStudentName}, '%')</if>
             <if test="checkInStudentGrade != null  and checkInStudentGrade != ''"> and check_in_student_grade = #{checkInStudentGrade}</if>
-            <if test="checkInDate != null "> and DATE(check_in_date) = #{checkInDate}</if>
+            <if test="checkInDate != null "> and check_in_date = #{checkInDate}</if>
             <if test="checkInStatus != null "> and check_in_status = #{checkInStatus}</if>
             <if test="checkInDatetime != null "> and check_in_datetime = #{checkInDatetime}</if>
         </where>

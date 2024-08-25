@@ -7,7 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 在考勤中的老师与学生对象 aj_homo_in_base_check_in
- * 
+ *
  * @author hysro
  * @date 2024-08-08
  */
@@ -38,57 +38,57 @@ public class AjHomoInBaseCheckIn extends BaseEntity
     @Excel(name = "教师姓名")
     private String teacherName;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setBaseCheckInId(Long baseCheckInId) 
+    public void setBaseCheckInId(Long baseCheckInId)
     {
         this.baseCheckInId = baseCheckInId;
     }
 
-    public Long getBaseCheckInId() 
+    public Long getBaseCheckInId()
     {
         return baseCheckInId;
     }
-    public void setStudentId(Long studentId) 
+    public void setStudentId(Long studentId)
     {
         this.studentId = studentId;
     }
 
-    public Long getStudentId() 
+    public Long getStudentId()
     {
         return studentId;
     }
-    public void setStudentName(String studentName) 
+    public void setStudentName(String studentName)
     {
         this.studentName = studentName;
     }
 
-    public String getStudentName() 
+    public String getStudentName()
     {
         return studentName;
     }
-    public void setTeacherId(Long teacherId) 
+    public void setTeacherId(Long teacherId)
     {
         this.teacherId = teacherId;
     }
 
-    public Long getTeacherId() 
+    public Long getTeacherId()
     {
         return teacherId;
     }
-    public void setTeacherName(String teacherName) 
+    public void setTeacherName(String teacherName)
     {
         this.teacherName = teacherName;
     }
 
-    public String getTeacherName() 
+    public String getTeacherName()
     {
         return teacherName;
     }

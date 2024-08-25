@@ -355,7 +355,9 @@
         });
         listAdvanceFee(param).then(response => {
           if (response.total > 0){
-            this.advanceFee = response.rows[0].advanceFee;
+            if (response.rows[0].verifyAdvanceFee != 2){
+              this.advanceFee = response.rows[0].advanceFee;
+            }
           }
         });
         this.showStudentCheckInDays(studentId);

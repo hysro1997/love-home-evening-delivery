@@ -83,12 +83,17 @@ public class AjCheckoutServiceImpl implements IAjCheckoutService {
         List<AjAdvenceFee> feeList = advenceFeeMapper.selectAjAdvenceFeeList(ajAdvenceFee);
         if (feeList.size() == 1){
             advanceFee = feeList.get(0).getAdvanceFee();
-            testSumCost = testSumCost.subtract(advanceFee);
-            if (testSumCost.compareTo(BigDecimal.ZERO) < 0){
-                testSumCost = BigDecimal.ZERO;
+            if (feeList.get(0).getVerifyAdvanceFee() != 2){
+                testSumCost = testSumCost.subtract(advanceFee);
+                if (testSumCost.compareTo(BigDecimal.ZERO) < 0){
+                    testSumCost = BigDecimal.ZERO;
+                }
+                feeList.get(0).setVerifyAdvanceFee(1);
+                advenceFeeMapper.updateAjAdvenceFee(feeList.get(0));
             }
         }
         if (0 == testSumCost.compareTo(ajStudentBill.getAcutalBillFee())){
+            ajStudentBill.setBillFee(testSumCost.add(ajStudentBill.getCoupon()));
             billMapper.insertAjStudentBill(ajStudentBill);
         } else {
             throw new Exception("金额不正确");
