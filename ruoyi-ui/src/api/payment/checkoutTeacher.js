@@ -17,3 +17,21 @@ export function listTeacherSalary(query) {
     params: query
   })
 }
+
+// 查询教师考勤信息
+export function getTeacherCheckinStatistic(query) {
+  return request({
+    url: '/payment/checkoutTeacher/getTeacherCheckinStatistic',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询工资模板列表
+export function listSalaryTemplate(query) {
+  return request({
+    url: '/payment/checkoutTeacher/listSalaryTemplate',
+    method: 'get',
+    params: query
+  })
+}

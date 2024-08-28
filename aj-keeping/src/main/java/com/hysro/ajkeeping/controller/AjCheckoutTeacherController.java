@@ -1,17 +1,17 @@
 package com.hysro.ajkeeping.controller;
 
 import com.hysro.ajkeeping.domain.AjSalaryBill;
+import com.hysro.ajkeeping.domain.AjSalaryTemplate;
 import com.hysro.ajkeeping.domain.AjTeacherInfo;
 import com.hysro.ajkeeping.service.IAjSalaryBillService;
+import com.hysro.ajkeeping.service.IAjSalaryTemplateService;
 import com.hysro.ajkeeping.service.IAjTeacherInfoService;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +28,8 @@ public class AjCheckoutTeacherController extends BaseController {
     private IAjTeacherInfoService teacherInfoService;
     @Autowired
     private IAjSalaryBillService ajSalaryBillService;
+    @Autowired
+    private IAjSalaryTemplateService ajSalaryTemplateService;
 
     /**
      * 查询教师信息列表
@@ -51,5 +53,25 @@ public class AjCheckoutTeacherController extends BaseController {
         startPage();
         List<AjSalaryBill> list = ajSalaryBillService.selectAjSalaryBillList(ajSalaryBill);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询工资明细列表
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkoutTeacher:query')")
+    @GetMapping("/getTeacherCheckinStatistic")
+    public AjaxResult getTeacherCheckinStatistic(AjSalaryBill ajSalaryBill)
+    {
+        return success(ajSalaryBillService.selectTeacherCheckinStatistic(ajSalaryBill));
+    }
+
+    /**
+     * 查询老师工资模板列表
+     */
+    @PreAuthorize("@ss.hasPermi('payment:checkoutTeacher:list')")
+    @GetMapping("/listSalaryTemplate")
+    public AjaxResult listSalaryTemplate(AjSalaryTemplate ajSalaryTemplate)
+    {
+        return success(ajSalaryTemplateService.selectAjSalaryTemplateList(ajSalaryTemplate));
     }
 }

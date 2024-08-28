@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.Digits;
+
 /**
  * 工资明细对象 aj_salary_bill
  *
@@ -69,18 +71,22 @@ public class AjSalaryBill extends BaseEntity
 
     /** 全勤奖 */
     @Excel(name = "全勤奖")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal fullCheckInPension;
 
     /** 其他补助 */
     @Excel(name = "其他补助")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal otherPension;
 
     /** 工资扣除 */
     @Excel(name = "工资扣除")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal deduckMoney;
 
     /** 实际工资 */
     @Excel(name = "实际工资")
+    @Digits(integer = 10, fraction = 2, message = "只能输入最多带两位小数的金额")
     private BigDecimal acutalSalary;
 
     public void setId(Long id)

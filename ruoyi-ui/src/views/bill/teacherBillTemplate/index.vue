@@ -158,19 +158,19 @@
         <el-row :gutter="20">
           <el-col :span="10">
             <el-form-item label="值班费" prop="salaryOnDuty">
-              <el-input v-model="form.salaryOnDuty" placeholder="请输入值班费"><template slot="append">元</template></el-input>
+              <el-input v-model="form.salaryOnDuty" placeholder="请输入值班费"><template slot="append">元/次</template></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="全勤奖" prop="salaryAllDuty">
-              <el-input v-model="form.salaryAllDuty" placeholder="请输入全勤奖"><template slot="append">元</template></el-input>
+              <el-input v-model="form.salaryAllDuty" placeholder="请输入全勤奖"><template slot="append">元/月</template></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="10">
             <el-form-item label="请假扣除" prop="salaryOffDutyFee">
-              <el-input v-model="form.salaryOffDutyFee" placeholder="请假扣除"><template slot="append">元</template></el-input>
+              <el-input v-model="form.salaryOffDutyFee" placeholder="请假扣除"><template slot="append">元/天</template></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">

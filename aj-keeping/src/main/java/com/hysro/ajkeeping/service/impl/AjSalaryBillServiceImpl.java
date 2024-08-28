@@ -1,6 +1,8 @@
 package com.hysro.ajkeeping.service.impl;
 
 import java.util.List;
+
+import com.hysro.ajkeeping.mapper.AjTeacherCheckInMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hysro.ajkeeping.mapper.AjSalaryBillMapper;
@@ -9,19 +11,21 @@ import com.hysro.ajkeeping.service.IAjSalaryBillService;
 
 /**
  * 工资明细Service业务层处理
- * 
+ *
  * @author hysro
  * @date 2024-08-04
  */
 @Service
-public class AjSalaryBillServiceImpl implements IAjSalaryBillService 
+public class AjSalaryBillServiceImpl implements IAjSalaryBillService
 {
     @Autowired
     private AjSalaryBillMapper ajSalaryBillMapper;
+    @Autowired
+    private AjTeacherCheckInMapper ajTeacherCheckInMapper;
 
     /**
      * 查询工资明细
-     * 
+     *
      * @param id 工资明细主键
      * @return 工资明细
      */
@@ -31,9 +35,20 @@ public class AjSalaryBillServiceImpl implements IAjSalaryBillService
         return ajSalaryBillMapper.selectAjSalaryBillById(id);
     }
 
+    @Override
+    public AjSalaryBill selectTeacherCheckinStatistic(AjSalaryBill ajSalaryBill) {
+        if (null == ajSalaryBill || null == ajSalaryBill.getCheckInBeginDate() || null == ajSalaryBill.getCheckInEndDate() || null == ajSalaryBill.getTeacherId()){
+            return null;
+        }
+        ajSalaryBill.setCheckInTimes(ajTeacherCheckInMapper.countTeacherCheckinOrLeaveTimes(ajSalaryBill.getCheckInBeginDate(),ajSalaryBill.getCheckInEndDate(),ajSalaryBill.getTeacherId(),1));
+        ajSalaryBill.setLeaveDays(ajTeacherCheckInMapper.countTeacherCheckinOrLeaveTimes(ajSalaryBill.getCheckInBeginDate(),ajSalaryBill.getCheckInEndDate(),ajSalaryBill.getTeacherId(),2));
+        ajSalaryBill.setOnDutyTimes(ajTeacherCheckInMapper.countTeacherOnDutyTimes(ajSalaryBill.getCheckInBeginDate(),ajSalaryBill.getCheckInEndDate(),ajSalaryBill.getTeacherId()));
+        return ajSalaryBill;
+    }
+
     /**
      * 查询工资明细列表
-     * 
+     *
      * @param ajSalaryBill 工资明细
      * @return 工资明细
      */
@@ -45,7 +60,7 @@ public class AjSalaryBillServiceImpl implements IAjSalaryBillService
 
     /**
      * 新增工资明细
-     * 
+     *
      * @param ajSalaryBill 工资明细
      * @return 结果
      */
@@ -57,7 +72,7 @@ public class AjSalaryBillServiceImpl implements IAjSalaryBillService
 
     /**
      * 修改工资明细
-     * 
+     *
      * @param ajSalaryBill 工资明细
      * @return 结果
      */
@@ -69,7 +84,7 @@ public class AjSalaryBillServiceImpl implements IAjSalaryBillService
 
     /**
      * 批量删除工资明细
-     * 
+     *
      * @param ids 需要删除的工资明细主键
      * @return 结果
      */
@@ -81,7 +96,7 @@ public class AjSalaryBillServiceImpl implements IAjSalaryBillService
 
     /**
      * 删除工资明细信息
-     * 
+     *
      * @param id 工资明细主键
      * @return 结果
      */
