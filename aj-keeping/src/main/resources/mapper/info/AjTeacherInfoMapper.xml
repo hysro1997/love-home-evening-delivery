@@ -31,6 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY teacher_id DESC
     </select>
 
+    <select id="selectAjTeacherInfoListOrderByStatus" resultMap="AjTeacherInfoResult">
+        <include refid="selectAjTeacherInfoVo"/>
+        ORDER BY teacher_status ASC
+    </select>
+
     <select id="selectAjTeacherSimpleInfoList" resultMap="AjTeacherInfoResult">
         select teacher_id, teacher_name, teacher_employ_type, teacher_status from aj_teacher_info
         where teacher_status = 0

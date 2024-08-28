@@ -9,19 +9,19 @@ import com.hysro.ajkeeping.service.IAjTeacherInfoService;
 
 /**
  * 教师信息Service业务层处理
- * 
+ *
  * @author ruoyi
  * @date 2024-08-04
  */
 @Service
-public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService 
+public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService
 {
     @Autowired
     private AjTeacherInfoMapper ajTeacherInfoMapper;
 
     /**
      * 查询教师信息
-     * 
+     *
      * @param teacherId 教师信息主键
      * @return 教师信息
      */
@@ -33,7 +33,7 @@ public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService
 
     /**
      * 查询教师信息列表
-     * 
+     *
      * @param ajTeacherInfo 教师信息
      * @return 教师信息
      */
@@ -44,8 +44,19 @@ public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService
     }
 
     /**
+     * 查询教师信息列表带排序，无参数
+     *
+     * @param ajTeacherInfo 教师信息
+     * @return 教师信息集合
+     */
+    @Override
+    public List<AjTeacherInfo> selectAjTeacherInfoListOrderByStatus(AjTeacherInfo ajTeacherInfo) {
+        return ajTeacherInfoMapper.selectAjTeacherInfoListOrderByStatus(ajTeacherInfo);
+    }
+
+    /**
      * 新增教师信息
-     * 
+     *
      * @param ajTeacherInfo 教师信息
      * @return 结果
      */
@@ -57,7 +68,7 @@ public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService
 
     /**
      * 修改教师信息
-     * 
+     *
      * @param ajTeacherInfo 教师信息
      * @return 结果
      */
@@ -69,7 +80,7 @@ public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService
 
     /**
      * 批量删除教师信息
-     * 
+     *
      * @param teacherIds 需要删除的教师信息主键
      * @return 结果
      */
@@ -81,7 +92,7 @@ public class AjTeacherInfoServiceImpl implements IAjTeacherInfoService
 
     /**
      * 删除教师信息信息
-     * 
+     *
      * @param teacherId 教师信息主键
      * @return 结果
      */

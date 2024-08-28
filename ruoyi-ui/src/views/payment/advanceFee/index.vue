@@ -86,7 +86,8 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="advanceFeeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="advanceFeeList" @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="学生id" align="center" prop="studentId" />
@@ -95,7 +96,7 @@
       <el-table-column label="预交费" align="center" prop="advanceFee" />
       <el-table-column label="核实状态" align="center" prop="verifyAdvanceFee">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.verifyAdvanceFee === 0">预交费</el-tag><el-tag type="success" v-else-if="scope.row.verifyAdvanceFee === 2">已核销</el-tag><el-tag type="warning" v-else>已退款作废</el-tag>
+          <el-tag v-if="scope.row.verifyAdvanceFee === 0">预交费</el-tag><el-tag type="success" v-else-if="scope.row.verifyAdvanceFee === 1">已核销</el-tag><el-tag type="warning" v-else>已退款作废</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="memo" />
@@ -162,7 +163,15 @@
     </el-dialog>
   </div>
 </template>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
 
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
 import { listAdvanceFee, getAdvanceFee, delAdvanceFee, addAdvanceFee, updateAdvanceFee } from "@/api/payment/advanceFee";
 
@@ -211,6 +220,14 @@ export default {
     this.getList();
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row';
+      } else if (rowIndex % 2 === 0) {
+        return 'success-row';
+      }
+      return '';
+    },
     /** 查询预收费列表 */
     getList() {
       this.loading = true;

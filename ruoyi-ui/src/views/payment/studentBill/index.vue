@@ -102,8 +102,10 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="studentBillList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" /><el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+    <el-table v-loading="loading" :data="studentBillList" @selection-change="handleSelectionChange"
+              :row-class-name="tableRowClassName">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
       <template slot-scope="scope">
         <el-button
           size="mini"
@@ -264,7 +266,15 @@
     </el-dialog>
   </div>
 </template>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
 
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <script>
   import { listStudentBill, getStudentBill, delStudentBill, addStudentBill, updateStudentBill } from "@/api/payment/studentBill";
 
@@ -330,6 +340,14 @@
       this.getList();
     },
     methods: {
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex % 2 === 1) {
+          return 'warning-row';
+        } else if (rowIndex % 2 === 0) {
+          return 'success-row';
+        }
+        return '';
+      },
       /** 查询学生账单明细列表 */
       getList() {
         this.loading = true;

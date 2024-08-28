@@ -97,7 +97,6 @@
               :row-class-name="tableRowClassName">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="对应考勤总表id" align="center" prop="baseCheckInId" />
       <el-table-column label="员工id" align="center" prop="teacherId" />
       <el-table-column label="员工姓名" align="center" prop="teacherName" />
       <el-table-column label="考勤总天数" align="center" prop="checkInSumDays" />

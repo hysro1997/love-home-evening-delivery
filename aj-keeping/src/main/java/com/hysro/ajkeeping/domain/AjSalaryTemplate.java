@@ -67,7 +67,6 @@ public class AjSalaryTemplate extends BaseEntity
 
     /** 默认（0不默认，1默认） */
     @Excel(name = "适用工作类型", readConverterExp = "0=兼职,1=全职,2=实习生,3=暑假工")
-    @NotBlank
     private Integer salaryEmployType;
 
     public Integer getSalaryEmployType() {

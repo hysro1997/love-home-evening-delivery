@@ -36,6 +36,14 @@ public interface AjTeacherInfoMapper
     public List<AjTeacherInfo> selectAjTeacherInfoList(AjTeacherInfo ajTeacherInfo);
 
     /**
+     * 查询教师信息列表
+     *
+     * @param ajTeacherInfo 教师信息
+     * @return 教师信息集合
+     */
+    public List<AjTeacherInfo> selectAjTeacherInfoListOrderByStatus(AjTeacherInfo ajTeacherInfo);
+
+    /**
      * 新增教师信息
      *
      * @param ajTeacherInfo 教师信息
