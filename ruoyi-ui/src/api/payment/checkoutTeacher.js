@@ -35,3 +35,12 @@ export function listSalaryTemplate(query) {
     params: query
   })
 }
+
+// 添加工资账单
+export function addSalaryTemplate(data) {
+  return request({
+    url: '/payment/checkoutTeacher/addSalaryBill',
+    method: 'post',
+    data: data
+  })
+}

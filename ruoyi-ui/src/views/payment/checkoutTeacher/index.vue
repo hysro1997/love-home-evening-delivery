@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="8" style="margin-left:15px">
+      <el-col :span="10" style="margin-left:15px">
         <div style="text-align: left" v-for="i in teacherList" :key="i.teacherId">
           <el-card class="box-card" shadow="always" style="margin: 6px">
             <div slot="header" class="clearfix">
@@ -26,11 +26,37 @@
           :limit.sync="queryParams.pageSize"
           @pagination="initTeachers"
         />
+        <br/>
+        <br/>
       </el-col>
-      <el-col :span="15">
+      <el-col :span="13" v-loading="checkoutTeacherLoading">
         <el-row>
           <el-table :data="teacherSalaryList" :row-class-name="tableRowClassName">
-            <el-table-column label="员工姓名" align="center" prop="teacherName" />
+            <el-table-column label="员工姓名" align="center" prop="teacherName">
+              <template slot-scope="scope">
+                <el-popover
+                  placement="right"
+                  width="400"
+                  trigger="click">
+                  <div>
+                    <el-descriptions title="详细信息">
+                      <el-descriptions-item label="教师ID">{{scope.row.teacherId}}</el-descriptions-item>
+                      <el-descriptions-item label="教师姓名" :span="2">{{scope.row.teacherName}}</el-descriptions-item>
+                      <el-descriptions-item label="考勤开始日期" :span="3">{{ parseTime(scope.row.checkInBeginDate, '{y}-{m}-{d}') }}</el-descriptions-item>
+                      <el-descriptions-item label="考勤结束日期" :span="3">{{parseTime(scope.row.checkInEndDate, '{y}-{m}-{d}')}}</el-descriptions-item>
+                      <el-descriptions-item label="考勤天数">{{scope.row.checkInTimes}}</el-descriptions-item>
+                      <el-descriptions-item label="请假天数">{{scope.row.leaveDays}}</el-descriptions-item>
+                      <el-descriptions-item label="值班次数">{{scope.row.onDutyTimes}}</el-descriptions-item>
+                      <el-descriptions-item label="全勤补助">{{scope.row.fullCheckInPension || '无'}}</el-descriptions-item>
+                      <el-descriptions-item label="其他补助">{{scope.row.otherPension}}</el-descriptions-item>
+                      <el-descriptions-item label="其他扣除">{{scope.row.deduckMoney}}</el-descriptions-item>
+                      <el-descriptions-item label="实际工资">{{scope.row.acutalSalary}}</el-descriptions-item>
+                    </el-descriptions>
+                  </div>
+                  <el-button type="text" slot="reference">{{ scope.row.teacherName }}</el-button>
+                </el-popover>
+              </template>
+            </el-table-column>
             <el-table-column label="实际工资" align="center" prop="acutalSalary" />
             <el-table-column label="考勤开始日期" align="center" prop="checkInBeginDate" width="180">
               <template slot-scope="scope">
@@ -79,7 +105,7 @@
             <br/><br/>
             <div>
               薪资模板：
-              <el-select v-model="salaryTemplateId" placeholder="请选择薪资模板">
+              <el-select v-model="salaryTemplateId" :disabled="!teacher.teacherName" placeholder="请选择薪资模板">
                 <el-option
                   v-for="item in salaryTemplates"
                   :label="item.salaryTemplateName"
@@ -88,35 +114,72 @@
               </el-select>
             </div>
             <br/><br/>
-            <div v-if="teacherSalaryBill">
-              <div>月工资：{{ salaryTemplate.salaryPerMonth }} 元 / 月</div>
-              <div>日工资：{{ salaryTemplate.salaryPerDay }} 元 / 天</div>
-              <div>全勤工资：{{ salaryTemplate.salaryAllDuty }} 元 / 月</div>
-              <div>值班工资：{{ salaryTemplate.salaryOnDuty }} 元 / 次</div>
-              <div>请假扣除工资：{{ salaryTemplate.salaryOffDutyFee }} 元 / 天</div>
-              <div>其他补助：元</div>
-              <div>工资扣除：元</div>
-            </div>
+            <el-row>
+              <el-col :span="12">
+                <div v-if="teacherSalaryBill">
+                  <div>月工资：{{ salaryTemplate.salaryPerMonth }} 元 / 月
+                    <el-radio-group v-model="salaryTemplate.salaryUsePerMonth" size="small" @change="verifyFeeUse(1)">
+                      <el-radio :label="1">使用</el-radio>
+                    </el-radio-group>
+                  </div>
+                  <div>日工资：{{ salaryTemplate.salaryPerDay }} 元 / 天
+                    <el-radio-group v-model="salaryTemplate.salaryUserPerDay" size="small" @change="verifyFeeUse(0)">
+                      <el-radio :label="1">使用</el-radio>
+                    </el-radio-group>
+                  </div>
+                  <div>全勤工资：{{ salaryTemplate.salaryAllDuty }} 元 / 月
+                    <el-radio-group v-model="allDuty" :disabled="0===salaryTemplate.salaryUsePerMonth" size="small" @change="calculateSumSalary">
+                      <el-radio :label="1">全勤</el-radio>
+                      <el-radio :label="0">未全勤</el-radio>
+                    </el-radio-group>
+                  </div>
+                  <div>值班工资：{{ salaryTemplate.salaryOnDuty }} 元 / 次</div>
+                  <div>请假扣除工资：{{ salaryTemplate.salaryOffDutyFee }} 元 / 天</div>
+                  <div>其他补助：
+                    <el-input style="width: 60%" v-model.number="otherPension" placeholder="请输入其他补助费用" @blur="calculateSumSalary"><template slot="append">元</template></el-input>
+                  </div>
+                  <div>其他扣除：
+                    <el-input style="width: 60%" v-model.number="deduckMoney" placeholder="请输入扣除费用" @blur="calculateSumSalary"><template slot="append">元</template></el-input>
+                  </div>
+                  <div>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div v-if="teacherSalaryBill">
+                  <div v-if="1===salaryTemplate.salaryUsePerMonth">
+                    {{ salaryTemplate.salaryPerMonth }} 月工资
+                    <br/>
+                     + {{ 1 === allDuty ? salaryTemplate.salaryAllDuty : 0 }} 全勤
+                     - {{ teacherSalaryBill.leaveDays }} × {{salaryTemplate.salaryOffDutyFee}} 请假扣除
+                  </div>
+                  <div v-else>{{ teacherSalaryBill.checkInTimes }} × {{ salaryTemplate.salaryPerDay }} 日工资</div>
+                  <div> + {{ teacherSalaryBill.onDutyTimes }} × {{salaryTemplate.salaryOnDuty}} 值班工资</div>
+                  <div> + {{otherPension}} 补助</div>
+                  <div> - {{deduckMoney}} 其他扣除</div>
+                  <div>--------------------------------------------</div>
+                  <el-button type="primary" @click="submitForm">结工资 {{salaryTemplate.acutalSalary || 0}} 元</el-button>
+                </div>
+            </el-col>
+            </el-row>
+
+
           </div>
         </el-row>
       </el-col>
     </el-row>
-
-    <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
-      <el-form-item size="large">
-        <el-button type="primary" @click="submitForm">提交</el-button>
-        <el-button @click="resetForm">重置</el-button>
-      </el-form-item>
-    </el-form>
   </div>
 </template>
 <script>
-  import { listTeachers, listTeacherSalary, getTeacherCheckinStatistic, listSalaryTemplate } from "@/api/payment/checkoutTeacher";
+  import { listTeachers, listTeacherSalary, getTeacherCheckinStatistic, listSalaryTemplate, addSalaryTemplate } from "@/api/payment/checkoutTeacher";
+  import { parseTime } from '@/utils/ruoyi'
   export default {
     components: {},
     props: [],
     data() {
       return {
+        checkoutTeacherLoading: false,
+        allDuty: 0,
         rangeDate:'',
         queryParams2: {
           pageNum: 1,
@@ -141,6 +204,8 @@
         salaryTemplates: [],
         salaryTemplateId: null,
         salaryTemplate: null,
+        otherPension: 0,
+        deduckMoney: 0,
       }
     },
     computed: {},
@@ -157,10 +222,47 @@
     },
     mounted() {},
     methods: {
+      verifyFeeUse(useNum){
+        if (0 === useNum){
+          this.salaryTemplate.salaryUsePerMonth = 0;
+        } else {
+          this.salaryTemplate.salaryUserPerDay = 0;
+        }
+        this.calculateSumSalary();
+      },
+      calculateSumSalary(){
+        let acutalSalary = 0;
+        if (this.teacherSalaryBill){
+          if (1 === this.salaryTemplate.salaryUsePerMonth){
+            //用月工资
+            acutalSalary += this.salaryTemplate.salaryPerMonth;
+            if (null === this.teacherSalaryBill.leaveDays || 0 === this.teacherSalaryBill.leaveDays){
+              // 没请假就全勤
+              if (1 === this.allDuty){
+                acutalSalary += this.salaryTemplate.salaryAllDuty;
+              }
+            } else {
+              // 请假扣请假工资
+              acutalSalary -= this.salaryTemplate.salaryOffDutyFee * this.teacherSalaryBill.leaveDays;
+            }
+          } else {
+            // 用日工资
+            acutalSalary += this.salaryTemplate.salaryPerDay * this.teacherSalaryBill.checkInTimes;
+          }
+          // 值班补助
+          acutalSalary += this.salaryTemplate.salaryOnDuty * this.teacherSalaryBill.onDutyTimes;
+          // 其他补助和扣除
+          acutalSalary += this.otherPension;
+          acutalSalary -= this.deduckMoney;
+          this.$set(this.salaryTemplate,'acutalSalary',acutalSalary);
+        }
+
+      },
       showSalaryTemplateDetail(){
         this.salaryTemplates.forEach(element => {
           if (element.salaryId === this.salaryTemplateId){
             this.salaryTemplate = element;
+            this.calculateSumSalary();
           }
         });
       },
@@ -177,6 +279,7 @@
           }
           getTeacherCheckinStatistic(param).then(response => {
             this.teacherSalaryBill = response.data;
+            this.calculateSumSalary();
           });
         }
       },
@@ -212,10 +315,35 @@
         });
       },
       submitForm() {
-        this.$refs['elForm'].validate(valid => {
-          if (!valid) return
-          // TODO 提交表单
-        })
+        this.checkoutTeacherLoading = true;
+        let teacherAttendance = {
+          teacherId: this.teacher.teacherId,          // 教师id
+          teacherName: this.teacher.teacherName,          // 教师姓名
+          checkInBeginDate: parseTime(this.rangeDate[0], '{y}-{m}-{d}'),   // 考勤开始日期
+          checkInEndDate: parseTime(this.rangeDate[1], '{y}-{m}-{d}'),     // 考勤结束日期
+          checkInTimes: this.teacherSalaryBill.checkInTimes,       // 考勤次数
+          leaveDays: this.teacherSalaryBill.leaveDays,          // 请假天数
+          onDutyTimes: this.teacherSalaryBill.onDutyTimes,        // 值班次数
+          onDutyPension: this.salaryTemplate.salaryOnDuty,      // 值班补助
+          fullCheckIn: this.allDuty,        // 全勤（0全勤，1未全勤）
+          fullCheckInPension: null, // 全勤奖
+          otherPension: this.otherPension,       // 其他补助
+          deduckMoney: this.salaryTemplate.salaryOffDutyFee * this.teacherSalaryBill.leaveDays + this.deduckMoney,        // 工资扣除
+          acutalSalary: this.salaryTemplate.acutalSalary        // 实际工资
+        };
+        if (1 === this.allDuty){
+          teacherAttendance.fullCheckInPension = this.salaryTemplate.salaryAllDuty;
+        }
+        addSalaryTemplate(teacherAttendance).then(response => {
+          window.alert("结账成功")
+          this.checkoutTeacherLoading = false;
+          listTeacherSalary(this.queryParams2).then(response => {
+            this.teacherSalaryList = response.rows;
+            this.teacherSalaryTotal = response.total;
+          });
+          this.teacherSalaryBill = null;
+          this.rangeDate = '';
+        });
       },
       resetForm() {
         this.$refs['elForm'].resetFields()
